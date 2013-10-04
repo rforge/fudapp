@@ -1,0 +1,39 @@
+\name{apply.fdsample}
+\alias{apply.fdsample}
+\title{Apply summary function to the y-values in an fdsample}
+\usage{
+  apply.fdsample(x, fun = mean, fopt = list(), ...)
+}
+\arguments{
+  \item{x}{object of type \code{\link{fdsample}}}
+
+  \item{fun}{the function to apply, defaults to the mean}
+
+  \item{fopt}{list of options to \code{fun}}
+
+  \item{...}{optional, (plot) options for updating
+  \code{options} element of the result}
+}
+\description{
+  Applies a function to the curves function values
+  (\eqn{y}-values) in an \code{\link{fdsample}} object, for
+  each argument value (\eqn{x}-value).
+}
+\details{
+  The function \code{fun} should return a single number or
+  a vector of fixed length. This is not checked.
+}
+\examples{
+data(exampledata)
+# look at data set fuda
+str(fuda)
+# apply the summary function contained in fuda$options
+str(apply.fdsample(fuda))
+# apply the median
+str(apply.fdsample(fuda, "median"))
+# apply median and change axis label
+str(apply.fdsample(fuda, median, xlab = "median of y-values"))
+# another way to get the median and change axis label
+str(apply.fdsample(fuda, quantile, list(prob = 0.5), xlab = "50\% quantile of y-values"))
+}
+
