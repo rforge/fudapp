@@ -1,0 +1,92 @@
+\name{coordTransform.owin}
+\alias{coordTransform.owin}
+\title{Apply Coordinate Transformation to Window}
+\usage{
+  \method{coordTransform}{owin} (X, trafoxy = identxy,
+    invtrafoxy = NULL, isAffine = FALSE, ...)
+}
+\arguments{
+  \item{X}{Window (object of class \code{"owin"}).}
+
+  \item{trafoxy}{The coordinate transformation function,
+  defaults to the identical map \code{\link{identxy}}, see
+  also `Details'.}
+
+  \item{invtrafoxy}{The inverse to \code{trafoxy}, defaults
+  to the identical map \code{\link{identxy}}. Only needed
+  if \code{X} is a pixel image.}
+
+  \item{isAffine}{If true, no subdivision of rectangles or
+  polygons, see the `Details'.}
+
+  \item{\ldots}{Optional arguments passed to
+  \code{\link{as.mask}} controlling the pixel resolution of
+  the transformed window, if \code{X} is a binary pixel
+  mask, or to \code{\link{refinepoly}}, if \code{X} is a
+  polygon or a rectangle, see the `Details'.}
+}
+\description{
+  Apply any coordinate transformation to a window. Compare
+  the spatstat function \code{\link{affine.owin}}.
+}
+\details{
+  The functions \code{trafoxy} (and \code{invtrafoxy}) take
+  one or two arguments. In the latter case, both arguments
+  are vectors of same length (not checked!), and the second
+  argument has to be named \code{y}.  If only one argument
+  is given, it is a list or a data frame with elements
+  \code{x} and \code{y}.  In a future version, ... may
+  transport arguments to the transformation function
+
+  If the window is a rectangle or polygon, it is converted
+  into a polygon which is subsequently refined using
+  \code{\link{refinepoly}}, unless \code{isAffine = TRUE}.
+  This is only necessary if the coordinate transform is not
+  affine, in order to achieve a better approximation of the
+  transformed window. Note however that
+  \code{coordTransform.owin} does not check whether
+  \code{trafoxy} really is affine. The option
+  \code{isAffine = TRUE} may therefore also be used to save
+  memory and computation time when transforming
+  xy-rectangles with a transformation that preserves
+  axe-parallel rectangles.
+}
+\examples{
+# transformation of the polygonal window letterR from spatstat
+
+# a nonlinear transformation
+trafo <- function(xy) list(x = xy$x^1.5 + 0.5*xy$y, y = xy$y*.5)
+
+# transform letterR and mark the boundary corners,
+# dummy variable for silent return
+plot(letterR)
+dummy <- lapply(letterR$bdry, points, col = "red")
+mappedR <- coordTransform(letterR, trafo, edgelen = 0.1)
+plot(mappedR)
+dummy <- lapply(mappedR$bdry, points, col = "red")
+
+# no refinement, assuming that trafo is affine
+mappedRcoarse <- coordTransform(letterR, trafo, isAffine = TRUE)
+plot(mappedRcoarse, add = TRUE)
+dummy <- lapply(mappedRcoarse$bdry, points, col = "green")
+# not much of a difference, though...
+
+# now as mask image. We need the inverse transformation, too
+
+invtrafo <- function(xy) list(x = (xy$x - xy$y) ^(1/1.5), y = xy$y*2)
+wimR <- as.owin(as.im(letterR))
+mappedimR <- coordTransform(wimR, trafo, invtrafo)
+plot(mappedimR)
+# compare with the polygonal window from before
+plot(mappedR, col = "green", add = TRUE)
+}
+\author{
+  Ute Hahn, \email{ute@imf.au.dk}
+}
+\seealso{
+  \code{\link{coordTransform.im}}, which is called if
+  \code{X} is a pixel image.
+}
+\keyword{manip}
+\keyword{spatial}
+
