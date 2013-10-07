@@ -43,7 +43,7 @@
 
   \item{Kfun}{optional \code{function}, the
   \eqn{K}-function to be used, either \code{\link{estK}}
-  (default) or \code{\link{DeltaKdir}}}
+  (default) or \code{\link{estDeltaKdir}}}
 
   \item{correction}{a character vector giving the edge
   correction type, may be any subset of \code{"border"},

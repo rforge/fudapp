@@ -29,7 +29,9 @@
   \item{...}{further arguments for plotting}
 }
 \description{
-  Plot a point pattern with coloured test quadrats
+  Plot a point pattern with two sets of coloured test
+  quadrats, meant as a visualisation supplement for the
+  function \code{\link{Kpermute.test}}.
 }
 \details{
   One of the arguments \code{bgcol} or \code{style} has to

@@ -1,6 +1,6 @@
 \name{estOnQuadrats}
 \alias{estOnQuadrats}
-\title{Template K-function, or Delta K_dir, estimated on quadrats}
+\title{Estimate summary function on quadrats}
 \usage{
   estOnQuadrats(X, type = NULL, quads, tquads, fun = estK,
     rmin = 0, rmax = 1.25, rlen = 100, ...)
@@ -35,8 +35,8 @@
   \item{rlen}{optional, number of steps in argument vector,
   defaults to 256,}
 
-  \item{...}{further arguments for \code{\link{estK}} or
-  \code{\link{DeltaKdir}}}
+  \item{...}{further arguments passed to \code{"fun"} or
+  for type-tagging of the point pattern \code{X}}
 }
 \value{
   An object of class \code{foolist}, which is a list with
@@ -50,14 +50,14 @@
   labels for plotting }
 }
 \description{
-  Estimate the template \eqn{K}-function, or the \eqn{Delta
-  K}-function, on subsamples of a point pattern
+  Estimate a summary function on subsamples of a point
+  pattern.
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}
 }
 \seealso{
-  \code{\link{estK}}, \code{\link{DeltaKdir}} for
+  \code{\link{estK}}, \code{\link{estDeltaKdir}} for
   estimation of the template \eqn{K}-function or of Delta
   K_dir.
 }

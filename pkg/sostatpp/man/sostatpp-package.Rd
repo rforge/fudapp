@@ -69,11 +69,11 @@
   \tabular{ll}{ \code{\link{estK}} \tab estimates the
   \eqn{K}-function, according to type \cr\code{\link{estL}}
   \tab estimates the \eqn{L}-function,
-  \cr\code{\link{DeltaKdir}} \tab estimates the \eqn{\Delta
-  K_{dir}}-function } \subsection{Tests}{ \tabular{ll}{
-  \code{\link{Kpermute.test}} \tab test type of s.o.s or
-  local anisotropy, using \eqn{K}-function on subsamples }
-  } }
+  \cr\code{\link{estDeltaKdir}} \tab estimates the
+  \eqn{\Delta K_{dir}}-function } \subsection{Tests}{
+  \tabular{ll}{ \code{\link{Kpermute.test}} \tab test type
+  of s.o.s or local anisotropy, using \eqn{K}-function on
+  subsamples } } }
 }
 
 \section{Coordinate transformation}{
