@@ -40,7 +40,7 @@ quadratsplot(bronzefilter, quads1, quads2, style1, style2, pch=16, cex=.5)
 
 ##### ----------  analysis as rescaled second-order stationary  --------
 
-bronzs <- rescaled(bronzefilter, lambda = lambda)
+bronzs <- rescaled(bronzefilter, intensity = lambda)
 
 # testing the hypothesis that the pattern is rescaled second-order stationary
 #
@@ -68,7 +68,7 @@ plot(estOnQuadrats(bronzs, fun = estK, quads = quads2, rmax = 1.25),
 
 ##### ----------  analysis as reweighted second-order stationary  --------
 
-bronzw <- reweighted(bronzefilter, lambda = lambda)
+bronzw <- reweighted(bronzefilter, intensity = lambda)
 
 Kpermute.test(bronzw, quads1 = quads1, quads2 = quads2, rmax = 0.4,
               nperm = nperm)
@@ -91,7 +91,7 @@ plot(estOnQuadrats(bronzw, fun = estK, quads = quads2, rmax = 0.4),
 # we use the fact that the transformation follows a gradient in x - direction,
 # and apply the estimated intensity
 
-bronzt <- retransformed(bronzefilter, trafo="gradx", lambda = lambda)
+bronzt <- retransformed(bronzefilter, backtrafo="gradx", intensity = lambda)
 
 # as in the paper, we specify the subwindows on the backtransformed pattern
 # note that this only necessary for obtaining a plot as Figure 12, but the
@@ -111,16 +111,16 @@ quadratsplot(backtransformed(bronzt), quadt1, quadt2, style1, style2,
 
 # Figure 12, right part
 
-plot(estOnQuadrats(bronzt, fun = estK, tquads = quadt1, rmax = 0.5), 
+plot(estOnQuadrats(bronzt, fun = estK, quads = quads1, rmax = 0.5), 
      style = style1, ylim = c(0, 0.8))
-plot(estOnQuadrats(bronzt, fun = estK, tquads = quadt2, rmax = 0.5), 
+plot(estOnQuadrats(bronzt, fun = estK, quads = quads2, rmax = 0.5), 
      style = style2, add = TRUE)
 
 # testing
 
-Kpermute.test(bronzt, tquads1 = quadt1, tquads2 = quadt2, rmax=.5, 
+Kpermute.test(bronzt, quads1 = quads1, quads2 = quads2, rmax=.5, 
               nperm = nperm)
-Kpermute.test(bronzt, tquads1 = quadt1, tquads2 = quadt2, rmax=.5, 
+Kpermute.test(bronzt, quads1 = quads1, quads2 = quads2, rmax=.5, 
               nperm = nperm, use.tbar = TRUE)
 
 
@@ -128,15 +128,15 @@ Kpermute.test(bronzt, tquads1 = quadt1, tquads2 = quadt2, rmax=.5,
 
 # Figure 14, left part, and test
 
-plot(estOnQuadrats(bronzt, fun = estDeltaKdir, tquads = quadt1, rmax = 0.6), 
+plot(estOnQuadrats(bronzt, fun = estDeltaKdir, quads = quads1, rmax = 0.6), 
      style = style1, ylim = c(-.5, .5))
-plot(estOnQuadrats(bronzt, fun = estDeltaKdir, tquads = quadt2, rmax = 0.6), 
+plot(estOnQuadrats(bronzt, fun = estDeltaKdir, quads = quads2, rmax = 0.6), 
      style = style2, add = TRUE)
 
-Kpermute.test(bronzt, Kfun = estDeltaKdir, tquads1 = quadt1, tquads2 = quadt2, 
+Kpermute.test(bronzt, Kfun = estDeltaKdir, quads1 = quads1, quads2 = quads2, 
               rmax=.5, use.tbar = FALSE, nperm = nperm)
 
-Kpermute.test(bronzt, Kfun = estDeltaKdir, tquads1 = quadt1, tquads2 = quadt2, 
+Kpermute.test(bronzt, Kfun = estDeltaKdir, quads1 = quads1, quads2 = quads2, 
               rmax=.5, use.tbar = TRUE, nperm = nperm)
 
 

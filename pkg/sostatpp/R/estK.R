@@ -70,7 +70,7 @@ estL <- function(...) {
 #'   any subset of \code{"border"},  \code{"isotropic"}, \code{"translate"}, \code{"none"}.
 #' @param normpower an integer between 0 and 2. If \code{normpower} > 0, the 
 #'  intensity is normalized, see the Details.
-#' @param ... optional arguments passed to \code{\link{as.sostpp}}   
+#' @param ... optional arguments passed to \code{\link{as.sostyppp}}   
 #' @param max.ls.r optional, upper limit for argument \eqn{r} if \code{type="s"}. 
 #'
 #' @details
@@ -79,22 +79,22 @@ estL <- function(...) {
 #' If \code{X} has no type of second-order stationarity, it is assumed to be homogeneous.
 #' 
 #' If \code{type} is given, but does not match the type of \code{X}, the function
-#' \code{\link{as.sostpp}} is called with arguments ldots to ensure the correct
+#' \code{\link{as.sostyppp}} is called with arguments ldots to ensure the correct
 #' hidden second-order information.
 #' 
 #' If  \code{normpower} > 0, the intensity is renormalized, so that \code{\link{estK}} yields similar results as
-#' the \bold{spatstat}-function \code{\link{Kinhom}}. The intensity values are then multiplied by 
+#' the \bold{spatstat}-function \code{\link{Kinhom}}. The intensity values \eqn{\lambda} are then multiplied by 
 #' \deqn{c^{normpower/2}}{c^(normpower/2),} where 
 #' \deqn{c = area(W)/sum_i(1/\lambda(x_i))}{c = area(W)/sum[i](1/lambda(x[i])).}
 #' 
 #' The hidden \eqn{K}-function for \strong{reweighted} s.o. stationary point processes
 #' delivers the same result as {spatstat}'s function \code{\link{Kinhom}}, up to a subtle
 #' difference for the border correction: \code{estK} does not use fast optimized code.
-#' #' 
+#'  
 #' If \code{X} is typed \strong{retransformed} s.o. stationary, the \eqn{K}-function of
 #' the \code{\link{backtransformed}} point pattern is returned, which corresponds to
 #' {spatstat}'s function \code{\link{Kest}}
-#' #' 
+#'  
 #' For \strong{locally rescaled} s.o. stationarity, the locally scaled interpoint 
 #' distances are computed using an approximation proposed by Hahn (2007): 
 #' The Euclidean distance between two points is multiplied by the 
@@ -109,7 +109,7 @@ estL <- function(...) {
 #' Note that the argument of the locally rescaled \eqn{K}-function corresponds to
 #'  \deqn{r/\sqrt{\lambda}}{r / sqrt(lambda)} in the non scaled case.
 #'  The default maximum \code{max.ls.r} = 3 is thus quite large.
-#' #' 
+#'  
 #' @export
 #' @seealso the \pkg{spatstat} functions \code{\link{Kest}}, \code{\link{Kinhom}}, \code{\link{Kscaled}}
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
@@ -146,7 +146,7 @@ estL <- function(...) {
 #' plot(estK(rescaled(bronzefilter)))
 #' 
 #' # The last given type is the one that counts
-#' plot(estK(retransformed(rescaled(bronzefilter), trafo="gradx")))
+#' plot(estK(retransformed(rescaled(bronzefilter), backtrafo="gradx")))
 
 
 estK <- function (X, 
@@ -159,13 +159,11 @@ estK <- function (X,
 {
   # verifyclass(X, "ppp")
   npts <- npoints(X)
-  W <- X$window
-  area <- area.owin(W)
   stopifnot(npts > 1)
   
   if (missing(type)) 
   {
-    if(is.sostpp(X)) sostype <- currenttype(X) else sostype <- NULL
+    if(is.sostyppp(X)) sostype <- currenttype(X) else sostype <- NULL
     if (length(sostype) == 0) 
       {
          X <- ashomogeneous(X)
@@ -174,15 +172,15 @@ estK <- function (X,
   }
   else {
     sostype <- type[1]
-    X <- as.sostpp(X, type = sostype, ...)
+    X <- as.sostyppp(X, type = sostype, ...)
   }
     
-  marx <- X$typemarks
+  marx <- X$tinfo$tmarks
   if (normpower != 0) {
     stopifnot ((1 <= normpower) & (normpower <= 2)) 
-    if (!is.null(marx$lambda)){  
-      renorm.factor <-  (sum(1 / marx$lambda) / (area.owin(X)))^(normpower / 2) 
-      marx$lambda <- marx$lambda * renorm.factor
+    if (!is.null(marx$intens)){  
+      renorm.factor <-  (sum(1 / marx$intens) / (area.owin(X)))^(normpower / 2) 
+      marx$intens <- marx$intens * renorm.factor
     }
     if(!is.null(marx$invscale)){
       renorm.factor <-  (sum(1 / marx$invscale^2) / (area.owin(X)))^(normpower / 4) 
@@ -197,14 +195,18 @@ estK <- function (X,
   
   # modify point pattern to "become" the template, if retransformed or rescaled
   
-  if (scaling) marx$lambda <- rep(1, npts) # refers to unit rate template
+  if (scaling) marx$intens <- rep(1, npts) # refers to unit rate template
   
   if (sostype == "t") 
   {
     X <- backtransformed (X)
-    # make uniform lambdas
-    marx$lambda <- npts / area
+    # make uniform intensities
+    # marx$intens <- rep(npts / area, npts)
+    marx <- X$tinfo$tmarks
   }
+  
+  W <- X$window
+  area <- area.owin(W)
   
   
   # get arguments r for K
@@ -234,7 +236,7 @@ estK <- function (X,
     alim <- c(0, min(rmax, rmaxdefault, max.ls.r))
   } 
   else { 
-    if(sostype == "w") lamax <- max(marx$lambda) else lamax <- npts / area
+    if(sostype == "w") lamax <- max(marx$intens) else lamax <- npts / area
     rmaxdefault <- rmax.rule("K", W, lamax)
     breaks <- handle.r.b.args(r, NULL, W, rmaxdefault = rmaxdefault)
     r <- breaks$r
@@ -304,12 +306,12 @@ estK <- function (X,
   XI <- X[I]
   XJ <- X[J]
   
-# lambdaweights. No worries, mate, lambdas are one if we deal with scaled processes.
+# intensityweights. No worries, mate, intensities are one if we deal with scaled processes.
 # we use them here in the homogeneous / scaled case, too, and implement implicitely that
 # infamous Poisson lambda^2 estimator n*(n-1)/area^2  
   
-  if (weighted) wIJ <- 1 / (marx$lambda[J] * marx$lambda[I])
-  else wIJ <- 1 / marx$lambda[J] * area / (npts - 1)
+  if (weighted) wIJ <- 1 / (marx$intens[J] * marx$intens[I])
+  else wIJ <- 1 / marx$intens[J] * area / (npts - 1)
       
  
   if (any(correction == "none")) {
@@ -325,7 +327,7 @@ estK <- function (X,
     bI <- b[I]
     newwIJ <- wIJ 
     if(scaling) newwIJ <- newwIJ * npts / area
-    RS <- Kwtsum(dIJ, bI, newwIJ, b, w = 1/marx$lambda, breaks)
+    RS <- Kwtsum(dIJ, bI, newwIJ, b, w = 1/marx$intens, breaks)
     if (any(correction == "border")) {
       Kb <- RS$ratio
       K <- bind.fv(K, data.frame(border=Kb),"%s*(r)", # "%s[bord](r)",

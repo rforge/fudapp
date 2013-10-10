@@ -1,6 +1,6 @@
 # scaled version of Ohser-Stoyan directional K-function, 31.08.12 / 25.08.13 uh
 
-# now with lambda / scalefaktor marked point processes
+# now with intensity / scalefaktor marked point processes
 
 
 
@@ -23,12 +23,14 @@
 #'    \code{"isotropic"} is supported.
 #' @param normpower an integer between 0 and 2. If \code{normpower} > 0, the 
 #'  intensity is normalized, see the Details.
-#' @param ... optional arguments passed to \code{\link{as.sostpp}}   
+#' @param ... optional arguments passed to \code{\link{as.sostyppp}}   
 #' @param rescaleangle logical, indicating whether to rescale the directional 
 #'   \eqn{K}-functions as to represent the full circle
 #' @param max.ls.r upper limit for argument \eqn{r}. The default 3 is quite large - note
 #'  that the argument of the locally rescaled \eqn{K}-function corresponds to
-#'  \deqn{r/\sqrt{\lambda}}{r / sqrt(lambda)} in the non scaled case.
+#'  \deqn{r/\sqrt{\lambda}, \lambda=intensity}{r / sqrt(intensity)} in the non scaled case.
+#'  @param warn.backtransformed logical, if \code{TRUE} issue a warning for retransformed DeltaKdir-function,
+#'  when the backtransformed  window is approximated its enclosing rectangle.
 #'
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
 #' @export
@@ -44,7 +46,7 @@
 #' lines(rr, estDeltaKdir (X[W2],r = rr)$iso, col="blue") 
 #'
 #' # the backtransformed pattern shows anisotropy
-#' Y <- backtransformed(retransformed(bronzefilter, trafo = "gradx"))                 
+#' Y <- backtransformed(retransformed(bronzefilter, backtrafo = "gradx"))                 
 #' lines(rr, estDeltaKdir (Y[W1], r = rr)$iso,  col= c("red"), lty = "dotted")
 #' lines(rr, estDeltaKdir (Y[W2], r = rr)$iso, col="blue", lty = "dotted" ) 
 
@@ -56,11 +58,10 @@ estDeltaKdir <- function (X,
                        normpower = 0,
                        ...,
                        rescaleangle = TRUE, # rescale to full angle
-                       max.ls.r = 3.0) 
+                       max.ls.r = 3.0,
+                       warn.backtransformed = FALSE) 
 {  
   npts <- npoints(X)
-  W <- X$window
-  area <- area.owin(W)
   stopifnot(npts > 1)
   
   if (missing(type))   
@@ -74,15 +75,15 @@ estDeltaKdir <- function (X,
   }
   else {
     sostype <- type[1]
-    if (!has.type (X, sostype)) X <- as.sostpp(X, type = sostype, ...)
+    if (!has.type (X, sostype)) X <- as.sostyppp(X, type = sostype, ...)
   }
     
-  marx <- X$typemarks
+  marx <- X$tinfo$tmarks
   if (normpower != 0) {
     stopifnot ((1 <= normpower) & (normpower <= 2)) 
-    if (!is.null(marx$lambda)){  
-      renorm.factor <-  (sum(1 / marx$lambda) / (area.owin(X)))^(normpower / 2) 
-      marx$lambda <- marx$lambda * renorm.factor
+    if (!is.null(marx$intens)){  
+      renorm.factor <-  (sum(1 / marx$intens) / (area.owin(X)))^(normpower / 2) 
+      marx$intens <- marx$intens * renorm.factor
     }
     if(!is.null(marx$invscale)){
       renorm.factor <-  (sum(1 / marx$invscale^2) / (area.owin(X)))^(normpower / 4) 
@@ -97,22 +98,25 @@ estDeltaKdir <- function (X,
   
   # modify point pattern to "become" the template, if retransformed or rescaled
   
-  if (scaling) marx$lambda <- rep(1, npts) # refers to unit rate template
+  if (scaling) marx$intens <- rep(1, npts) # refers to unit rate template
   
   if (sostype == "t") 
   {
     X <- backtransformed (X)
-    # make uniform lambdas
-    marx$lambda <- npts / area
+    # make uniform intensities
+    marx <- X$tinfo$tmarks
     # approximate window, if not a rectangle
     W <- X$window
     if (!is.rectangle(W))
     {
-      warning("window of backtransformed pattern approximated by its enclosing rectangle")
+      if (warn.backtransformed) warning("window of backtransformed pattern approximated by its enclosing rectangle")
       W <- owin(W$xrange, W$yrange)
       X$window <- W
     }
   }
+  
+  W <- X$window
+  area <- area.owin(W)
   
   # get arguments r for K
   
@@ -141,7 +145,7 @@ estDeltaKdir <- function (X,
     alim <- c(0, min(rmax, rmaxdefault, max.ls.r))
   } 
   else { 
-    if(sostype == "w") lamax <- max(marx$lambda) else lamax <- npts / area
+    if(sostype == "w") lamax <- max(marx$intens) else lamax <- npts / area
     rmaxdefault <- rmax.rule("K", W, lamax)
     breaks <- handle.r.b.args(r, NULL, W, rmaxdefault = rmaxdefault)
     r <- breaks$r
@@ -195,8 +199,8 @@ estDeltaKdir <- function (X,
   XI <- X[I]
   XJ <- X[J]
   
-  if (weighted) wIJ <- 1 / (marx$lambda[J] * marx$lambda[I])
-  else  wIJ <- 1 / marx$lambda[J] * area / (npts - 1)
+  if (weighted) wIJ <- 1 / (marx$intens[J] * marx$intens[I])
+  else  wIJ <- 1 / marx$intens[J] * area / (npts - 1)
 
   
   edgewts <- edgecross.Ripley(XI, r = matrix(eudIJ, ncol = 1), dphi = dphi)
