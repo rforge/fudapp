@@ -2,7 +2,7 @@
 \alias{ashomogeneous}
 \title{Mark point pattern as homogeneous}
 \usage{
-  ashomogeneous(X, type = "h", lambda = NULL)
+  ashomogeneous(X, type = "h", intensity = NULL)
 }
 \arguments{
   \item{X}{the original point pattern}
@@ -11,13 +11,13 @@
   patterns is preferentially evaluated as "rescaled",
   otherwise as "reweighted" (default).}
 
-  \item{lambda}{optional, constant lambda.}
+  \item{intensity}{optional, constant intensity.}
 }
 \value{
   A homogeneous s.o.s. typed point pattern (object of class
-  \code{"\link{sostpp}"}), having typemarks with elements
-  \code{lambda} (estimated intensity) and \code{invscale}
-  (square root of lambda).
+  \code{"\link{sostyppp}"}), having typemarks with elements
+  \code{intensity} (estimated intensity) and
+  \code{invscale} (square root of intensity).
 }
 \description{
   Add type information for second-order stationary point
@@ -30,6 +30,6 @@
   related functions: \code{\link{rescaled}},
   \code{\link{retransformed}}, \code{\link{reweighted}}
 
-  \code{\link{sostpp.object}} for details on the class.
+  \code{\link{sostyppp.object}} for details on the class.
 }
 

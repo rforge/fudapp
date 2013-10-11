@@ -1,8 +1,8 @@
-\name{print.sostpp}
-\alias{print.sostpp}
+\name{print.sostyppp}
+\alias{print.sostyppp}
 \title{Print brief details of a second-order stationarity typed point pattern}
 \usage{
-  \method{print}{sostpp} (x, ...)
+  \method{print}{sostyppp} (x, ...)
 }
 \arguments{
   \item{x}{sos-typed point pattern.}

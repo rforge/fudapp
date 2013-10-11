@@ -2,7 +2,7 @@
 \alias{estOnQuadrats}
 \title{Estimate summary function on quadrats}
 \usage{
-  estOnQuadrats(X, type = NULL, quads, tquads, fun = estK,
+  estOnQuadrats(X, type = NULL, quads, fun = estK,
     rmin = 0, rmax = 1.25, rlen = 100, ...)
 }
 \arguments{
@@ -20,11 +20,7 @@
   \item{quads}{quadrats for subsampling \code{X}. A
   \code{list} of objects of \bold{spatstat}-class
   \code{\link{owin}} or an object of \bold{spatstat}-class
-  \code{\link{tess}}. In the current version not used for
-  retransformed used if \code{type != "t"}.}
-
-  \item{tquads}{used instead of \code{quads} for the
-  backtransformed pattern if \code{type != "t"}.}
+  \code{\link{tess}}.}
 
   \item{fun}{the summary function to be applied}
 

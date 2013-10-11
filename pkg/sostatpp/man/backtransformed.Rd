@@ -6,14 +6,18 @@
 }
 \arguments{
   \item{X}{a retransformed s.o.s. typed point pattern,
-  object of class \code{{sostpp}}.}
+  object of class \code{{sostyppp}}.}
 }
 \value{
   a homogeneous s.o.s. typed point pattern of class
-  \code{{sostpp}} with points in \code{x0} and \code{y0}.
+  \code{{sostyppp}} with points in \code{x0} and \code{y0}.
   The type of the result is set to both homogeneous and
   scaled-homogeneous, and is typemarked with constant
   intensity and constant inverse scale factor.
+
+  The window of the resulting pattern is polygonal if the
+  original was a rectangle or polygonal; it is a binary
+  mask if the original window was a binary mask.
 }
 \description{
   Extract the backtransformed template from a retransformed
@@ -21,16 +25,14 @@
 }
 \details{
   As retransformed s.o.s. typed point pattern, \code{X} has
-  an element \code{extra}, a list containing information
+  an element \code{tinfo}, a list containing information
   about the transformation. If this list contains an
-  element \code{invtrafo}, this element is taken to be a
-  function and used to backtransform the window. If the
+  element \code{backtransform}, this element is taken to be
+  a function and used to backtransform the window. If the
   original transformation was a gradient transformation,
   the coordinates of the window are interpolated.
-  Currently, no saftey precautions if \code{invtrafo}
-  returns rubbish. If no element \code{invtrafo} is present
-  in \code{X$extra}, the original window is retained, which
-  also might result in rubbish.
+  Currently, no saftey precautions if \code{backtransform}
+  returns rubbish.
 }
 \examples{
 bronzetra <- retransformed(bronzefilter, "gradx")

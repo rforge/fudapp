@@ -8,15 +8,15 @@
   currenttype(x)
 }
 \arguments{
-  \item{x}{point pattern, of class sostpp}
+  \item{x}{point pattern, of class sostyppp}
 
   \item{type}{character, type of second-order stationarity.
-  See \code{\link{sostpp.object}} for details.}
+  See \code{\link{sostyppp.object}} for details.}
 }
 \description{
   Access the encrypted type information of second-order
   stationarity typed point patterns, objects of class
-  \code{sostpp}.
+  \code{sostyppp}.
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}

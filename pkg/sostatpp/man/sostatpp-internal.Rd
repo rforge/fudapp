@@ -1,7 +1,7 @@
 \docType{data}
-\name{edgecross.Ripley}
-\alias{.settype}
+\name{ppsplit}
 \alias{.TYPENAMES}
+\alias{.settype}
 \alias{correctionkey}
 \alias{currenttypeno}
 \alias{edgecross.Ripley}
@@ -13,29 +13,32 @@
 \alias{normalizedIntensity}
 \alias{peripolyxy}
 \alias{ppsplit}
+\alias{retagList}
 \alias{sostatpp-internal}
 \alias{subdivpolyxy}
 \title{internal functions of sostatpp package}
 \format{chr [1:5] "reweighted" "retransformed" "rescaled" "homogeneous" "scaled-homogeneous"}
 \usage{
+  ppsplit(X, quadrats)
+
+  correctionkey(correction)
+
+  getIntensity(X, intensity = NULL, ...)
+
+  normalizedIntensity(X, intensity = NULL, normpower = 2)
+
   edgecross.Ripley(X, r, dphi = pi/4, W = X$window,
     maxweight = 100)
 
   ls.r.args(r = NULL, eps = NULL, rmaxdefault = 4,
     minscale = NULL, maxscale)
 
-  ppsplit(X, quadrats)
-
-  correctionkey(correction)
+  retagList(arglist, tagnames)
 
   lspairdist(x, y, invscale, lambda)
 
   lsclosepairs(X, rmax, invscale, lambda, ordered = TRUE,
     what = c("all", "indices"))
-
-  getIntensity(X, lambda = NULL, ...)
-
-  normalizedIntensity(X, lambda = NULL, normpower = 2)
 
   currenttypeno(x)
 

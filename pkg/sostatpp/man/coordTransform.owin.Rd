@@ -3,7 +3,7 @@
 \title{Apply Coordinate Transformation to Window}
 \usage{
   \method{coordTransform}{owin} (X, trafoxy = identxy,
-    invtrafoxy = NULL, isAffine = FALSE, ...)
+    invtrafoxy = NULL, subdivideBorder = TRUE, ...)
 }
 \arguments{
   \item{X}{Window (object of class \code{"owin"}).}
@@ -16,8 +16,9 @@
   to the identical map \code{\link{identxy}}. Only needed
   if \code{X} is a pixel image.}
 
-  \item{isAffine}{If true, no subdivision of rectangles or
-  polygons, see the `Details'.}
+  \item{subdivideBorder}{If TRUE, subdivision of rectangle
+  or polygon borders to achieve better precision, see the
+  `Details'.}
 
   \item{\ldots}{Optional arguments passed to
   \code{\link{as.mask}} controlling the pixel resolution of
@@ -40,14 +41,14 @@
 
   If the window is a rectangle or polygon, it is converted
   into a polygon which is subsequently refined using
-  \code{\link{refinepoly}}, unless \code{isAffine = TRUE}.
-  This is only necessary if the coordinate transform is not
-  affine, in order to achieve a better approximation of the
-  transformed window. Note however that
-  \code{coordTransform.owin} does not check whether
+  \code{\link{refinepoly}}, unless \code{subdivideBorder =
+  FALSE}. This is only necessary if the coordinate
+  transform is not affine, in order to achieve a better
+  approximation of the transformed window. Note however
+  that \code{coordTransform.owin} does not check whether
   \code{trafoxy} really is affine. The option
-  \code{isAffine = TRUE} may therefore also be used to save
-  memory and computation time when transforming
+  \code{subdivideBorder = FALSE} may therefore also be used
+  to save memory and computation time when transforming
   xy-rectangles with a transformation that preserves
   axe-parallel rectangles.
 }
@@ -66,7 +67,7 @@ plot(mappedR)
 dummy <- lapply(mappedR$bdry, points, col = "red")
 
 # no refinement, assuming that trafo is affine
-mappedRcoarse <- coordTransform(letterR, trafo, isAffine = TRUE)
+mappedRcoarse <- coordTransform(letterR, trafo, subdivideBorder = FALSE)
 plot(mappedRcoarse, add = TRUE)
 dummy <- lapply(mappedRcoarse$bdry, points, col = "green")
 # not much of a difference, though...

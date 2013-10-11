@@ -3,8 +3,8 @@
 \title{Studentized Permutation Test for K-functions of Subsampled Point Patterns}
 \usage{
   Kpermute.test(X, Y = NULL, type = NULL, quads1, quads2,
-    tquads1, tquads2, rmin = 0, rmax, rlen = 100,
-    Kfun = estK, correction = "iso", ..., use.tbar = FALSE,
+    rmin = 0, rmax, rlen = 100, Kfun = estK,
+    correction = "iso", ..., use.tbar = FALSE,
     nperm = 25000)
 }
 \arguments{
@@ -25,13 +25,7 @@
   \item{quads1,quads2}{quadrats for subsampling \code{X}
   (and \code{Y}). A \code{list} of objects of
   \bold{spatstat}-class \code{\link{owin}} or an object of
-  \bold{spatstat}-class \code{\link{tess}}. In the current
-  version not used for retransformed used if \code{type !=
-  "t"}.}
-
-  \item{tquads1,tquads2}{used instead of \code{quads1} and
-  \code{quads2} for the backtransformed pattern if
-  \code{type != "t"}.}
+  \bold{spatstat}-class \code{\link{tess}}.}
 
   \item{rmin}{optional, lower integration bound, defaults
   to 0; see `Details',}

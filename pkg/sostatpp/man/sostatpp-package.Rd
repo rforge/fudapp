@@ -42,24 +42,24 @@
   show many similarities. In order to stress this aspect,
   the statistical analysis is unified by assigning the
   stationarity type to the data beforehand. To this end,
-  \pkg{sostatpp} declares a class \code{\link{sostpp}} of
+  \pkg{sostatpp} declares a class \code{\link{sostyppp}} of
   second-order stationarity typed point patterns.
 }
 \section{Assigning and retrieving the type of second-order stationarity}{
   Any spatstat or sostatpp point pattern (object of class
-  \code{ppp} or \code{sostpp}) can be converted into a
+  \code{ppp} or \code{sostyppp}) can be converted into a
   second-order stationarity typed point pattern (object of
-  class \code{sostpp}), using \tabular{ll}{
+  class \code{sostyppp}), using \tabular{ll}{
   \code{\link{reweighted}} \tab for reweighted
   s.o.stationarity \cr\code{\link{retransformed}} \tab for
   retransformed s.o. stationarity \cr\code{\link{rescaled}}
   \tab for locally rescaled s.o.stationarity
   \cr\code{\link{ashomogeneous}} \tab for plain,
-  homogeneous s.o. stationarity.  } A \code{sostpp}-object
-  can contain information on several types of s.o.
-  stationarity. To retrieve the type(s) of an
-  \code{sostpp}, apply \tabular{ll}{ \code{\link{has.type}}
-  \tab check for a particular type
+  homogeneous s.o. stationarity.  } A
+  \code{sostyppp}-object can contain information on several
+  types of s.o.  stationarity. To retrieve the type(s) of
+  an \code{sostyppp}, apply \tabular{ll}{
+  \code{\link{has.type}} \tab check for a particular type
   \cr\code{\link{currenttype}} \tab the s.o.s.-type that
   will be used for analysis }
 }

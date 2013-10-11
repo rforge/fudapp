@@ -1,11 +1,11 @@
-\name{as.sostpp.sostpp}
-\alias{as.sostpp.sostpp}
-\title{Convert object of class sostpp to class sostpp}
+\name{as.sostyppp.sostyppp}
+\alias{as.sostyppp.sostyppp}
+\title{Convert object of class sostyppp to class sostyppp}
 \usage{
-  \method{as.sostpp}{sostpp} (x, type = "h", ...)
+  \method{as.sostyppp}{sostyppp} (x, type = "h", ...)
 }
 \arguments{
-  \item{x}{an object of class \code{"sostpp"}}
+  \item{x}{an object of class \code{"sostyppp"}}
 
   \item{type}{character giving the type of second order
   stationarity. One of "w", "t", "s", "h", or "hs".}
@@ -16,7 +16,7 @@
   \code{"hs"}.}
 }
 \value{
-  an object of class \code{"sostpp"} with corresponding
+  an object of class \code{"sostyppp"} with corresponding
   type information.
 }
 \description{
@@ -26,13 +26,13 @@
   stationarity.
 }
 \examples{
-brofi <- as.sostpp (bronzefilter)
-bronze <- as.sostpp (brofi, "t", "gradx")
+brofi <- as.sostyppp (bronzefilter)
+bronze <- as.sostyppp (brofi, "t", "gradx")
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}
 }
 \seealso{
-  \code{\link{sostpp.object}} for details on the class.
+  \code{\link{sostyppp.object}} for details on the class.
 }
 

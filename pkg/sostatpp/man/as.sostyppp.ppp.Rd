@@ -1,8 +1,8 @@
-\name{as.sostpp.ppp}
-\alias{as.sostpp.ppp}
-\title{Convert object of class ppp to class sostpp}
+\name{as.sostyppp.ppp}
+\alias{as.sostyppp.ppp}
+\title{Convert object of class ppp to class sostyppp}
 \usage{
-  \method{as.sostpp}{ppp} (x, type = "h", ...)
+  \method{as.sostyppp}{ppp} (x, type = "h", ...)
 }
 \arguments{
   \item{x}{an object of class \code{"ppp"}}
@@ -17,13 +17,13 @@
   \code{"hs"}.}
 }
 \value{
-  an object of class \code{"sostpp"}, but with no type
+  an object of class \code{"sostyppp"}, but with no type
   information.
 }
 \description{
   Converts a spatstat-point pattern of class \code{"ppp"}
   into a second-order stationarity typed point pattern of
-  class \code{"sostpp"}, and assigns type of second-order
+  class \code{"sostyppp"}, and assigns type of second-order
   stationarity.
 }
 \details{
@@ -34,13 +34,13 @@
 \examples{
 # print an ordinary ppp point pattern
 print(bronzefilter)
-brofi <- as.sostpp (bronzefilter)
+brofi <- as.sostyppp (bronzefilter)
 print(brofi)
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}
 }
 \seealso{
-  \code{\link{sostpp.object}} for details on the class.
+  \code{\link{sostyppp.object}} for details on the class.
 }
 

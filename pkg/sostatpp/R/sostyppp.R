@@ -1,16 +1,16 @@
-# basic methods for sostpp, like print, extract and replace 
+# basic methods for sostyppp, like print, extract and replace 
 
 #' Check whether an object is a second-order stationarity typed point pattern
 #' 
-#' Checks if an object belongs to class \code{"sostpp"}.
+#' Checks if an object belongs to class \code{"sostyppp"}.
 #' 
 #' @param x any \code{R} object
-#' @return \code{TRUE} if \code{x} belongs to class \code{"sostpp"}, otherwise \code{FALSE}.
+#' @return \code{TRUE} if \code{x} belongs to class \code{"sostyppp"}, otherwise \code{FALSE}.
 #' @export
-#' @seealso \code{\link{sostpp.object}} for details on the class.
+#' @seealso \code{\link{sostyppp.object}} for details on the class.
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
 
-is.sostpp <- function(x) inherits(x, "sostpp")
+is.sostyppp <- function(x) inherits(x, "sostyppp")
 
 
 #' Extract or replace subset of a second-order stationarity typed point pattern
@@ -18,53 +18,64 @@ is.sostpp <- function(x) inherits(x, "sostpp")
 #' An analogon to extraction an replacement of points in an ordinary 
 #' point pattern, i.e. a spatstat-object of class \code{ppp}.
 #' 
-#' @rdname Extract.sostpp
-#' @S3method [ sostpp
-#' @method [ sostpp
+#' @rdname Extract.sostyppp
+#' @S3method [ sostyppp
+#' @method [ sostyppp
 # @export
-#' @param x a sos-typed point pattern, object of class \code{"sostpp"}. 
+#' @param x a sos-typed point pattern, object of class \code{"sostyppp"}. 
 #' @param i subset index, see spatstat \code{\link{[<-.ppp}}.
 # @param j,drop ignored.
-#' @seealso \code{\link{sostpp.object}} for details on the class.
+#' @seealso \code{\link{sostyppp.object}} for details on the class.
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
 
 
-"[.sostpp" <- function(x, i) #, j, drop, ...) 
+"[.sostyppp" <- function(x, i) #, j, drop, ...) 
   {
+    need.to.rescue.tmarks <- (!is.null(x$tinfo$tmarks))
     # attach typemarks to marks
-    marx <- as.data.frame(marks(x))
-    male <- dim(marx)[2]
-    if (male>0) marx <- cbind(marx, x$typemarks)  else marx <- x$typemarks
-    x$marks <- marx
-    y <- NextMethod()
-    y <- as.sostpp.ppp(y)
-    marx <- y$marks
-    if (male > 0) {
-      marks(y) <- marx[, (1:male)] # has to come first, function marks will destroy typemarks!
-      y$typemarks <- as.data.frame(marx[, -(1 : male)]) 
+    if (need.to.rescue.tmarks)
+    {
+      marx <- as.data.frame(marks(x))
+      male <- dim(marx)[2]
+      if (male>0) marx <- cbind(marx, x$tinfo$tmarks)  else marx <- x$tinfo$tmarks
+      x$marks <- marx
+      y <- NextMethod()
+      y <- as.sostyppp.ppp(y)
+      y$tinfo <- x$tinfo
+      marx <- y$marks
+      if (male > 0) {
+        marks(y) <- marx[, (1:male)] # has to come first, function marks will destroy typemarks!
+        y$tinfo$tmarks <- as.data.frame(marx[, -(1 : male)]) 
+      }
+      else {
+        marks(y) <- NULL
+        y$tinfo$tmarks <- as.data.frame(marx)
+      }
+      names(y$tinfo$tmarks) <- names(x$tinfo$tmarks)
     }
-    else {
-      marks(y) <- NULL
-      y$typemarks <- as.data.frame(marx)
-    }
+    else 
+    {  
+      y <- NextMethod()
+      y <- as.sostyppp.ppp(y)
+      y$tinfo <- x$tinfo
+    }  
     y$sostype <- x$sostype
     y$extra <- x$extra
-    names(y$typemarks) <- names(x$typemarks)
-    class(y)<- c("sostpp", class(y))
+    class(y)<- c("sostyppp", class(y))
     return(y)
   }
 
-#' @rdname Extract.sostpp
-#' @S3method [<- sostpp
-#'@usage \method{[}{sostpp} (x, i) <- value 
+#' @rdname Extract.sostyppp
+#' @S3method [<- sostyppp
+#'@usage \method{[}{sostyppp} (x, i) <- value 
 #' @export
 #' @param value Replacement for the subset, a sos-typed point pattern of same type. 
-
-"[<-.sostpp" <-
+#' @details Replacing a subset in a gradient retransformed point patterns does not make much sense
+#' since the transformation was calculated from the original data.
+"[<-.sostyppp" <-
   function(x, i, value) #j, value) 
 {
-    
-    stopifnot(is.sostpp(value))
+    stopifnot(is.sostyppp(value))
     
     if(missing(i)) # && missing(j))
       return(value)
@@ -72,36 +83,47 @@ is.sostpp <- function(x) inherits(x, "sostpp")
     #check if both have same sos-type
     stopifnot(has.type(x, currenttype(value)))
     
-    #attach typemarks to marks
-    marx <- as.data.frame(marks(x))
-    male <- dim(marx)[2]
-    if (male>0) marx <- cbind(marx, x$typemarks)  else marx <- x$typemarks
-    mary <- as.data.frame(marks(value))
-    maly <- dim(mary)[2]
-    if (maly>0) mary <- cbind(mary, value$typemarks)  else mary <- value$typemarks
-   
-    # marks function is not inheritable - securing valuables before using it...
-    typemarknames <- names(x$typemarks)
-    sostyp <- x$sostype
-    xtras <- x$extra
     
-    marks(x) <- marx
-    marks(value) <- mary
-    y <- NextMethod()
-    
-    marx <- y$marks
-    if (male > 0) {
-      marks(y) <- marx[, (1:male)] # has to come first, function marks will destroy typemarks!
-      y$typemarks <- as.data.frame(marx[, -(1 : male)]) 
+    need.to.rescue.tmarks <- (!is.null(x$tinfo$tmarks))
+    if (need.to.rescue.tmarks)
+    {  
+      #attach typemarks to marks in order to use spatstats replace mechanism
+      marx <- as.data.frame(marks(x))
+      male <- dim(marx)[2]
+      if (male>0) marx <- cbind(marx, x$tinfo$tmarks)  else marx <- x$tinfo$tmarks
+      mary <- as.data.frame(marks(value))
+      maly <- dim(mary)[2]
+      if (maly>0) mary <- cbind(mary, value$tinfo$tmarks)  else mary <- value$tinfo$tmarks
+      
+      # marks function is not inheritable - securing valuables before using it...
+      tmarknames <- names(x$tinfo$tmarks)
+      sostyp <- x$sostype
+      xtras <- x$extra
+      
+      marks(x) <- marx
+      marks(value) <- mary
+      y <- NextMethod()
+      
+      marx <- y$marks
+      if (male > 0) {
+        marks(y) <- marx[, (1:male)] # has to come first, function marks will destroy typemarks!
+        y$tinfo$tmarks <- as.data.frame(marx[, -(1 : male)]) 
+      }
+      else {
+        marks(y) <- NULL
+        y$tinfo$tmarks <- as.data.frame(marx)    
+      }
     }
-    else {
-      marks(y) <- NULL
-      y$typemarks <- as.data.frame(marx)    
+    else 
+    {
+      y <- NextMethod()
+      y <- as.sostyppp.ppp(y)
+      y$tinfo <- x$tinfo
     }
     y$sostype <- sostyp
     y$extra <- xtras
-    names(y$typemarks) <- typemarknames
-    class(y)<- c("sostpp", class(y))
+    names(y$tinfo$tmarks) <- tmarknames
+    class(y)<- c("sostyppp", class(y))
     invisible(y)
 } 
 
@@ -111,13 +133,13 @@ is.sostpp <- function(x) inherits(x, "sostpp")
 #' 
 #' @param x sos-typed point pattern.
 #' @param ... ignored
-#' @S3method print sostpp
-#' @method print sostpp
+#' @S3method print sostyppp
+#' @method print sostyppp
 # @export
 #' @seealso \code{\link{print.ppp}} for the print method of class ancestor \code{ppp}.
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
 
-print.sostpp <- function(x, ...)
+print.sostyppp <- function(x, ...)
 {
   print.ppp(x)
   if(length (currenttypeno(x)) > 0)
@@ -130,13 +152,13 @@ print.sostpp <- function(x, ...)
 #' Manipulate s.o.s. type information
 #' 
 #' Access the encrypted type information of second-order stationarity typed point
-#' patterns, objects of class \code{sostpp}.
-#' @param x point pattern, of class sostpp
-#' @param type character, type of second-order stationarity. See \code{\link{sostpp.object}}
+#' patterns, objects of class \code{sostyppp}.
+#' @param x point pattern, of class sostyppp
+#' @param type character, type of second-order stationarity. See \code{\link{sostyppp.object}}
 #' for details.
 # @return logical
 #' @export
-# @rdname sostpp-types
+# @rdname sostyppp-types
 # @alias sos-type functions
 # @keywords internal
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
@@ -149,10 +171,10 @@ has.type <- function (x, type = .TYPES)
 }
 
 
-# @param x point pattern, of class sostpp
+# @param x point pattern, of class sostyppp
 # @return character, giving the last second-order stationarity type X was assigned to
 # if several types are present, the last one is picked
-# @rdname sostpp-types
+# @rdname sostyppp-types
 # @keywords internal
 #' @export
 # @alias sos-type functions
@@ -164,7 +186,7 @@ currenttype <- function (x)
 }
 
 # @return integer, index number of second-order stationarity type
-# @rdname sostpp-types
+# @rdname sostyppp-types
 #' @rdname sostatpp-internal
 #' @keywords internal
 # @export
@@ -175,10 +197,10 @@ currenttypeno <- function (x)
 }
 
 
-# @param x point pattern, of class sostpp
+# @param x point pattern, of class sostyppp
 # @return vector of type numbers, all but the current type
 # if several types are present, the last one is picked
-# @rdname sostpp-types
+# @rdname sostyppp-types
 #' @rdname sostatpp-internal
 #' @keywords internal
 # @export
@@ -237,13 +259,13 @@ furthertypeno <- function (x)
 
 
 
-# documentation of class sostpp -------------------------------------------
+# documentation of class sostyppp -------------------------------------------
 
-#'@name sostpp.object
-#'@aliases sostpp.object sostpp
+#'@name sostyppp.object
+#'@aliases sostyppp.object sostyppp
 #'@title Class of Second-Order Stationarity-Typed Point Patterns
 #'@description
-#'  A class \code{"sostpp"} to represent a two-dimensional point
+#'  A class \code{"sostyppp"} to represent a two-dimensional point
 #'  pattern, with extra information about hidden second-order 
 #'  stationarity. Built on top of the spatstat-class \code{"\link{ppp}"}.
 #'@details
@@ -252,7 +274,7 @@ furthertypeno <- function (x)
 #'  second-order stationary point process.
 #'  
 #'  From its ancestor, spatstat-class \code{"\link{ppp}"}, an object of type 
-#'  \code{sostpp} inherits the elements
+#'  \code{sostyppp} inherits the elements
 #'  \tabular{ll}{
 #'    \code{x} \tab vector of \eqn{x} coordinates of data points 
 #'    \cr\code{y} \tab vector of \eqn{y} coordinates of data points 
@@ -264,30 +286,32 @@ furthertypeno <- function (x)
 #' \tabular{ll}{
 #'    \code{sostype} \tab integer, encrypts the type of stationarity that is 
 #'    assumed in analysis, see below 
-#'    \cr\code{typemarks} \tab a data frame containing information relevant to 
+#'    \cr\code{tinfo} \tab a list containing information relevant to 
 #'    the type of stationarity,
-#'    \cr\code{extra} \tab a container of additional information for internal use\cr
+#'    \cr\code{extra} \tab a container (list) of additional information, intended for internal use.
+#'    This container is copied in subsetting operations.\cr
 #'  }
 #'  
-#'  The type of second-order stationarity of an object \code{X} of class \code{sostpp}
+#'  The type of second-order stationarity of an object \code{X} of class \code{sostyppp}
 #'  is returned as \code{character} by the function \code{\link{currenttype}}. Whether \code{X} has a given type of
 #'  second-order stationarity, can be checked with \code{\link{has.type}}.
 #'  
 #'  Possible types of second-order stationarity (s.o.s.) are
 #'  \tabular{ll}{
 #'    \code{"w"}  \tab intensity reweighted s.o.s. 
-#'                \cr\tab \code{marks} contains a row \code{lambda} with intensity evaluated
+#'                \cr\tab \code{tinfo} contains a data frame \code{tmarks}, with a variable \code{intens} with intensity evaluated
 #'               in each data point
 #'    \cr\code{"t"} \tab obtained by coordinate transformation
-#'               \cr\tab \code{marks} contains rows \code{x0} and \code{y0}
-#'                  of original (backtransformed) coordinates
-#'                \cr\tab for each data point
+#'               \cr\tab \code{tinfo} contains a function \code{backtrafo(x,y)} that yields the backtransformed pattern.
+#'                \cr\tab and a character variable \code{gradient}, taking values \code{"gradx"} or \code{"grady"} 
+#'                if the transformation depends only on one coordinate.
 #'    \cr\code{"s"} \tab locally rescaled s.o.s.
-#'                  \cr\tab \code{marks} contains a row \code{invscale}, the inverse scale factor in each data point\cr
+#'                  \cr\tab \code{tinfo} contains a data frame \code{tmarks}, with a variable  \code{invscale}, the inverse scale factor in each data point\cr
 #'    \cr\code{"h"}  \tab homogeneous, to be evaluated with standard methods 
 #'    \cr\code{"hs"} \tab homogeneous, to be evaluated with scale invariant statistics.  
 #'    }
-#'
+#'  An object of class \code{sostyppp} can carry type information for several types simultaneously.
+#'  Thus, function \code{\link{has.type}} may return \code{TRUE} for different arguments.
 #' 
 #'@author Ute Hahn  \email{ute@@imf.au.dk}
 #'

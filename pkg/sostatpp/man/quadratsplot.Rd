@@ -9,7 +9,7 @@
 }
 \arguments{
   \item{x}{point pattern, object of class
-  \code{\link{sostpp}} or \pkg{spatstat} class
+  \code{\link{sostyppp}} or \pkg{spatstat} class
   \code{\link{ppp}}}
 
   \item{quads1,quads2}{test quadrats, a list of windows

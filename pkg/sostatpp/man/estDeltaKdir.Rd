@@ -4,7 +4,8 @@
 \usage{
   estDeltaKdir(X, type = c("s", "t", "w", "h", "hs"),
     dphi = pi/4, r = NULL, correction = "isotropic",
-    normpower = 0, ..., rescaleangle = TRUE, max.ls.r = 3)
+    normpower = 0, ..., rescaleangle = TRUE, max.ls.r = 3,
+    warn.backtransformed = FALSE)
 }
 \arguments{
   \item{X}{a point pattern, object of class \code{"ppp"}.}
@@ -30,7 +31,7 @@
   the Details.}
 
   \item{...}{optional arguments passed to
-  \code{\link{as.sostpp}}}
+  \code{\link{as.sostyppp}}}
 
   \item{rescaleangle}{logical, indicating whether to
   rescale the directional \eqn{K}-functions as to represent
@@ -39,8 +40,13 @@
   \item{max.ls.r}{upper limit for argument \eqn{r}. The
   default 3 is quite large - note that the argument of the
   locally rescaled \eqn{K}-function corresponds to
-  \deqn{r/\sqrt{\lambda}}{r / sqrt(lambda)} in the non
-  scaled case.}
+  \deqn{r/\sqrt{\lambda}, \lambda=intensity}{r /
+  sqrt(intensity)} in the non scaled case.}
+
+  \item{warn.backtransformed}{logical, if \code{TRUE} issue
+  a warning for retransformed DeltaKdir-function, when the
+  backtransformed window is approximated its enclosing
+  rectangle.}
 }
 \description{
   Estimates the difference of vertical and horizontal
@@ -57,7 +63,7 @@ plot(estDeltaKdir (X[W1], r=rr), ylim=c(-2,1), col= c("red", "black"), main="")
 lines(rr, estDeltaKdir (X[W2],r = rr)$iso, col="blue")
 
 # the backtransformed pattern shows anisotropy
-Y <- backtransformed(retransformed(bronzefilter, trafo = "gradx"))
+Y <- backtransformed(retransformed(bronzefilter, backtrafo = "gradx"))
 lines(rr, estDeltaKdir (Y[W1], r = rr)$iso,  col= c("red"), lty = "dotted")
 lines(rr, estDeltaKdir (Y[W2], r = rr)$iso, col="blue", lty = "dotted" )
 }

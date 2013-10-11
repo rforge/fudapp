@@ -29,7 +29,7 @@
   the Details.}
 
   \item{...}{optional arguments passed to
-  \code{\link{as.sostpp}}}
+  \code{\link{as.sostyppp}}}
 
   \item{max.ls.r}{optional, upper limit for argument
   \eqn{r} if \code{type="s"}.}
@@ -47,14 +47,14 @@
   is assumed to be homogeneous.
 
   If \code{type} is given, but does not match the type of
-  \code{X}, the function \code{\link{as.sostpp}} is called
-  with arguments ldots to ensure the correct hidden
+  \code{X}, the function \code{\link{as.sostyppp}} is
+  called with arguments ldots to ensure the correct hidden
   second-order information.
 
   If \code{normpower} > 0, the intensity is renormalized,
   so that \code{\link{estK}} yields similar results as the
   \bold{spatstat}-function \code{\link{Kinhom}}. The
-  intensity values are then multiplied by
+  intensity values \eqn{\lambda} are then multiplied by
   \deqn{c^{normpower/2}}{c^(normpower/2),} where \deqn{c =
   area(W)/sum_i(1/\lambda(x_i))}{c =
   area(W)/sum[i](1/lambda(x[i])).}
@@ -63,13 +63,16 @@
   stationary point processes delivers the same result as
   {spatstat}'s function \code{\link{Kinhom}}, up to a
   subtle difference for the border correction: \code{estK}
-  does not use fast optimized code. #' If \code{X} is typed
-  \strong{retransformed} s.o. stationary, the
-  \eqn{K}-function of the \code{\link{backtransformed}}
-  point pattern is returned, which corresponds to
-  {spatstat}'s function \code{\link{Kest}} #' For
-  \strong{locally rescaled} s.o. stationarity, the locally
-  scaled interpoint distances are computed using an
+  does not use fast optimized code.
+
+  If \code{X} is typed \strong{retransformed} s.o.
+  stationary, the \eqn{K}-function of the
+  \code{\link{backtransformed}} point pattern is returned,
+  which corresponds to {spatstat}'s function
+  \code{\link{Kest}}
+
+  For \strong{locally rescaled} s.o. stationarity, the
+  locally scaled interpoint distances are computed using an
   approximation proposed by Hahn (2007): The Euclidean
   distance between two points is multiplied by the average
   of the square roots of the intensity values at the two
@@ -85,7 +88,7 @@
   Note that the argument of the locally rescaled
   \eqn{K}-function corresponds to \deqn{r/\sqrt{\lambda}}{r
   / sqrt(lambda)} in the non scaled case.  The default
-  maximum \code{max.ls.r} = 3 is thus quite large. #'
+  maximum \code{max.ls.r} = 3 is thus quite large.
 }
 \examples{
 # compare homogeneous version of estK and spatstat's Kest
@@ -105,7 +108,7 @@ plot(estK(bronzefilter, type = "w", normpower = 1, add=T))
 plot(estK(rescaled(bronzefilter)))
 
 # The last given type is the one that counts
-plot(estK(retransformed(rescaled(bronzefilter), trafo="gradx")))
+plot(estK(retransformed(rescaled(bronzefilter), backtrafo="gradx")))
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}
