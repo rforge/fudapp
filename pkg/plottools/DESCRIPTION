@@ -1,0 +1,12 @@
+Package: plottools
+Type: Package
+Title: Tools for plotting with style 
+Version: 0.2.0
+Date: 2013-10-15
+Author: Ute Hahn
+Maintainer: Ute Hahn <ute@imf.au.dk>
+Description: Provides utilities for handling plot and graphic parameters, 
+  plotting lists of objects, colour tools. Plotting with style: plot parameters 
+  can be given as lists.
+License: GPL-2
+LazyData: yes
