@@ -1,0 +1,8 @@
+  CHANGES IN plottools VERSION 0.2.1  
+  
+    o new function classesWithMethod returns a list of all classes for which
+      a given S3 method is implemented
+
+    o new generic function rangexy that returns range of coordinates of an object
+      for plotting
+ 

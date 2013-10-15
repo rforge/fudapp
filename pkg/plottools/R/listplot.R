@@ -73,9 +73,11 @@ retagList <- function (arglist, tagnames)
 #'@description Plot all objects given in a list, with parameters that can be given as
 #'a named list.
 #'@param objects named list of \code{R}-objects.
-#'@param allinone logical, if TRUE, all objects are plotted in one window.
 #'@param ... parameters and parameterlists passed to plot method of the objects.
-#'@details
+#'@param allinone logical, if TRUE, all objects are plotted in one window.
+#'@param .plotmethod a generic function for plotting, or a character string naming 
+#'a generic function. Defaults to \code{"plot"} and should usually not be changed.
+#'#'@details
 #'Only objects that belong to classes with a plot method are plotted.
 #'The plot parameters may be given as lists with the same name as the objects list.
 #' Parameters in named lists are assigned to the object with same name in
@@ -103,13 +105,12 @@ retagList <- function (arglist, tagnames)
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
 
 
-lplot <- function (objects=NULL, ..., allinone = TRUE)
+lplot <- function (objects=NULL, ..., allinone = TRUE, .plotmethod = "plot")
 {
   stopifnot(is.list(objects))
 
   # check whether objects have plot methods
-  plotmethods <- methods(plot)
-  plottingclasses <- sapply(plotmethods, function(s) substr(s, 6, 200))
+  plottingclasses <- classesWithMethod(.plotmethod)
   canplot <- function(obj) any(class(obj) %in% plottingclasses)
   objects <- objects[sapply(objects, canplot)]
 

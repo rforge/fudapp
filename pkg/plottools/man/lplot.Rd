@@ -2,16 +2,21 @@
 \alias{lplot}
 \title{Plot objects in a list}
 \usage{
-  lplot(objects = NULL, ..., allinone = TRUE)
+  lplot(objects = NULL, ..., allinone = TRUE,
+    .plotmethod = "plot")
 }
 \arguments{
   \item{objects}{named list of \code{R}-objects.}
 
+  \item{...}{parameters and parameterlists passed to plot
+  method of the objects.}
+
   \item{allinone}{logical, if TRUE, all objects are plotted
   in one window.}
 
-  \item{...}{parameters and parameterlists passed to plot
-  method of the objects.}
+  \item{.plotmethod}{a generic function for plotting, or a
+  character string naming a generic function. Defaults to
+  \code{"plot"} and should usually not be changed. #'}
 }
 \description{
   Plot all objects given in a list, with parameters that
