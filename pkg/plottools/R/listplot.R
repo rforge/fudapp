@@ -117,7 +117,10 @@ lplot <- function (objects=NULL, ..., allinone = TRUE, .plotmethod = "plot")
   nobjects <- length(objects)
   if (nobjects == 0) stop("nothing to plot here")
   unnamed <- is.null(obnames <- names(objects))
-
+  if (unnamed) {
+    obnames <- paste("obj", 1:nobjects, sep=".")
+    names(objects) <- obnames
+  }
   dotargs <- list(...)
   if(is.null(names(dotargs))) names(dotargs) <- rep("", length(dotargs))
 
@@ -125,8 +128,28 @@ lplot <- function (objects=NULL, ..., allinone = TRUE, .plotmethod = "plot")
   #override add arguments: plot either all in one, or all separately
   dotargs$add <- NULL # plot all in one plot
 
+  # get plot limits, at least for y in case this is necessary at all
+  if (allinone && nobjects > 1 && !addfirst && is.null(dotargs$ylim)) 
+  {
+    rangexyclasses <- classesWithMethod("rangexy")
+    hasrange <- function(obj) any(class(obj) %in% rangexyclasses)
+    ranges <- lapply (objects[sapply(objects, hasrange)], rangexy)
+    ranges <- ranges[!sapply(ranges, is.null)]
+    xrange <- range(sapply(ranges, function(x) x$x))
+    yrange <- range(sapply(ranges, function(x) x$y))
+    dotargs$ylim  <- yrange
+    if (is.null(dotargs$xlim)) 
+      dotargs$xlim <- xrange
+  }
   orderedArgs <- retagList(dotargs, obnames)
-  do.call(splot, c(list(objects[[1]]), orderedArgs[[1]],
+  
+  # ppppatch
+  # don't let plot.ppp print a rubbish name as title
+  
+  if (("ppp" %in% class(objects[[1]])) && is.null(dotargs$main))
+    orderedArgs[["..."]]$main <- ifelse(unnamed, "", obnames[1])
+    
+  do.call(splot, c(list(objects[[1]]), orderedArgs[[obnames[1]]],
                   orderedArgs[["..."]], add = addfirst))
 
   if (nobjects > 1) for (i in 2 : nobjects)
