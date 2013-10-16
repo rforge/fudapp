@@ -195,7 +195,7 @@ reweighted <- function (X, intensity = NULL, ...)#, normpower = 0)
 
 rescaled <- function (X,  invscale = NULL, intensity = NULL, ...)
 {
-  if(!is.sostyppp(X)) X <- as.sostyppp.ppp(X)
+  if(!is.sostyppp(X)) X <- as.sostyppp.ppp(X, "none")
 
   npts <- npoints(X)
   marx <- X$sostinfo$tmarks

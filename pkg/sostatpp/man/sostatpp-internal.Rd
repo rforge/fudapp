@@ -16,7 +16,7 @@
 \alias{sostatpp-internal}
 \alias{subdivpolyxy}
 \title{internal functions of sostatpp package}
-\format{chr [1:5] "reweighted" "retransformed" "rescaled" "homogeneous" "scaled-homogeneous"}
+\format{chr [1:5] "reweighted" "retransformed" "rescaled" "homogeneous" ...}
 \usage{
   ppsplit(X, quadrats)
 
