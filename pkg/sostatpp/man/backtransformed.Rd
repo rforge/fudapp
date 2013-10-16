@@ -1,15 +1,15 @@
 \name{backtransformed}
 \alias{backtransformed}
-\title{Obtain backtransformed pattern}
+\title{Obtain backtransformed point pattern}
 \usage{
   backtransformed(X)
 }
 \arguments{
-  \item{X}{a retransformed s.o.s. typed point pattern,
-  object of class \code{{sostyppp}}.}
+  \item{X}{a retransformed s.o.s. type tagged point
+  pattern, object of class \code{{sostyppp}}.}
 }
 \value{
-  a homogeneous s.o.s. typed point pattern of class
+  a homogeneous s.o.s. type tagged point pattern of class
   \code{{sostyppp}} with points in \code{x0} and \code{y0}.
   The type of the result is set to both homogeneous and
   scaled-homogeneous, and is typemarked with constant
@@ -20,8 +20,8 @@
   mask if the original window was a binary mask.
 }
 \description{
-  Extract the backtransformed template from a retransformed
-  point process.
+  Backtransform a pattern that is tagged as retransformed
+  second-order stationary.
 }
 \details{
   As retransformed s.o.s. typed point pattern, \code{X} has

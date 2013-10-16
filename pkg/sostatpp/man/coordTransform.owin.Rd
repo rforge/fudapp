@@ -20,11 +20,12 @@
   or polygon borders to achieve better precision, see the
   `Details'.}
 
-  \item{\ldots}{Optional arguments passed to
-  \code{\link{as.mask}} controlling the pixel resolution of
-  the transformed window, if \code{X} is a binary pixel
-  mask, or to \code{\link{refinepoly}}, if \code{X} is a
-  polygon or a rectangle, see the `Details'.}
+  \item{...}{Optional arguments passed to \code{trafoxy}
+  and \code{invtrafoxy}, and / or to \code{\link{as.mask}}
+  controlling the pixel resolution of the transformed
+  window, if \code{X} is a binary pixel mask, and / or to
+  \code{\link{refinepoly}}, if \code{X} is a polygon or a
+  rectangle, see the `Details'.}
 }
 \description{
   Apply any coordinate transformation to a window. Compare
@@ -36,8 +37,7 @@
   are vectors of same length (not checked!), and the second
   argument has to be named \code{y}.  If only one argument
   is given, it is a list or a data frame with elements
-  \code{x} and \code{y}.  In a future version, ... may
-  transport arguments to the transformation function
+  \code{x} and \code{y}.
 
   If the window is a rectangle or polygon, it is converted
   into a polygon which is subsequently refined using
@@ -56,13 +56,13 @@
 # transformation of the polygonal window letterR from spatstat
 
 # a nonlinear transformation
-trafo <- function(xy) list(x = xy$x^1.5 + 0.5*xy$y, y = xy$y*.5)
+trafo <- function(xy, a = 1.5) list(x = xy$x^a + 0.5*xy$y, y = xy$y*.5)
 
 # transform letterR and mark the boundary corners,
 # dummy variable for silent return
 plot(letterR)
 dummy <- lapply(letterR$bdry, points, col = "red")
-mappedR <- coordTransform(letterR, trafo, edgelen = 0.1)
+mappedR <- coordTransform(letterR, trafo, edgelen = 0.1, a=1.2)
 plot(mappedR)
 dummy <- lapply(mappedR$bdry, points, col = "red")
 
@@ -74,9 +74,10 @@ dummy <- lapply(mappedRcoarse$bdry, points, col = "green")
 
 # now as mask image. We need the inverse transformation, too
 
-invtrafo <- function(xy) list(x = (xy$x - xy$y) ^(1/1.5), y = xy$y*2)
+invtrafo <- function(xy, a = 1.5) list(x = (xy$x - xy$y) ^(1/a), y = xy$y*2)
 wimR <- as.owin(as.im(letterR))
-mappedimR <- coordTransform(wimR, trafo, invtrafo)
+# eps controlles the pixel size of the transformed image, via as.mask
+mappedimR <- coordTransform(wimR, trafo, invtrafo, a = 1.2, eps = 0.02)
 plot(mappedimR)
 # compare with the polygonal window from before
 plot(mappedR, col = "green", add = TRUE)

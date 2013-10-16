@@ -3,7 +3,7 @@
 \alias{rangexy.default}
 \title{Report x- and y-range, generic function}
 \usage{
-  rangexy(x, ...)
+  rangexy(...)
 
   \method{rangexy}{default} (x, y = NULL, finite = TRUE,
     ...)
@@ -12,7 +12,7 @@
   \item{x,y}{numeric vectors of x- and y- coordinates, or
   alternatively a single argument \code{x}.}
 
-  \item{...}{arguments passed to class methods, ignorde in
+  \item{...}{arguments passed to class methods, ignored in
   default method \code{rangexy.default}}
 
   \item{finite}{logical, indicating if all non-finite

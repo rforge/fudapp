@@ -13,7 +13,6 @@
 \alias{normalizedIntensity}
 \alias{peripolyxy}
 \alias{ppsplit}
-\alias{retagList}
 \alias{sostatpp-internal}
 \alias{subdivpolyxy}
 \title{internal functions of sostatpp package}
@@ -33,8 +32,6 @@
   ls.r.args(r = NULL, eps = NULL, rmaxdefault = 4,
     minscale = NULL, maxscale)
 
-  retagList(arglist, tagnames)
-
   lspairdist(x, y, invscale, lambda)
 
   lsclosepairs(X, rmax, invscale, lambda, ordered = TRUE,
@@ -48,7 +45,7 @@
 
   .settype(type, typecode)
 
-  mapstructxy(X, mapxy = identxy)
+  mapstructxy(X, mapxy = identxy, ...)
 
   peripolyxy(poly)
 

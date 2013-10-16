@@ -8,7 +8,7 @@
 #' 
 #'@param x,y numeric vectors of x- and y- coordinates, or alternatively a single 
 #'argument \code{x}.
-#'@param ... arguments passed to class methods, ignorde in default method
+#'@param ... arguments passed to class methods, ignored in default method
 #'  \code{rangexy.default}
 #'@param finite logical, indicating if all non-finite elements should be omitted.
 #'@export
@@ -30,7 +30,7 @@
 #' rangexy(df)
 #' rangexy(1:4, 5:8)
 
-rangexy <- function(x, ...) UseMethod("rangexy", x)
+rangexy <- function(...) UseMethod("rangexy")
 
 #' @rdname rangexy
 #' @method rangexy default

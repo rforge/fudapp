@@ -25,5 +25,5 @@
 
 splot <- function(x, ..., NULL.rm = TRUE, .plotmethod = "plot") {
   plotargs <- style(..., NULL.rm = NULL.rm)
-  do.call(.plotmethod, c(list(x), plotargs))
+  do.call(.plotmethod, c(list(x), plotargs, recursive = F))
 }

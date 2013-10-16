@@ -11,8 +11,8 @@
   defaults to the identical map \code{\link{identxy}}, see
   also `Details'.}
 
-  \item{\ldots}{Optional arguments passed to
-  \code{\link{coordTransform.owin}}.}
+  \item{...}{Optional arguments passed \code{trafoxy}, and
+  to \code{\link{coordTransform.owin}}.}
 }
 \description{
   Apply any coordinate transformation to a point pattern.
@@ -24,8 +24,7 @@
   are vectors of same length (not checked!), and the second
   argument has to be named \code{y}.  If only one argument
   is given, it is a list or a data frame with elements
-  \code{x} and \code{y}.  In a future version, ... may
-  transport arguments to the transformation function
+  \code{x} and \code{y}.
 
   If the window of $X$ is a pixel mask, an additional
   inverse transformation has to be provided, see

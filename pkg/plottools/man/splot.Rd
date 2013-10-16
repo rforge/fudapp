@@ -2,7 +2,7 @@
 \alias{splot}
 \title{Plot with styles}
 \usage{
-  splot(x, ..., NULL.rm = TRUE, .plotmethod = plot)
+  splot(x, ..., NULL.rm = TRUE, .plotmethod = "plot")
 }
 \arguments{
   \item{x}{an object that belongs to a class with
@@ -14,7 +14,8 @@
   \item{NULL.rm}{logical. If \code{TRUE}, ignore parameters
   with value \code{NULL}.}
 
-  \item{.plotmethod}{function, dafaults to \code{plot}.}
+  \item{.plotmethod}{character naming a function, defaults
+  to \code{"plot"}.}
 }
 \description{
   Plot using predefined parameter lists

@@ -9,7 +9,7 @@
   \code{"\link{im}"}, \code{"\link{owin}"} or
   \code{"\link{ppp}"}.}
 
-  \item{\ldots}{arguments passed to class methods.}
+  \item{...}{arguments passed to class methods.}
 }
 \value{
   A list with elements \code{x} and \code{y}.

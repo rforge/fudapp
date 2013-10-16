@@ -129,17 +129,18 @@ lplot <- function (objects=NULL, ..., allinone = TRUE, .plotmethod = "plot")
   dotargs$add <- NULL # plot all in one plot
 
   # get plot limits, at least for y in case this is necessary at all
-  if (allinone && nobjects > 1 && !addfirst && is.null(dotargs$ylim)) 
-  {
+  if (allinone && nobjects > 1 && !addfirst && is.null(dotargs$ylim)) {
     rangexyclasses <- classesWithMethod("rangexy")
     hasrange <- function(obj) any(class(obj) %in% rangexyclasses)
     ranges <- lapply (objects[sapply(objects, hasrange)], rangexy)
-    ranges <- ranges[!sapply(ranges, is.null)]
-    xrange <- range(sapply(ranges, function(x) x$x))
-    yrange <- range(sapply(ranges, function(x) x$y))
-    dotargs$ylim  <- yrange
-    if (is.null(dotargs$xlim)) 
-      dotargs$xlim <- xrange
+    if (!is.null(ranges) && (length(ranges) > 1)) {
+      ranges <- ranges[!sapply(ranges, is.null)]
+      xrange <- range(sapply(ranges, function(x) x$x))
+      yrange <- range(sapply(ranges, function(x) x$y))
+      dotargs$ylim  <- yrange
+      if (is.null(dotargs$xlim)) 
+        dotargs$xlim <- xrange
+      }      
   }
   orderedArgs <- retagList(dotargs, obnames)
   
@@ -150,7 +151,7 @@ lplot <- function (objects=NULL, ..., allinone = TRUE, .plotmethod = "plot")
     orderedArgs[["..."]]$main <- ifelse(unnamed, "", obnames[1])
     
   do.call(splot, c(list(objects[[1]]), orderedArgs[[obnames[1]]],
-                  orderedArgs[["..."]], add = addfirst))
+                  orderedArgs[["..."]], add = addfirst, recursive=F))
 
   if (nobjects > 1) for (i in 2 : nobjects)
      do.call(splot, c(list(objects[[i]]), orderedArgs[[i]],

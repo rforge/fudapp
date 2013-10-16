@@ -15,9 +15,10 @@
   \item{invtrafoxy}{the inverse to \code{trafoxy}, defaults
   to the identical map \code{\link{identxy}}.}
 
-  \item{...}{Optional arguments passed to
-  \code{\link{as.mask}} controlling the pixel resolution of
-  the transformed image.}
+  \item{...}{Optional arguments passed to \code{trafoxy}
+  and \code{ivtrafoxy}, and to \code{\link{as.mask}}, then
+  controlling the pixel resolution of the transformed
+  image.}
 }
 \description{
   Apply any coordinate transformation to a pixel image.

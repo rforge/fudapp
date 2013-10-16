@@ -62,8 +62,8 @@
   obtained by linear transformation with
   (\code{\link{approxfun}}). The reverse of
   \code{backtransform} is needed when the window is a
-  binary mask, see \link{owin}, and has to be given as
-  argument {\code{trafo}}.
+  binary mask, see \code{spatstat}'s \code{\link{owin}},
+  and has to be given as argument {\code{trafo}}.
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}

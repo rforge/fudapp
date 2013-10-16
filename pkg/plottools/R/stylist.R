@@ -30,7 +30,7 @@ style <- function(..., NULL.rm = FALSE){
   dotargs <- list(...)
   # resolve styles in dotargs
   result <- list()
-  if (length(dotargs) < 1) return(result)
+  #if (length(dotargs) < 1) return(result)
   for (i in seq_along(dotargs))
   {
     elem <- dotargs[[i]]
@@ -38,6 +38,7 @@ style <- function(..., NULL.rm = FALSE){
   }
   # remove NULLs
   if (NULL.rm) result <- result[!sapply(result, is.null)]
+  if (all(is.null(names(result)))) names(result) <- rep("", length(result))
   # remove duplicates from right to left
   result <- result[!duplicated(names(result), fromLast = TRUE)]
   class(result) <- c("style", class(result))
