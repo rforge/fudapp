@@ -20,7 +20,7 @@ NA
                     log = "", main = NULL, sub = NULL, xlab = NULL, ylab = NULL,
                     ann = par("ann"), axes = TRUE, frame.plot = TRUE,
                     panel.first = NULL, panel.last = NULL, asp = NA,
-                    mgp = par("mgp"))
+                    mgp = par("mgp"), add = FALSE)
 
 #'@rdname plottools-predefined
 #'@export

@@ -33,7 +33,7 @@ NA
 #'@rdname updatelists
 #'@export
 #'@family updatelist
-#'@keywords internal
+#@keywords internal
 #'@examples
 #'A <- list(a = NULL, b = "b from A", c = "c from A", d = "d from A")
 #'B <- list(a = "a from B", b = "b from B", c =  NULL, 
@@ -64,7 +64,7 @@ updateList <- function(input, update, ignoreNULLs = TRUE) {
 
 #'@rdname updatelists
 #'@export
-#'@keywords internal
+#@keywords internal
 #'@family updatelist
 
 updateNULLs <- function(input, update, ignoreNULLs = TRUE) {
@@ -76,7 +76,7 @@ updateNULLs <- function(input, update, ignoreNULLs = TRUE) {
 
 #'@rdname updatelists
 #'@export
-#'@keywords internal
+#@keywords internal
 #'@family updatelist
 
 updateMissing <- function(input, update, ignoreNULLs = TRUE) {
@@ -87,7 +87,7 @@ updateMissing <- function(input, update, ignoreNULLs = TRUE) {
 
 #'@rdname updatelists
 #'@export
-#'@keywords internal
+#@keywords internal
 #'@family updatelist
 
 updateJoin <- function(input, update, ignoreNULLs = FALSE) {
