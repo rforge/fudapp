@@ -77,5 +77,4 @@ str(updateJoin(A, NULL, ignoreNULLs = TRUE))
 \author{
   Ute Hahn, \email{ute@imf.au.dk}
 }
-\keyword{internal}
 

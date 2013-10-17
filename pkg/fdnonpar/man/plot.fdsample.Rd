@@ -2,58 +2,54 @@
 \alias{plot.fdsample}
 \title{Plot an fdsample object}
 \usage{
-  \method{plot}{fdsample} (x, ploptions = NULL,
-    includy = NULL, add = F, ...)
+  \method{plot}{fdsample} (x, ..., includy = NULL)
 }
 \arguments{
   \item{x}{the fdsample to be plotted}
-
-  \item{ploptions}{optional list of plotting parameters,
-  see the Details}
 
   \item{includy}{optional numeric vector containing values
   that are to be included in the \code{ylim} extent of the
   \eqn{y-axis}. Can be used to always start at 0, for
   example.}
 
-  \item{add}{if \code{FALSE} (default), a new plot is
-  started, if \code{TRUE}, adds to existing plot}
-
-  \item{...}{further arguments}
+  \item{...}{further arguments for controlling the plot.}
 }
 \description{
   Plots the individual functions coerced in an object of
   class \code{\link{fdsample}}.
 }
 \details{
-  Plotting parameters can be given as list
-  \code{"ploptions"} or separately. If not given
-  explicitely, default values contained in the list
-  \code{x$options} are used. The list of options in an
-  \code{fdsample}-object has elements \tabular{ll}{
-  \code{col} \tab color for plotting the individual curves,
-  defaults to "black" \cr\code{light} \tab numeric between
-  0 and 1. Regulates how much the color of individual
-  \cr\tab functions is lightened up, 0 means no extra
-  light. Defaults to 0. \cr\code{lwd} \tab numeric, line
-  width for individual function. Defaults to 1.
-  \cr\code{lty} \tab line type (character or numeric),
-  defaults to "solid". \cr\code{xlab,ylab} \tab character,
-  axes labels, default to \code{"x"} and \code{"y"}.
-  \cr\code{main} \tab character, axes labels, default to
-  \code{""}. }
+  This method requires that the functional data are curves,
+  i.e. that element \code{arg} is a vector. By default,
+  lines are plotted. This may be modified by giving an
+  argument \code{type} which is passed to the
+  \code{\link{matplot}} function used to plot the curves.
+  Thus, \code{type = "p"} plots points, and \code{type =
+  "b"} plots both points and lines.
+
+  Brightness / opacity of the curves can be controlled by
+  setting \code{alpha} to a number between 0 and 1, see the
+  description of function \code{\link{alphacol}} in package
+  \code{plottools.}
+
+  The plot method \code{plot.fdsample} works like the
+  function \code{\link{splot}} from package
+  \code{plottools}. In particular, plot parameters can be
+  given as \code{"\link{style}"} lists or separately.
 }
 \examples{
 # load example data
 data(ExampleData)
 plot(fuda)
 # using a predefined list of options
-blau <- list(col = "blue", light = .6)
-plot(fuda, blau, main="mein blau", includy = -2)
+blau <- style(col = "blue", alpha = 0.4)
+plot(fuda, blau, includy = -2)
 # add mean
-plot(mean(fuda), blau, light = 0, lwd = 2, add = TRUE)
+plot(mean(fuda), col = "blue", lwd = 2, add = TRUE)
 }
 \seealso{
-  \code{\link{getoptions}}
+  \code{\link{alphacol}} on defining transparent colors,
+  and \code{\link{splot}} for the evaluation of plot
+  parameters.
 }
 

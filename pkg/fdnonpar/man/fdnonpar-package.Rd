@@ -20,34 +20,34 @@
 }
 \section{Data classes, visualisation of data}{
   \tabular{ll}{ \code{\link{fdsample}} \tab basic data
-  type, a sample of curves\cr \code{envelope} \tab two
+  type, a sample of curves \cr\code{envelope} \tab two
   boundary curves of an envelope, a specialized
-  \code{fdsample} object\cr \code{\link{print.fdsample}}
-  \tab print brief details of an fdsample\cr
-  \code{\link{plot.fdsample}} \tab plot the individual
-  members of an fdsample\cr \code{\link{plot.envelope}}
-  \tab plot an \code{envelope} object\cr
-  \code{\link{summaryplot}}\tab plot individual curves,
+  \code{fdsample} object \cr\code{\link{print.fdsample}}
+  \tab print brief details of an fdsample
+  \cr\code{\link{plot.fdsample}} \tab plot the individual
+  members of an fdsample \cr\code{\link{plot.envelope}}
+  \tab plot an \code{envelope} object
+  \cr\code{\link{summaryplot}}\tab plot individual curves,
   envelopes or summary functions \cr\tab such as the mean
-  of an \code{\link{fdsample}} object\cr }
+  of an \code{\link{fdsample}} objectr }
 }
 
 \section{{Manipulation and summary functions}}{
   \tabular{ll}{ \code{\link{[.fdsample}} \tab extract or
-  replace curves form a sample\cr
-  \code{\link{apply.fdsample}} \tab apply a summary
-  function to the function values\cr
-  \code{\link{mean.fdsample}} \tab mean of the function
-  values\cr \code{\link{median.fdsample}} \tab median of
-  the function values\cr \code{\link{quantile.fdsample}}
-  \tab quantiles of the function values\cr
-  \code{\link{pwEnvelope}} \tab pointwise envelope\cr }
+  replace curves form a sample
+  \cr\code{\link{apply.fdsample}} \tab apply a summary
+  function to the function values
+  \cr\code{\link{mean.fdsample}} \tab mean of the function
+  values \cr\code{\link{median.fdsample}} \tab median of
+  the function values \cr\code{\link{quantile.fdsample}}
+  \tab quantiles of the function values
+  \cr\code{\link{pwEnvelope}} \tab pointwise envelope }
 }
 
 \section{{Permutation tests}}{
   \tabular{ll}{ \code{\link{tL2.permtest}} \tab Comparison
-  of two groups,\cr \tab using square integrated
-  Welch-t-statistic\cr }
+  of two groups, \cr\tab using square integrated
+  Welch-t-statistic }
 }
 \examples{
 # simulated data sets, consisting of 8 and 9

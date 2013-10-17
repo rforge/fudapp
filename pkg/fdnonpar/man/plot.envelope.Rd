@@ -2,22 +2,15 @@
 \alias{plot.envelope}
 \title{Plot an envelope object}
 \usage{
-  \method{plot}{envelope} (x, ploptions = NULL,
-    includy = NULL, add = F, ...)
+  \method{plot}{envelope} (x, ..., includy = NULL)
 }
 \arguments{
   \item{x}{the envelop to be plotted}
-
-  \item{ploptions}{optional list of plotting parameters,
-  see the Details}
 
   \item{includy}{optional numeric vector containing values
   that are to be included in the \code{ylim} extent of the
   \eqn{y-axis}. Can be used to always start at 0, for
   example.}
-
-  \item{add}{if \code{FALSE} (default), a new plot is
-  started, if \code{TRUE}, adds to existing plot}
 
   \item{...}{further arguments}
 }

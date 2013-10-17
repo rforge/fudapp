@@ -1,9 +1,8 @@
 \name{pwEnvelope}
 \alias{pwEnvelope}
-\title{Calculate pointwise envelope of an functional data sample}
+\title{Calculate pointwise envelope of a functional data sample}
 \usage{
-  pwEnvelope(x, prob = 1, multi = FALSE, lightup = 0.5,
-    ...)
+  pwEnvelope(x, prob = 1, ..., lightup = 0.5)
 }
 \arguments{
   \item{x}{object of class \code{\link{fdsample}}}
@@ -11,13 +10,11 @@
   \item{prob}{numeric, covering probability for the
   envelope, see Details.}
 
-  \item{multi}{currently ignored}
+  \item{...}{arguments for updating the \code{options} list
+  in the result.}
 
   \item{lightup}{a number between 0 and 1, regulates
   brightness of color in plot.}
-
-  \item{...}{arguments for updating the \code{options} list
-  in the result.}
 }
 \value{
   An object of class \code{envelope}, which is essentially
@@ -36,12 +33,12 @@
   envelope.
 
   A default value for the brightness of the color is
-  calculated from the options in \code{x} and the argument
-  \code{lightup}, namely \code{lightup +
-  (1-lightup)*xy$options$light}. Thus \code{lightup = 0}
-  results in retaining original brightness, and
-  \code{lightup = 1} in white color. Can be overridden by
-  the \code{...} arguments.
+  calculated from any \code{alpha} argument in the plot
+  method and the argument \code{lightup}, namely the
+  \eqn{\alpha}-value is corrected to \code{lightup *
+  alpha}. If not given, \eqn{\alpha} is set to one. Thus
+  \code{lightup = 0} results in retaining original
+  brightness, and \code{lightup = 1} in white color.
 }
 \examples{
 data(ExampleData)

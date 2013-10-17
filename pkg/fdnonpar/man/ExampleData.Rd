@@ -12,8 +12,8 @@
 \details{
   Regression type data with normal distributed
   \eqn{y}-values. Mean values: \tabular{ll}{ \code{fuda}
-  \tab{mean \eqn{y = x^2}}\cr \code{fuda1} \tab{mean \eqn{y
-  = 4 - x^2}}\cr \code{fuda2} \tab{mean \eqn{y = 4.2 - 1.2
+  \tab{mean \eqn{y = x^2}} \cr\code{fuda1} \tab{mean \eqn{y
+  = 4 - x^2}} \cr\code{fuda2} \tab{mean \eqn{y = 4.2 - 1.2
   x^2 }}\cr }
 }
 \keyword{datasets}
