@@ -4,10 +4,10 @@
 #'@rdname updatelists
 #'@name Functions for updating parameter lists
 #'@description Joining or updating lists of parameters.
-#'@param input list of input parameters to be updated
-#'@param update list of updates
+#'@param input style list of input parameters to be updated
+#'@param update style list of updates
 #'@param ignoreNULLs logical, if \code{TRUE} ignore \code{NULL} values in list \code{update}
-#'@return A list with updated values, see the Details
+#'@return A style list with updated values, see the Details
 #'@details
 #'  \code{updateList} replaces values of any elements in \code{input} that 
 #'  also are contained in \code{update} with new values from \code{update}.
@@ -35,8 +35,8 @@ NA
 #'@family updatelist
 #@keywords internal
 #'@examples
-#'A <- list(a = NULL, b = "b from A", c = "c from A", d = "d from A")
-#'B <- list(a = "a from B", b = "b from B", c =  NULL, 
+#'A <- style(a = NULL, b = "b from A", c = "c from A", d = "d from A")
+#'B <- style(a = "a from B", b = "b from B", c =  NULL, 
 #'          e = "e from B", f = NULL)
 #'
 #'str(updateList(A, B))
@@ -59,6 +59,7 @@ updateList <- function(input, update, ignoreNULLs = TRUE) {
   if (ignoreNULLs) update <- update[!sapply(update, is.null)]
   replace <- update[names(update) %in% names(input)]
   input[names(replace)] <- replace
+  firstclass(input) <- "style"
   input
 }
 
@@ -71,6 +72,7 @@ updateNULLs <- function(input, update, ignoreNULLs = TRUE) {
   inulls <- input[sapply(input, is.null)]
   replace <- updateList(inulls, update, ignoreNULLs)
   input[names(replace)] <- replace
+  firstclass(input) <- "style"
   input
 }
 
@@ -82,7 +84,9 @@ updateNULLs <- function(input, update, ignoreNULLs = TRUE) {
 updateMissing <- function(input, update, ignoreNULLs = TRUE) {
   if (ignoreNULLs) update <- update[!sapply(update, is.null)]
   xlist <- c(input, update)
-  xlist[!duplicated(names(xlist), fromLast = FALSE)]
+  output <- xlist[!duplicated(names(xlist), fromLast = FALSE)]
+  firstclass(output) <- "style"
+  output
 }
 
 #'@rdname updatelists
@@ -95,5 +99,6 @@ updateJoin <- function(input, update, ignoreNULLs = FALSE) {
   result <- updateMissing(update, input, ignoreNULLs = FALSE) 
   result <- updateNULLs(result, input)
   if (ignoreNULLs) result <- result[!sapply(result, is.null)]
+  firstclass(result) <- "style"
   result
 }

@@ -1,4 +1,5 @@
 S3method(rangexy,default)
+export("firstclass<-")
 export(.graphparams)
 export(.plotoptions)
 export(.plotparams)

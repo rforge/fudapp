@@ -2,7 +2,7 @@
 \alias{alphacol}
 \title{Generate color of a given brightness / opacity}
 \usage{
-  alphacol(col, alpha = 1)
+  alphacol(col = par("col"), alpha = 1)
 }
 \arguments{
   \item{col}{a valid color specification}

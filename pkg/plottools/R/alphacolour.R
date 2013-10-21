@@ -25,7 +25,7 @@
 #' @keywords internal
 #' @export
 
-alphacol <- function(col, alpha = 1){
+alphacol <- function(col = par("col"), alpha = 1){
   # add alpha to a colour
   if (is.null(alpha)) alpha <- 1
   if (.plotoptions$alphamixing) return(rgb(t(col2rgb(col)/255), alpha=alpha))
