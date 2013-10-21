@@ -15,8 +15,8 @@
   arguments.}
 }
 \value{
-  a list containing those elements of \code{x} whose names
-  match the arguments, see details.
+  a style list containing those elements of \code{x} whose
+  names match the arguments, see details.
 }
 \description{
   Finds elements in a list whose names match some given

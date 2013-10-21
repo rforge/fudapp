@@ -36,6 +36,7 @@ rangexy <- function(...) UseMethod("rangexy")
 #' @method rangexy default
 #' @S3method rangexy default
 #' 
+ 
 rangexy.default <- function (x, y=NULL, finite = TRUE, ...) {
   xy <- xy.coords(x, y)
   list(x = range(xy$x, finite = finite),

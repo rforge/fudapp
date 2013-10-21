@@ -121,7 +121,7 @@ lplot <- function (objects=NULL, ..., allinone = TRUE, .plotmethod = "plot")
     obnames <- paste("obj", 1:nobjects, sep=".")
     names(objects) <- obnames
   }
-  dotargs <- list(...)
+  dotargs <- style(...)
   if(is.null(names(dotargs))) names(dotargs) <- rep("", length(dotargs))
 
   addfirst <- any(dotargs$add)
@@ -151,9 +151,10 @@ lplot <- function (objects=NULL, ..., allinone = TRUE, .plotmethod = "plot")
     orderedArgs[["..."]]$main <- ifelse(unnamed, "", obnames[1])
     
   do.call(splot, c(list(objects[[1]]), orderedArgs[[obnames[1]]],
-                  orderedArgs[["..."]], add = addfirst, recursive=F))
+                  orderedArgs[["..."]], add = addfirst, 
+                   .plotmethod = .plotmethod, recursive=F))
 
   if (nobjects > 1) for (i in 2 : nobjects)
      do.call(splot, c(list(objects[[i]]), orderedArgs[[i]],
-       orderedArgs[["..."]], add = allinone))
+       orderedArgs[["..."]], add = allinone, .plotmethod = .plotmethod))
 }
