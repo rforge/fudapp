@@ -1,8 +1,8 @@
-\name{estK}
-\alias{estK}
+\name{K.est}
+\alias{K.est}
 \title{Estimate the (template) K-function}
 \usage{
-  estK(X, type, r = NULL,
+  K.est(X, type, r = NULL,
     correction = c("border", "isotropic", "Ripley", "translate"),
     normpower = 0, ..., max.ls.r = 3)
 }
@@ -37,39 +37,54 @@
 \description{
   Estimates the \eqn{K}-function or template
   \eqn{K}-function of a point process. Modified (and
-  frozen) version of \code{\link{Kest}}.
+  frozen) version of \code{spatstat:\link[spatstat]{Kest}}.
 }
 \details{
-  If \code{type} is not given, the last type of second
-  order stationarity assigned to \code{X} is used to
-  determine how the template \eqn{K}-function is estimated.
-  If \code{X} has no type of second-order stationarity, it
-  is assumed to be homogeneous.
+  If applied to homogeneous point patterns,
+  \code{sostatpp}'s function \code{K.est} is a simplified
+  version of \code{spatstat:\link[spatstat]{Kest}}. In
+  particular, it does not provide any variance estimates,
+  and does not choose the edge correction according to the
+  number of points in the data set. See the excellent man
+  page of \code{spatstat:\link[spatstat]{Kest}} for
+  information on the \eqn{K}-function and edge correction.
+
+  The present version of \code{K.est} also applies to
+  inhomogeneous point processes that are supposed to be
+  hidden second-order stationary (H&J, 2013). It then
+  estimates the so called \emph{template} \eqn{K}-function,
+  the definition of which depends on the type of
+  second-order stationarity. If \code{type} is not given,
+  the last type of second-order stationarity assigned to
+  \code{X} is used to determine how the template
+  \eqn{K}-function is estimated. If \code{X} has no type of
+  second-order stationarity, it is assumed to be
+  homogeneous.
 
   If \code{type} is given, but does not match the type of
   \code{X}, the function \code{\link{as.sostyppp}} is
-  called with arguments ldots to ensure the correct hidden
+  called with arguments ... to ensure the correct hidden
   second-order information.
 
   If \code{normpower} > 0, the intensity is renormalized,
-  so that \code{\link{estK}} yields similar results as the
-  \bold{spatstat}-function \code{\link{Kinhom}}. The
-  intensity values \eqn{\lambda} are then multiplied by
+  so that \code{\link{K.est}} yields similar results as
+  \code{spatstat:\link[spatstat]{Kinhom}}. The intensity
+  values \eqn{\lambda} are then multiplied by
   \deqn{c^{normpower/2}}{c^(normpower/2),} where \deqn{c =
   area(W)/sum_i(1/\lambda(x_i))}{c =
   area(W)/sum[i](1/lambda(x[i])).}
 
   The hidden \eqn{K}-function for \strong{reweighted} s.o.
   stationary point processes delivers the same result as
-  {spatstat}'s function \code{\link{Kinhom}}, up to a
-  subtle difference for the border correction: \code{estK}
-  does not use fast optimized code.
+  \code{spatstat:\link[spatstat]{Kinhom}}, up to a subtle
+  difference for the border correction: \code{K.est} does
+  not use fast optimized code.
 
   If \code{X} is typed \strong{retransformed} s.o.
   stationary, the \eqn{K}-function of the
   \code{\link{backtransformed}} point pattern is returned,
   which corresponds to {spatstat}'s function
-  \code{\link{Kest}}
+  \code{spatstat:\link[spatstat]{Kest}}
 
   For \strong{locally rescaled} s.o. stationarity, the
   locally scaled interpoint distances are computed using an
@@ -77,8 +92,8 @@
   distance between two points is multiplied by the average
   of the square roots of the intensity values at the two
   points. Similarly, all edge corrections are implemented
-  as approximations. Here \code{estK} is similar to the
-  {spatstat}-function \code{\link{Kscaled}} The
+  as approximations. Here \code{K.est} is similar to
+  \code{spatstat:\link[spatstat]{Kscaled}} The
   translational edge correction suffers from a small
   intrinsic bias in some cases of locally rescaled s.o.s.,
   depending on intensity and window shape. It is
@@ -91,24 +106,24 @@
   maximum \code{max.ls.r} = 3 is thus quite large.
 }
 \examples{
-# compare homogeneous version of estK and spatstat's Kest
+# compare homogeneous version of K.est and spatstat's Kest
 # bronzefilter data are not marked as hidden second-order stationary
-plot(Kest(bronzefilter))
-plot(estK(bronzefilter))
+plot(spatstat::Kest(bronzefilter))
+plot(K.est(bronzefilter))
 
 # Evaluate as reweighted, with default intensity estimate,
 # compare with spatstat's Kinhom
-plot(Kinhom(bronzefilter))
-plot(estK(reweighted(bronzefilter)))
+plot(spatstat::Kinhom(bronzefilter))
+plot(K.est(reweighted(bronzefilter)))
 # There is a subtle difference because spatstat uses intensity renormalisation
 # by default. We can do that, too:
-plot(estK(bronzefilter, type = "w", normpower = 1, add=T))
+plot(K.est(bronzefilter, type = "w", normpower = 1))
 
 # Evaluate a rescaled version of the bronzefilter data:
-plot(estK(rescaled(bronzefilter)))
+plot(K.est(rescaled(bronzefilter)))
 
 # The last given type is the one that counts
-plot(estK(retransformed(rescaled(bronzefilter), backtrafo="gradx")))
+plot(K.est(retransformed(rescaled(bronzefilter), backtrafo="gradx")))
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}
@@ -131,7 +146,9 @@ plot(estK(retransformed(rescaled(bronzefilter), backtrafo="gradx")))
   \url{http://data.imf.au.dk/publications/csgb/2013/math-csgb-2013-07.pdf}
 }
 \seealso{
-  the \pkg{spatstat} functions \code{\link{Kest}},
-  \code{\link{Kinhom}}, \code{\link{Kscaled}}
+  the \pkg{spatstat} functions
+  \code{\link[spatstat]{Kest}},
+  \code{\link[spatstat]{Kinhom}},
+  \code{\link[spatstat]{Kscaled}}
 }
 

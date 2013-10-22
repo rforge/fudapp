@@ -66,14 +66,16 @@
 
 \section{Statistical analysis}{
   \subsection{Second order summary functions}{
-  \tabular{ll}{ \code{\link{estK}} \tab estimates the
-  \eqn{K}-function, according to type \cr\code{\link{estL}}
-  \tab estimates the \eqn{L}-function,
-  \cr\code{\link{estDeltaKdir}} \tab estimates the
-  \eqn{\Delta K_{dir}}-function } \subsection{Tests}{
-  \tabular{ll}{ \code{\link{Kpermute.test}} \tab test type
-  of s.o.s or local anisotropy, using \eqn{K}-function on
-  subsamples } } }
+  \tabular{ll}{ \code{\link{K.est}} \tab estimates the
+  \eqn{K}-function, according to type
+  \cr\code{\link{L.est}} \tab estimates the
+  \eqn{L}-function, \cr\code{\link{DeltaKdir.est}} \tab
+  estimates the \eqn{\Delta K_{dir}}-function }
+  \subsection{Tests}{ \tabular{ll}{ \code{\link{sos.test}}
+  \tab test type of s.o.s or local anisotropy, using
+  \eqn{K}-function on subsamples
+  \cr\code{\link{twosample.K.test}} \tab comparison of the
+  \eqn{K}-function on two samples of point patterns. } } }
 }
 
 \section{Coordinate transformation}{
@@ -129,8 +131,7 @@ ssample <- list(hi = ppsubsample(sscholtzia, quads1),
   \url{http://data.imf.au.dk/publications/csgb/2013/math-csgb-2013-07.pdf}
 }
 \seealso{
-  The \code{\link[spatstat:spatstat-package]{spatstat}}
-  package
+  The \code{\link[spatstat]{spatstat}} package
 }
 \keyword{package}
 

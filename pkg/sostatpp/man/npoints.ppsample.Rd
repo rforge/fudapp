@@ -19,7 +19,7 @@
 \seealso{
   \code{\link{ppsubsample}} for creating \code{ppsample}
   objects, \code{intensity.ppsample} for estimating the
-  empirical intensity, \code{\link{npoints}} for spatstats
-  generic function.
+  empirical intensity, \code{\link[spatstat]{npoints}} for
+  spatstat's generic function.
 }
 

@@ -10,8 +10,8 @@
   \item{...}{ignored}
 }
 \description{
-  Extends spatstat method \code{\link{print.ppp}} by type
-  of second-order stationarity.
+  Extends spatstat method \code{\link[spatstat]{print.ppp}}
+  by type of second-order stationarity.
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}

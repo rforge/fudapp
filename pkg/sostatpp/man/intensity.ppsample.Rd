@@ -25,7 +25,7 @@
 \seealso{
   \code{\link{ppsubsample}} for creating \code{ppsample}
   objects, \code{\link{npoints.ppsample}} for obtaining the
-  number of points, \code{\link{intensity}} for spatstats
-  generic function.
+  number of points, \code{\link[spatstat]{intensity}} for
+  spatstats generic function.
 }
 

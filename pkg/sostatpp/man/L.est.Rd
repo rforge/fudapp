@@ -1,11 +1,11 @@
-\name{estL}
-\alias{estL}
+\name{L.est}
+\alias{L.est}
 \title{Template L-function of a hidden 2nd-order stationary process}
 \usage{
-  estL(...)
+  L.est(...)
 }
 \arguments{
-  \item{\ldots}{Arguments for \code{\link{estK}}.}
+  \item{...}{Arguments for \code{\link{K.est}}.}
 }
 \description{
   Estimates the template \eqn{L}-function of a point
@@ -28,6 +28,6 @@
   holds very well for reasonably small arguments.
 }
 \seealso{
-  \code{\link{estK}}
+  \code{\link{K.est}}
 }
 

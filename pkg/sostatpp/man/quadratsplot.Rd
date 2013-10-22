@@ -1,73 +1,49 @@
 \name{quadratsplot}
 \alias{quadratsplot}
-\title{Plot of point pattern with test quadrats}
+\title{Plot a point pattern with test quadrats}
 \usage{
-  quadratsplot(x, quads1, quads2, style1 = NULL,
-    style2 = NULL, bgcol1 = NULL, bgcol2 = NULL,
-    quads0 = NULL, style0 = list(col = "white"),
-    bgcol0 = NULL, light = 0.75, ...)
+  quadratsplot(x, qsets, styles = NULL, ...)
 }
 \arguments{
-  \item{x}{point pattern, object of class
-  \code{\link{sostyppp}} or \pkg{spatstat} class
-  \code{\link{ppp}}}
+  \item{x}{point pattern}
 
-  \item{quads1,quads2}{test quadrats, a list of windows
-  (\code{"\link{owin}"}) or a tessellation
-  (\pkg{spatstat}-object \code{"\link{tess}"})}
+  \item{qsets}{the quadrat sets, a \emph{named} list of
+  lists of windows (\code{"\link{owin}"}) or tessellations
+  (\pkg{spatstat}-object \code{"\link[spatstat]{tess}"})}
 
-  \item{quads0}{optional unused test quadrats}
+  \item{styles}{optional a \emph{named} list of
+  \code{\link{style}} lists, see Details,}
 
-  \item{style1,style2,style0}{plotting parameters, see
-  details}
-
-  \item{bgcol1,bgcol2,bgcol0}{colors, see details}
-
-  \item{light}{default lightness of the background, a
-  number between 0 (dark) and 1 (white)}
-
-  \item{...}{further arguments for plotting}
+  \item{...}{further plot parameters}
 }
 \description{
-  Plot a point pattern with two sets of coloured test
-  quadrats, meant as a visualisation supplement for the
-  function \code{\link{Kpermute.test}}.
+  A plot of a point pattern, with subdivision into
+  quadrats. Several sets of quadrats can be plotted in the
+  same plot, distinguished by different background colour.
 }
 \details{
-  One of the arguments \code{bgcol} or \code{style} has to
-  be given. If both are specified, \code{bgcol} overrides
-  \code{style}. Lightness \code{light} applies to the
-  background colors, and is overridden by lightness
-  specified in the \code{style}s.
+  Background colour and coulour intensity of the quadrats
+  are determined by the parameters \code{col.win} and
+  \code{alpha.win}, see \code{\link{plot.sostyppp}}. These
+  plot parameters can be given as \code{\link{style}} lists
+  or explicitely. Both styles and explicite parameters can
+  be given as named lists, the names are then matched with
+  the names of the quadrat sets. Quadrats that have not
+  been assigned
 }
 \examples{
-# tile the beilschmiedia pattern evenly into many quadrats, and count points
-data(bei)
-allquads <- tiles(quadrats(bei, nx=8, ny=4))
-npts <- sapply(allquads, function(w) npoints(bei[w]))
+# quadrat plot for the beilschmiedia pattern
+beiquads <- quadshilo(bei, nx = 8, ny = 4, minpoints = 30)
+beistyle <- list(hi = style(col.win = "red"), lo = style(col.win = "blue"))
 
-# select quadrats with more than 30 points, and split into three sets
-enoughpoints <- npts > 30
-nmedian <- median(npts[enoughpoints])
-few <- npts <= nmedian & enoughpoints
-many <- npts >= nmedian
+quadratsplot(bei, beiquads, beistyle, alpha.win = 0.2, main = "Beilschmiedia: quadrats")
 
-quads1 <- allquads[many]
-quads2 <- allquads[few]
-quads0 <- allquads[!enoughpoints]
+# does the same colours:
 
-redstyle <- list(col = "red", light = 0.5)
-bluestyle <- list(col = "blue")
-quadratsplot(bei, quads1, quads2, redstyle, bluestyle)
-
-# overriding some options
-quadratsplot(bei, quads1, quads2, redstyle, bluestyle,
-             light=.8, pch=16, cex=.4)
-
-# also unused quadrats
-quadratsplot(bei, quads1, quads2, redstyle, bluestyle,
-             light = .8, pch = 16, cex = .4,
-             quads0 = quads0, bgcol0 = "yellow"
-     )
+quadratsplot(bei, beiquads, col.win = list(hi = "red", lo = "blue"),
+ alpha.win = 0.2, main = "Beilschmiedia: quadrats", pch = 16, cex = .3)
+}
+\author{
+  Ute Hahn, \email{ute@imf.au.dk}
 }
 

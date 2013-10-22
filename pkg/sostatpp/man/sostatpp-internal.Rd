@@ -1,8 +1,7 @@
 \docType{data}
-\name{ppsplit}
+\name{getIntensity}
 \alias{.TYPENAMES}
 \alias{.settype}
-\alias{correctionkey}
 \alias{currenttypeno}
 \alias{edgecross.Ripley}
 \alias{furthertypeno}
@@ -12,16 +11,11 @@
 \alias{lspairdist}
 \alias{normalizedIntensity}
 \alias{peripolyxy}
-\alias{ppsplit}
 \alias{sostatpp-internal}
 \alias{subdivpolyxy}
 \title{internal functions of sostatpp package}
-\format{chr [1:5] "reweighted" "retransformed" "rescaled" "homogeneous" ...}
+\format{chr [1:5] "reweighted" "retransformed" "rescaled" "homogeneous" "scaled-homogeneous"}
 \usage{
-  ppsplit(X, quadrats)
-
-  correctionkey(correction)
-
   getIntensity(X, intensity = NULL, ...)
 
   normalizedIntensity(X, intensity = NULL, normpower = 2)

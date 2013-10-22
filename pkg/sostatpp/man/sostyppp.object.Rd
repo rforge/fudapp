@@ -13,15 +13,16 @@
   dataset with extra information relevant for analysis as a
   realization of a second-order stationary point process.
 
-  From its ancestor, spatstat-class \code{"\link{ppp}"}, an
-  object of type \code{sostyppp} inherits the elements
-  \tabular{ll}{ \code{x} \tab vector of \eqn{x} coordinates
-  of data points \cr\code{y} \tab vector of \eqn{y}
-  coordinates of data points \cr\code{n} \tab number of
-  points \cr\code{window} \tab window of observation (an
-  object of class \code{\link{owin}}) \cr\code{marks} \tab
-  vector or data frame of marks } Additionally, it contains
-  the elements \tabular{ll}{ \code{sostype} \tab integer,
+  From its ancestor, spatstat-class
+  \code{"\link[spatstat]{ppp}"}, an object of type
+  \code{sostyppp} inherits the elements \tabular{ll}{
+  \code{x} \tab vector of \eqn{x} coordinates of data
+  points \cr\code{y} \tab vector of \eqn{y} coordinates of
+  data points \cr\code{n} \tab number of points
+  \cr\code{window} \tab window of observation (an object of
+  class \code{\link{owin}}) \cr\code{marks} \tab vector or
+  data frame of marks } Additionally, it contains the
+  elements \tabular{ll}{ \code{sostype} \tab integer,
   encrypts the type of stationarity that is assumed in
   analysis, see below \cr\code{tinfo} \tab a list
   containing information relevant to the type of

@@ -18,8 +18,8 @@
   window color, see \code{\link{alphacol}}}
 }
 \description{
-  Extends spatstat method \code{\link{plot.ppp}} by
-  background color.
+  Extends the spatstat method
+  \code{\link[spatstat]{plot.ppp}} by background color.
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}

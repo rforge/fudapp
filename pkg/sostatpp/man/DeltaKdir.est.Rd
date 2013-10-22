@@ -1,8 +1,8 @@
-\name{estDeltaKdir}
-\alias{estDeltaKdir}
+\name{DeltaKdir.est}
+\alias{DeltaKdir.est}
 \title{Contrast of orthogonal directional K-functions}
 \usage{
-  estDeltaKdir(X, type = c("s", "t", "w", "h", "hs"),
+  DeltaKdir.est(X, type = c("s", "t", "w", "h", "hs"),
     dphi = pi/4, r = NULL, correction = "isotropic",
     normpower = 0, ..., rescaleangle = TRUE, max.ls.r = 3,
     warn.backtransformed = FALSE)
@@ -59,19 +59,20 @@ X <- rescaled(bronzefilter)
 W1 <- owin(c(0,9), c(0,7))
 W2 <- owin(c(9,18), c(0,7))
 rr <- seq(0, 1.3, .01)
-plot(estDeltaKdir (X[W1], r=rr), ylim=c(-2,1), col= c("red", "black"), main="")
-lines(rr, estDeltaKdir (X[W2],r = rr)$iso, col="blue")
+plot(DeltaKdir.est (X[W1], r=rr), ylim=c(-2,1), col= c("red", "black"), main="")
+lines(rr, DeltaKdir.est (X[W2],r = rr)$iso, col="blue")
 
 # the backtransformed pattern shows anisotropy
 Y <- backtransformed(retransformed(bronzefilter, backtrafo = "gradx"))
-lines(rr, estDeltaKdir (Y[W1], r = rr)$iso,  col= c("red"), lty = "dotted")
-lines(rr, estDeltaKdir (Y[W2], r = rr)$iso, col="blue", lty = "dotted" )
+lines(rr, DeltaKdir.est (Y[W1], r = rr)$iso,  col= c("red"), lty = "dotted")
+lines(rr, DeltaKdir.est (Y[W2], r = rr)$iso, col="blue", lty = "dotted" )
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}
 }
 \seealso{
-  \code{\link{Kest}}, \code{\link{Kinhom}},
-  \code{\link{Kscaled}}
+  \code{spatstat:\link[spatstat]{Kest}},
+  \code{spatstat:\link[spatstat]{Kinhom}},
+  \code{spatstat:\link[spatstat]{Kscaled}}
 }
 

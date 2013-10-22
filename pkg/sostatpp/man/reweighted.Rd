@@ -18,8 +18,8 @@
   \item{\ldots}{optional extra parameters. If
   \code{intensity} is given as a function, \ldots may
   contain extra parameters, if \code{intensity} is empty,
-  these are parameters passed to the
-  \bold{spatstat}-function \code{\link{density.ppp}}.}
+  these are parameters passed to
+  \code{spatstat::\link[spatstat]{density.ppp}}.}
 }
 \value{
   A reweighted s.o.s. typed point pattern (object of class
@@ -38,11 +38,11 @@
   inverse scale factor.
 
   If \code{intensity} is empty, and \code{X} has no inverse
-  scale factor marks, the intensity is estimated using the
-  \bold{spatstat}-function \code{\link{density.ppp}}, and
-  extra arguments \ldots are passed to \code{density.ppp}.
-  By contrast to \bold{spatstat}, the
-  {"leaveoneout"}-method is not chosen by default.
+  scale factor marks, the intensity is estimated using
+  \code{spatstat::\link[spatstat]{density.ppp}}, and extra
+  arguments \ldots are passed to \code{density.ppp}. By
+  contrast to \bold{spatstat}, the {"leaveoneout"}-method
+  is not chosen by default.
 
   If \code{intensity} is given as a function, extra
   parameters may be passed as \ldots.

@@ -23,7 +23,7 @@
 \description{
   Apply any coordinate transformation to a pixel image.
   Generalizes the spatstat function
-  \code{\link{affine.im}}.
+  \code{\link[spatstat]{affine.im}}.
 }
 \details{
   The mappings are given by \code{trafoxy} (and

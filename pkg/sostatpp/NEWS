@@ -1,3 +1,34 @@
+  CHANGES IN sostatpp VERSION 0.11.2
+
+    o renamed estK, estL, estDeltaKdir to K.est, L.est, DeltaKdir.est to stress
+      similarity to spatstat, since these functions return fv-objects
+    
+    o removed obsolete functions like Kpermute.test
+
+    o adjustments in the documentation
+
+  CHANGES IN sostatpp VERSION 0.11.1
+
+    o new plot function for class Ktest
+    
+    o function quadratsplot completely rewritten, with changed call
+    
+    o some fixes
+
+  CHANGES IN sostatpp VERSION 0.11.0
+
+    o new functions twosample.K.test and sos.test, to replace Kpermute.test
+
+    o new class Ktest
+
+  CHANGES IN sostatpp VERSION 0.10.1
+  
+    o new function quadratsets.hilo: makes sets of test quadrats
+
+    o fixed: subsetting of sostyppp objects behaved different for marked and
+      unmarked patterns
+
+
   CHANGES IN sostatpp VERSION 0.10.0
   
     o utilities for plotting have been replaced by separate package plottools

@@ -12,7 +12,7 @@
   \code{"sostyppp"}.}
 
   \item{i}{subset index, see spatstat
-  \code{\link{[<-.ppp}}.}
+  \code{\link[spatstat]{[<-.ppp}}.}
 
   \item{value}{Replacement for the subset, a sos-typed
   point pattern of same type.}

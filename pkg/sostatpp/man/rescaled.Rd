@@ -20,9 +20,9 @@
   parameter \code{invscale}.}
 
   \item{\ldots}{arguments passed to \code{invscale} or
-  \code{intensity}, if these are functions, or to the
-  \bold{spatstat}-function \code{\link{density.ppp}} if
-  both \code{invscale} and \code{intensity} are missing.}
+  \code{intensity}, if these are functions, or to
+  \code{spatstat::\link[spatstat]{density.ppp}} if both
+  \code{invscale} and \code{intensity} are missing.}
 }
 \value{
   A rescaled s.o.s. typed point pattern (object of class
@@ -42,9 +42,9 @@
   been marked with the intensity (by function
   \code{\link{reweighted}}).  If both \code{invscale} and
   \code{intensity} are empty and there are no intensity
-  marks, the intensity is estimated using the
-  \bold{spatstat}-function \code{\link{density.ppp}}, and
-  extra arguments \ldots are passed to \code{density.ppp}.
+  marks, the intensity is estimated using
+  \code{spatstat::\link[spatstat]{density.ppp}}, and extra
+  arguments \ldots are passed to \code{density.ppp}.
 
   If \code{invscale} (or \code{intensity}) is given as a
   function, extra parameters may be passed as \ldots.
