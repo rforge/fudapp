@@ -2,7 +2,7 @@
 \alias{rangexy.fdsample}
 \title{Report x- and y-range, generic function}
 \usage{
-  rangexy.fdsample(x, finite = TRUE, ...)
+  \method{rangexy}{fdsample} (x, finite = TRUE, ...)
 }
 \arguments{
   \item{x}{the data to be inspected}
