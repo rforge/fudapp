@@ -26,6 +26,9 @@
   \code{\link{style}}s contained in the arguments are
   unwrapped. If arguments with the same name appear in the
   list, the last one is taken.
+
+  ! Note: Don't use this function inside a plot method, or
+  any other method that might be called with \code{splot} !
 }
 \examples{
 boldly <- style(col = "red", lwd = 5)

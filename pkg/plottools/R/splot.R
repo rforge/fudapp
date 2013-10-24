@@ -10,6 +10,9 @@
 #' given in \code{...}. Any \code{\link{style}}s contained in the arguments are
 #' unwrapped. If arguments with the same name appear in the list, the last one
 #' is taken.
+#' 
+#' ! Note: Don't use this function inside a plot method, or any other method that
+#' might be called with \code{splot} !
 #'@author Ute Hahn,  \email{ute@@imf.au.dk}
 #'@export 
 #'@examples
@@ -24,6 +27,10 @@
 #'splot(sin, timidly, boldly, col = "green")
 
 splot <- function(x, ..., NULL.rm = TRUE, .plotmethod = "plot") {
-  plotargs <- style(..., NULL.rm = NULL.rm)
-  do.call(.plotmethod, c(list(x), plotargs, recursive = F))
+  if (length(list(...)) == 0)
+    do.call(.plotmethod, list(x))
+  else{
+    plotargs <- style(..., NULL.rm = NULL.rm)
+    do.call(.plotmethod, c(list(x), plotargs, recursive = F))
+  }  
 }

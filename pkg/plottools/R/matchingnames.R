@@ -25,7 +25,7 @@
 matching <- function(x, ..., .notmatching = FALSE)
 {
   stopifnot(is.list(x))
-  if (length(x) < 1) return(list())
+  if (length(x) < 1) return(NULL)
   dotargs <- as.list(c(..., "", recursive = FALSE))
     # the "" forces something reasonable if only one element is in ...
   # removing the "" again:
@@ -45,8 +45,9 @@ matching <- function(x, ..., .notmatching = FALSE)
                   else {if (isfun[i]) names(formals(argi))})
   }
   matches <- names(x) %in% allnames
-  if (.notmatching) matches <- ! matches
+  if (.notmatching) matches <- !matches
   result <- x[matches]
-  class(result) <- c("style", "list")
+  if (length(result) == 0) return(NULL)
+  firstclass(result) <- "style"
   result
 }
