@@ -4,7 +4,7 @@
 \usage{
   plot.Ktest(x, styles,
     theostyle = style(lty = "dotted", col = "black", alpha = 1),
-    ...)
+    ..., labline = 2.4)
 }
 \arguments{
   \item{x}{result of a \code{\link{sos.test}} or a
@@ -21,6 +21,9 @@
   NULL}.}
 
   \item{...}{further arguments passed to plot methods,}
+
+  \item{labline}{numeric, controls the position of the axis
+  labels: first entry in graphic parameter \code{mgp}.}
 }
 \description{
   Plot the K-function estimates used in a test on
@@ -49,11 +52,11 @@
 \examples{
 # testing beilschmiedia pattern on reweighted second-order stationarity
 bei.ml <- reweighted(bei, intensity = bei.intens.maxlik)
-bei.quads <- quadshilo(bei, nx = 8, ny = 4, minpoints = 30)
-beitest <- sos.test(bei.ml, qsets = bei.quads, r0 =25 )
-beistyle <- list(hi = style(col = "red"), lo = style(col = "blue"))
+bei.quads <- twoquadsets(bei, nx = 8, ny = 4, minpoints = 30)
+beitest <- sos.test(bei.ml, qsets = bei.quads, rmax =25 )
+beistyle <- list(hi = style(col = "red", alpha = .5), lo = style(col = "blue", alpha = .5))
 
-plot(beitest, beistyle, main = "bei.ml: K estimated on quadrats")
+plot(beitest, beistyle, main = "bei.ml: K estimated on quadrats", ylim = c(0,3000))
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}

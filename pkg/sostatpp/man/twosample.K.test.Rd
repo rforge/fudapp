@@ -2,14 +2,14 @@
 \alias{twosample.K.test}
 \title{Two sample K-permutation-test}
 \usage{
-  twosample.K.test(x, y, Kfun = K.est, r0, rlen = 256, ...,
-    use.tbar = FALSE, nperm = 1000)
+  twosample.K.test(x, y, Kfun = K.est, rmax, rlen = 256,
+    ..., use.tbar = FALSE, nperm = 1000)
 }
 \arguments{
   \item{x,y}{the point pattern samples to be compared,
   objects of class \code{ppsample}}
 
-  \item{r0}{numeric, the upper integration limit, see
+  \item{rmax}{numeric, the upper integration limit, see
   Details,}
 
   \item{rlen}{optional, number of steps for numerical
@@ -54,7 +54,7 @@
   r_{max}]}. It is approximated by the mean of the
   integrand over all \code{rlen} values of \eqn{r},
   multiplied by the length of the integral, i.e., by
-  \code{r0}.
+  \code{rmax}.
 
   A variant of the test statistic, \eqn{\bar T}{Tbar}, uses
   the variance stabilized function \eqn{K(r)/r} instead of
@@ -79,7 +79,7 @@
   variant of the test, let \code{Kfun = DeltaKdir.est}.
 
   A list of quadrats as required for argument \code{qsets}
-  can be obtained by function \code{\link{quadshilo}}. }
+  can be obtained by function \code{\link{twoquadsets}}. }
   \subsection{Details on the return value}{ The test
   returns an object belonging to classes \code{sostest} and
   \code{htest}, a list containing the following components:
@@ -108,7 +108,7 @@
 \seealso{
   function \code{\link{tL2.permtest}} from package
   {fdnonpar} is used as test engine,
-  \code{\link{quadshilo}} is used for setting up quadrat
+  \code{\link{twoquadsets}} is used for setting up quadrat
   samples.
 }
 

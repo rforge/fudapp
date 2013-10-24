@@ -1,8 +1,8 @@
-\name{quadshilo}
-\alias{quadshilo}
+\name{twoquadsets}
+\alias{twoquadsets}
 \title{Set up samples of quadrats with high and low intensity}
 \usage{
-  quadshilo(pp, quads = NULL, nx = NULL, ny = NULL,
+  twoquadsets(pp, quads = NULL, nx = NULL, ny = NULL,
     gradx = FALSE, grady = FALSE, xbreaks = NULL,
     ybreaks = NULL, minpoints = 20,
     by.intensity = !xor(gradx, grady))

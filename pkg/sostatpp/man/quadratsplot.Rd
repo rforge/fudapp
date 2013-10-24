@@ -2,7 +2,8 @@
 \alias{quadratsplot}
 \title{Plot a point pattern with test quadrats}
 \usage{
-  quadratsplot(x, qsets, styles = NULL, ...)
+  quadratsplot(x, qsets, styles = NULL, ..., main = NULL,
+    backtransformed = FALSE)
 }
 \arguments{
   \item{x}{point pattern}
@@ -15,6 +16,13 @@
   \code{\link{style}} lists, see Details,}
 
   \item{...}{further plot parameters}
+
+  \item{main}{title to be put above the plot. Default:
+  tries to guess title from call.}
+
+  \item{backtransformed}{logical, if \code{TRUE}
+  backtransform pattern and quadrats. Requires pattern of
+  sos-type \code{"t"}. #'}
 }
 \description{
   A plot of a point pattern, with subdivision into
@@ -33,7 +41,7 @@
 }
 \examples{
 # quadrat plot for the beilschmiedia pattern
-beiquads <- quadshilo(bei, nx = 8, ny = 4, minpoints = 30)
+beiquads <- twoquadsets(bei, nx = 8, ny = 4, minpoints = 30)
 beistyle <- list(hi = style(col.win = "red"), lo = style(col.win = "blue"))
 
 quadratsplot(bei, beiquads, beistyle, alpha.win = 0.2, main = "Beilschmiedia: quadrats")

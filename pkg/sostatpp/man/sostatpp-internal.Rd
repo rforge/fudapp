@@ -14,7 +14,7 @@
 \alias{sostatpp-internal}
 \alias{subdivpolyxy}
 \title{internal functions of sostatpp package}
-\format{chr [1:5] "reweighted" "retransformed" "rescaled" "homogeneous" "scaled-homogeneous"}
+\format{chr [1:6] "reweighted" "retransformed" "rescaled" "homogeneous" "scaled-homogeneous" ...}
 \usage{
   getIntensity(X, intensity = NULL, ...)
 

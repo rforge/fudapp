@@ -2,7 +2,7 @@
 \alias{sos.test}
 \title{Test of second-order stationarity}
 \usage{
-  sos.test(x, qsets = NULL, Kfun = K.est, r0, rlen = 256,
+  sos.test(x, qsets = NULL, Kfun = K.est, rmax, rlen = 256,
     ..., use.tbar = FALSE, nperm = 1000)
 }
 \arguments{
@@ -14,9 +14,9 @@
   test quadrats or tessellations (objects of type
   \code{\link{tess}}). The list contains entries with names
   \code{hi} and \code{lo}, optionally also \code{unused},
-  as produced by \code{\link{quadshilo}}.}
+  as produced by \code{\link{twoquadsets}}.}
 
-  \item{r0}{numeric, the upper integration limit, see
+  \item{rmax}{numeric, the upper integration limit, see
   Details,}
 
   \item{rlen}{optional, number of steps for numerical
@@ -52,15 +52,16 @@
   two samples of estimated K-functions are compared by a
   permutation test. The test statistic is the integral over
   a squared Welch-t-statistic,
-  \deqn{T=\int_0^{r_0}\frac{(K_1(r)-K_2(r))^2}{s_1^2(r)/m_1
+  \deqn{T=\int_0^{r_{max}}\frac{(K_1(r)-K_2(r))^2}{s_1^2(r)/m_1
   + s_2^2(r)/m_2} d r}{T = integral [ (K_1(r)-K_2(r))^2 /
   (s_1^2(r)/m_1 + s_2^2(r)/m_2)],} where \eqn{K_1(r)} and
   \eqn{K_2(r)} are the group means, and \eqn{s_1^2(r),
   s_2^2(r)} are within group variances at a fixed argument
-  \eqn{r}. The integral spans an interval \eqn{[0, r_0]}.
-  It is approximated by the mean of the integrand over all
-  \code{rlen} values of \eqn{r}, multiplied by the length
-  of the integral, i.e., by \code{r0}.
+  \eqn{r}. The integral spans an interval \eqn{[0,
+  r_{max}]}. It is approximated by the mean of the
+  integrand over all \code{rlen} values of \eqn{r},
+  multiplied by the length of the integral, i.e., by
+  \code{rmax}.
 
   A variant of the test statistic, \eqn{\bar T}{Tbar}, uses
   the variance stabilized function \eqn{K(r)/r} instead of
@@ -88,7 +89,7 @@
   \code{Kfun = DeltaKdir.est}.
 
   A list of quadrats as required for argument \code{qsets}
-  can be obtained by function \code{\link{quadshilo}}. }
+  can be obtained by function \code{\link{twoquadsets}}. }
   \subsection{Details on the return value}{ The test
   returns an object belonging to classes \code{sostest} and
   \code{htest}, a list containing the following components:
@@ -115,7 +116,7 @@
 \seealso{
   function \code{\link{tL2.permtest}} from package
   {fdnonpar} is used as test engine,
-  \code{\link{quadshilo}} is used for setting up quadrat
+  \code{\link{twoquadsets}} is used for setting up quadrat
   samples. The quadrat subsamples or the $K$-function
   estimates can be plotted, see \code{\link{plot.Ktest}}
 }

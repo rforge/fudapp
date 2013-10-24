@@ -35,11 +35,11 @@
   in \code{fvl}.
 }
 \examples{
-Ks <- replicate(4, list(estK(rpoispp(100), r = seq(0, 0.2, 0.005))))
+Ks <- replicate(4, list(K.est(rpoispp(100), r = seq(0, 0.2, 0.005))))
 Ksample <- extract.fdsample(Ks, "iso")
 plot(Ksample, col = "red")
 # add the "theo" values to the plot
-plot(extract.fdsample(Ks, "theo"), lty = "dashed", add = T)
+plot(extract.fdsample(Ks, "theo"), lty = "dashed", add = TRUE)
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}
