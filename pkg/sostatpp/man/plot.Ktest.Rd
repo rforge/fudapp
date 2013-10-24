@@ -2,7 +2,7 @@
 \alias{plot.Ktest}
 \title{Plot K-functions used in test on second-order stationarity}
 \usage{
-  plot.Ktest(x, styles,
+  \method{plot}{Ktest} (x, styles,
     theostyle = style(lty = "dotted", col = "black", alpha = 1),
     ..., labline = 2.4)
 }
