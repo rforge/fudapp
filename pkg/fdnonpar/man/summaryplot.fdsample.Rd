@@ -86,7 +86,7 @@ summaryplot(fuda, envprob = NULL, sumfun = median,
 # using a predefined list of options,
 # summary function will be plotted in black (default)
 
-blau <- style(col = "blue", alpha.env = .8, col.smf = "green")
+blau <- simplist(col = "blue", alpha.env = .8, col.smf = "green")
 summaryplot(fuda, sumfun = "mean", envprob = .8, blau, alpha = .7)
 # adds individual lines, overriding light options contained in fuda and blau
 }

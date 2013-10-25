@@ -12,7 +12,7 @@
   dimension: dimarg x groupsize}
 
   \item{...}{predefined plot options or
-  \code{\link{style}}s, see the details and
+  \code{\link{simplist}}s, see the details and
   \code{\link{plot.fdsample}}}
 }
 \value{
@@ -30,7 +30,7 @@
   Predefining plot options may be particularly useful for
   plot annotation, i.e. \code{xlab}, \code{ylab} and
   \code{main}. They may be also given as a
-  \pkg{plottools}-\code{\link{style}}. Options with same
+  \pkg{plottools}-\code{\link{simplist}}. Options with same
   name are overriden from left to right, i.e., the last one
   given counts.
 }

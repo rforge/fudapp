@@ -35,14 +35,14 @@
   The plot method \code{plot.fdsample} works like the
   function \code{\link{splot}} from package
   \code{plottools}. In particular, plot parameters can be
-  given as \code{"\link{style}"} lists or separately.
+  given as \code{"\link{simplist}"}s or separately.
 }
 \examples{
 # load example data
 data(ExampleData)
 plot(fuda)
 # using a predefined list of options
-blau <- style(col = "blue", alpha = 0.4)
+blau <- simplist(col = "blue", alpha = 0.4)
 plot(fuda, blau, includy = -2)
 # add mean
 plot(mean(fuda), col = "blue", lwd = 2, add = TRUE)

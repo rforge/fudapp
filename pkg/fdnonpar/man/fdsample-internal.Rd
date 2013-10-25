@@ -13,7 +13,7 @@
  $ col    : NULL
  $ lwd    : NULL
  $ lty    : NULL
- - attr(*, "class")= chr [1:2] "style" "list"}
+ - attr(*, "class")= chr [1:2] "simplist" "list"}
 \usage{
   defaultoptions.fdsample
 

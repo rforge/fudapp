@@ -15,7 +15,7 @@
   \item{...}{further arguments}
 }
 \description{
-  Plots an object of class \code{\link{envelope}}.
+  Plots an object of class \code{fdenvelope}.
 }
 \details{
   Plotting parameters can be given as list
@@ -34,7 +34,7 @@
 data(ExampleData)
 envy <- pwEnvelope(fuda, prob = .9, lightup = .9)
 # using a predefined list of options
-blau <- style(col = "blue")
+blau <- simplist(col = "blue")
 plot(envy, blau, main="mein blau", includy = -2)
 # add lines and mean
 plot(fuda, blau, lightup = 0.4, add = TRUE)
