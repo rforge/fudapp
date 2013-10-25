@@ -29,8 +29,8 @@
   named lists are assigned to the object with same name in
   list \code{objects}. Plot parameters not given in a list
   apply to all objects. Plot parameters may also be grouped
-  as \code{\link{style}} lists, since \code{lplot}
-  internally calles \code{\link{splot}}.
+  as \code{\link{simplist}}s, since \code{lplot} internally
+  calles \code{\link{splot}}.
 
   Any \code{add}-parameters only affect the first plotted
   object. Whether or not the plots of the remaining objects
@@ -47,7 +47,7 @@ lplot(curves, allinone = FALSE, col = list(a = "green", b = "red"),
 
 # using plot styles
 curves <- list(b = cos, a = sin)
-mystyles <- list(a = style(col = "red", lwd = 2), b = style(col = "green"))
+mystyles <- list(a = simplist(col = "red", lwd = 2), b = simplist(col = "green"))
 lplot(curves, mystyles, ylim = c(-1, 1), to = 2*pi)
 }
 \author{

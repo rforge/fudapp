@@ -15,16 +15,17 @@
   updateJoin(input, update, ignoreNULLs = FALSE)
 }
 \arguments{
-  \item{input}{style list of input parameters to be
-  updated}
+  \item{input}{\code{\link{simplist}} of input parameters
+  to be updated}
 
-  \item{update}{style list of updates}
+  \item{update}{\code{\link{simplist}} of updates}
 
   \item{ignoreNULLs}{logical, if \code{TRUE} ignore
   \code{NULL} values in list \code{update}}
 }
 \value{
-  A style list with updated values, see the Details
+  A \code{\link{simplist}} with updated values, see the
+  Details
 }
 \description{
   Joining or updating lists of parameters.
@@ -55,8 +56,8 @@
   in \code{input}.
 }
 \examples{
-A <- style(a = NULL, b = "b from A", c = "c from A", d = "d from A")
-B <- style(a = "a from B", b = "b from B", c =  NULL,
+A <- simplist(a = NULL, b = "b from A", c = "c from A", d = "d from A")
+B <- simplist(a = "a from B", b = "b from B", c =  NULL,
          e = "e from B", f = NULL)
 
 str(updateList(A, B))

@@ -6,7 +6,7 @@
 #' see the details
 #'@param .notmatching if \code{TRUE}, the opposite is done: return all elements
 #'whose names do not match the given arguments.
-#'@return a style list containing those elements of \code{x} whose names match the
+#'@return a \code{\link{simplist}} containing those elements of \code{x} whose names match the
 #'arguments, see details.
 #'@details For functions or functions names contained in \code{...}, the argument
 #'list is matched. This works only for non primitive functions.
@@ -48,6 +48,6 @@ matching <- function(x, ..., .notmatching = FALSE)
   if (.notmatching) matches <- !matches
   result <- x[matches]
   if (length(result) == 0) return(NULL)
-  firstclass(result) <- "style"
+  firstclass(result) <- "simplist"
   result
 }

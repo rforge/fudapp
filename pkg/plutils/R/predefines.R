@@ -1,5 +1,5 @@
 #'@title Predefined lists
-#'@rdname plottools-predefined
+#'@rdname plutils-predefined
 #'@name Predefined parameter lists and options
 #'@description Predefined lists of parameters, for convenience
 #'@details 
@@ -14,7 +14,7 @@
 #'@format named lists
 NA
 
-#'@rdname plottools-predefined
+#'@rdname plutils-predefined
 #'@export
 .plotparams <- list(type = "p",  xlim = NULL, ylim = NULL,
                     log = "", main = NULL, sub = NULL, xlab = NULL, ylab = NULL,
@@ -22,12 +22,12 @@ NA
                     panel.first = NULL, panel.last = NULL, asp = NA,
                     mgp = par("mgp"), add = FALSE)
 
-#'@rdname plottools-predefined
+#'@rdname plutils-predefined
 #'@export
 .graphparams <- par(no.readonly = TRUE)
 
 
-#'@rdname plottools-predefined
+#'@rdname plutils-predefined
 #'@export
 #'@format named lists
 #'

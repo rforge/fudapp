@@ -1,0 +1,49 @@
+\name{simplist}
+\alias{simplist}
+\title{Construct a Style List}
+\usage{
+  simplist(..., .NULL.rm = FALSE)
+}
+\arguments{
+  \item{...}{objects, should be named if not
+  \code{simplist} objects.}
+
+  \item{.NULL.rm}{if \code{TRUE}, arguments of value
+  \code{NULL} are ignored.  Default: \code{FALSE}.}
+}
+\value{
+  an object of class \code{simplist}, a list with uniquely
+  named elements.
+}
+\description{
+  Construct an object of class \code{simplist}, a list with
+  unique names.
+}
+\details{
+  Tagged arguments have priority from right to left, that
+  is, if arguments with the same name occur more than once,
+  the value of the last one is picked.
+
+  Arguments of class \code{"simplist"} themselves are
+  resolved before integrating into the resulting unique
+  list.
+
+  The class name was chosen because the main purpose for
+  \code{simplist}s is to define plotting styles for the use
+  with function \code{\link{splot}}.
+}
+\examples{
+A <- simplist(a = 1, b = "cool", a = 3)
+str(A)
+B <- simplist(a = 2, A, b = NULL, c = list(x = 4, y = 5))
+str(B)
+str(simplist(A, B))
+str(simplist(A, B, .NULL.rm = TRUE))
+}
+\author{
+  Ute Hahn, \email{ute@imf.au.dk}
+}
+\seealso{
+  splot
+}
+

@@ -1,10 +1,24 @@
+ CHANGES IN plutils VERSION 0.2.3
+  
+    o package has been renamed!
+ 
+    o class simplist (was "styles")
+
+CHANGES IN plottools VERSION 0.2.2-1
+
+    o new function firstclass
+
+    o alphacol takes par("col") as default colour
+
+    o updateList and family are based on styles instead of lists
+
  CHANGES IN plottools VERSION 0.2.2  
   
     o new generic function summaryplot (just to have a few more... - needed for package fdnonpar)
 
     o fixes in lplot for the use of styles (parlists) instead of lists
 
-    O matching returns style list	
+    o matching returns style list	
 
  CHANGES IN plottools VERSION 0.2.1  
   

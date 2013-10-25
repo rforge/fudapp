@@ -1,7 +1,7 @@
 \docType{package}
-\name{plottools-package}
+\name{plutils-package}
 \alias{plottools}
-\alias{plottools-package}
+\alias{plutils-package}
 \title{Plotting with Style}
 \description{
   Provides utilities for handling plot and graphic
@@ -12,10 +12,10 @@
 \details{
   \strong{Functions for plotting with style, and plotting
   lists} \tabular{ll}{ \code{\link{splot}} \tab plot using
-  a list of parameters (a "\code{\link{style}}")
+  a list of parameters (a "\code{\link{simplist}}")
   \cr\code{\link{lplot}} \tab plot all objects in a list
-  \cr\code{\link{style}} \tab collect parameters in a list
-  } \strong{Utility functions} \tabular{ll}{
+  \cr\code{\link{simplist}} \tab collect parameters in a
+  list } \strong{Utility functions} \tabular{ll}{
   \code{\link{alphacol}} \tab control transparency /
   brightness of a colour \cr\code{\link{matching}} \tab
   match a list of parameters by name, \cr\tab useful for

@@ -15,8 +15,8 @@
   arguments.}
 }
 \value{
-  a style list containing those elements of \code{x} whose
-  names match the arguments, see details.
+  a \code{\link{simplist}} containing those elements of
+  \code{x} whose names match the arguments, see details.
 }
 \description{
   Finds elements in a list whose names match some given

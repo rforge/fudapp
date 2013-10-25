@@ -31,12 +31,12 @@
 #str(newlist.p$...)
 
 #'@title Internal functions
-#'@rdname plottools-internal
+#'@rdname plutils-internal
 #'@name Internal functions
 #'@description Utility functions
 NA
 
-#' @rdname plottools-internal
+#' @rdname plutils-internal
 #' @keywords internal
 
 retagList <- function (arglist, tagnames)
@@ -75,14 +75,14 @@ retagList <- function (arglist, tagnames)
 #'@param objects named list of \code{R}-objects.
 #'@param ... parameters and parameterlists passed to plot method of the objects.
 #'@param allinone logical, if TRUE, all objects are plotted in one window.
-#'@param .plotmethod a generic function for plotting, or a character string naming 
+#'@param .plotmethod a generic function for plotting, or a character string naming
 #'a generic function. Defaults to \code{"plot"} and should usually not be changed.
 #'#'@details
 #'Only objects that belong to classes with a plot method are plotted.
 #'The plot parameters may be given as lists with the same name as the objects list.
 #' Parameters in named lists are assigned to the object with same name in
 #'list \code{objects}. Plot parameters not given in a list apply to all objects.
-#'Plot parameters may also be grouped as \code{\link{style}} lists, since \code{lplot}
+#'Plot parameters may also be grouped as \code{\link{simplist}}s, since \code{lplot}
 #'internally calles \code{\link{splot}}.
 #'
 #'Any \code{add}-parameters only affect the first plotted object. Whether or not
@@ -100,7 +100,7 @@ retagList <- function (arglist, tagnames)
 #'
 #'# using plot styles
 #'curves <- list(b = cos, a = sin)
-#'mystyles <- list(a = style(col = "red", lwd = 2), b = style(col = "green"))
+#'mystyles <- list(a = simplist(col = "red", lwd = 2), b = simplist(col = "green"))
 #'lplot(curves, mystyles, ylim = c(-1, 1), to = 2*pi)
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
 
@@ -121,7 +121,7 @@ lplot <- function (objects=NULL, ..., allinone = TRUE, .plotmethod = "plot")
     obnames <- paste("obj", 1:nobjects, sep=".")
     names(objects) <- obnames
   }
-  dotargs <- style(...)
+  dotargs <- simplist(...)
   if(is.null(names(dotargs))) names(dotargs) <- rep("", length(dotargs))
 
   addfirst <- any(dotargs$add)
@@ -138,20 +138,20 @@ lplot <- function (objects=NULL, ..., allinone = TRUE, .plotmethod = "plot")
       xrange <- range(sapply(ranges, function(x) x$x))
       yrange <- range(sapply(ranges, function(x) x$y))
       dotargs$ylim  <- yrange
-      if (is.null(dotargs$xlim)) 
+      if (is.null(dotargs$xlim))
         dotargs$xlim <- xrange
-      }      
+      }
   }
   orderedArgs <- retagList(dotargs, obnames)
-  
+
   # ppppatch
   # don't let plot.ppp print a rubbish name as title
-  
+
   if (("ppp" %in% class(objects[[1]])) && is.null(dotargs$main))
     orderedArgs[["..."]]$main <- ifelse(unnamed, "", obnames[1])
-    
+
   do.call(splot, c(list(objects[[1]]), orderedArgs[[obnames[1]]],
-                  orderedArgs[["..."]], add = addfirst, 
+                  orderedArgs[["..."]], add = addfirst,
                    .plotmethod = .plotmethod, recursive=F))
 
   if (nobjects > 1) for (i in 2 : nobjects)
