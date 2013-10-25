@@ -65,7 +65,7 @@
 }
 \seealso{
   related functions: \code{\link{reweighted}},
-  \code{\link{retransformed}}, \code{\link{ashomogeneous}}
+  \code{\link{retransformed}}, \code{\link{homogeneous}}
 
   \code{\link{sostyppp.object}} for details on the class.
 }

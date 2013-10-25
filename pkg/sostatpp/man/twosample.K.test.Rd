@@ -32,7 +32,7 @@
 \description{
   Perform a permutation test to compare K-functions
   estimated on two point pattern samples Returns an object
-  of class \code{Ktest} that also can be plotted, see the
+  of class \code{sostest} that also can be plotted, see the
   details.
 }
 \details{

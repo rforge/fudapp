@@ -1,20 +1,18 @@
-\docType{data}
-\name{getIntensity}
-\alias{.TYPENAMES}
+\name{sostatpp-internal}
 \alias{.settype}
-\alias{currenttypeno}
+\alias{currentType<-}
 \alias{edgecross.Ripley}
-\alias{furthertypeno}
 \alias{getIntensity}
+\alias{longTypeName}
 \alias{ls.r.args}
 \alias{lsclosepairs}
 \alias{lspairdist}
+\alias{mapstructxy}
 \alias{normalizedIntensity}
 \alias{peripolyxy}
 \alias{sostatpp-internal}
 \alias{subdivpolyxy}
-\title{internal functions of sostatpp package}
-\format{chr [1:6] "reweighted" "retransformed" "rescaled" "homogeneous" "scaled-homogeneous" ...}
+\title{Internal functions of sostatpp package}
 \usage{
   getIntensity(X, intensity = NULL, ...)
 
@@ -31,11 +29,9 @@
   lsclosepairs(X, rmax, invscale, lambda, ordered = TRUE,
     what = c("all", "indices"))
 
-  currenttypeno(x)
+  currentType(x) <- value
 
-  furthertypeno(x)
-
-  .TYPENAMES
+  longTypeName(type)
 
   .settype(type, typecode)
 
@@ -46,9 +42,8 @@
   subdivpolyxy(poly, newlen)
 }
 \description{
-  functions for use by the package's functions, partly
+  Functions for use by the package's functions, partly
   slightly documented in the source code
 }
-\keyword{datasets}
 \keyword{internal}
 

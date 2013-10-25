@@ -21,21 +21,22 @@
   data points \cr\code{n} \tab number of points
   \cr\code{window} \tab window of observation (an object of
   class \code{\link{owin}}) \cr\code{marks} \tab vector or
-  data frame of marks } Additionally, it contains the
-  elements \tabular{ll}{ \code{sostype} \tab integer,
-  encrypts the type of stationarity that is assumed in
-  analysis, see below \cr\code{tinfo} \tab a list
-  containing information relevant to the type of
-  stationarity, \cr\code{extra} \tab a container (list) of
-  additional information, intended for internal use.  This
-  container is copied in subsetting operations.\cr }
+  data frame of marks } Additionally, it has attributes
+  \tabular{ll}{ \code{sostype} \tab integer, encrypts the
+  type of stationarity that is assumed in analysis, see
+  below \cr\code{sostinfo} \tab a list containing
+  information relevant to for calculating second-order
+  statistics, such as the intensity function at the points
+  of the pattern, \cr\code{extra} \tab a container (list)
+  of additional information, intended for internal use.
+  This container is copied in subsetting operations.\cr }
 
   The type of second-order stationarity of an object
   \code{X} of class \code{sostyppp} is returned as
   \code{character} by the function
-  \code{\link{currenttype}}. Whether \code{X} has a given
+  \code{\link{currentType}}. Whether \code{X} has a given
   type of second-order stationarity, can be checked with
-  \code{\link{has.type}}.
+  \code{\link{hasType}}.
 
   Possible types of second-order stationarity (s.o.s.) are
   \tabular{ll}{ \code{"w"} \tab intensity reweighted s.o.s.
@@ -55,7 +56,7 @@
   homogeneous, to be evaluated with scale invariant
   statistics.  } An object of class \code{sostyppp} can
   carry type information for several types simultaneously.
-  Thus, function \code{\link{has.type}} may return
+  Thus, function \code{\link{hasType}} may return
   \code{TRUE} for different arguments.
 }
 \author{

@@ -31,12 +31,15 @@ is.sostyppp <- function(x) inherits(x, "sostyppp")
 
 "[.sostyppp" <- function(x, i) #, j, drop, ...)
   {
-    need.to.rescue.tmarks <- (!is.null(x$sostinfo$tmarks))
+    sostinfo <- attr(x, "sostinfo")
+    need.to.rescue.tmarks <- (!is.null(sostinfo$tmarks))
     # attach typemarks to marks
     if (need.to.rescue.tmarks)
     {
       marx <- marks(x)
-      tmarx <- as.matrix(x$sostinfo$tmarks)
+      tmarx <- as.matrix(sostinfo$tmarks)
+      tmarknames <- names(sostinfo$tmarks)
+
       if (is.null(marx)) {
         marx <- tmarx
         male <- 0
@@ -48,30 +51,29 @@ is.sostyppp <- function(x) inherits(x, "sostyppp")
       x$marks <- as.data.frame(marx)
       y <- NextMethod()
       y <- as.sostyppp(y, "none")
-      y$sostinfo <- x$sostinfo
       # now split up the marks again
       marx <- as.matrix(y$marks)
       if (male > 0) {
         # new side effects in spatstat make this a dangerous thing: y looses its type!
         # marks(y) <- marx[, (1:male)] # has to come first, function marks will destroy typemarks!
         y$marks <- marx[, (1:male)]
-        y$sostinfo$tmarks <- as.data.frame(marx[, -(1 : male)], row.names = NULL)
+        sostinfo$tmarks <- as.data.frame(marx[, -(1 : male)], row.names = NULL)
       }
       else {
         y$marks <- NULL
         y$markformat <- "none"
-        y$sostinfo$tmarks <- as.data.frame(marx, row.names = NULL)
+        sostinfo$tmarks <- as.data.frame(marx, row.names = NULL)
       }
-      names(y$sostinfo$tmarks) <- names(x$sostinfo$tmarks)
+      names(sostinfo$tmarks) <- tmarknames 
     }
     else
     {
       y <- NextMethod()
       y <- as.sostyppp(y, "none")
-      y$sostinfo <- x$sostinfo
     }
-    y$sostype <- x$sostype
-    y$extra <- x$extra
+    attr(y, "sostype") <- attr(x, "sostype")
+    attr(y, "sostinfo") <- sostinfo
+    attr(y, "extra") <- attr(x, "extra")
     return(y)
   }
 
@@ -91,21 +93,21 @@ is.sostyppp <- function(x) inherits(x, "sostyppp")
       return(value)
 
     #check if both have same sos-type
-    stopifnot(has.type(x, currenttype(value)))
+    stopifnot(hasType(x, currentType(value)))
 
-    sostyp <- x$sostype
-    xtras <- x$extra
-    sosinfo <- x$sostinfo
-    tmarknames <- names(x$sostinfo$tmarks)
+    sostyp <- attr(x, "sostype")
+    xtras <- attr(x, "extra")
+    sostinfo <- attr(x, "sostinfo")
+    tmarknames <- names(sostinfo$tmarks)
 
     marx <- marks(x)
     marknames <- names(marx)
 
-    need.to.rescue.tmarks <- (!is.null(x$sostinfo$tmarks))
+    need.to.rescue.tmarks <- (!is.null(sostinfo$tmarks))
     if (need.to.rescue.tmarks)
     {
       #attach typemarks to marks in order to use spatstats replace mechanism
-      tmarx <- as.matrix(x$sostinfo$tmarks)
+      tmarx <- as.matrix(sostinfo$tmarks)
        if (is.null(marx)) {
           marx <- tmarx
           male <- 0
@@ -118,7 +120,7 @@ is.sostyppp <- function(x) inherits(x, "sostyppp")
       names(marx) <- NULL
       mary <- as.matrix(marks(value))
       maly <- dim(mary)[2]
-      tvmarx <- as.matrix(value$sostinfo$tmarks)
+      tvmarx <- as.matrix(attr(value, "sostinfo")$tmarks)
       if (maly>0) mary <- cbind(mary, tvmarx)  else mary <- tvmarx
       names(mary) <- NULL
 
@@ -128,28 +130,27 @@ is.sostyppp <- function(x) inherits(x, "sostyppp")
       marks(value) <- as.data.frame(mary, row.names = NULL)
       y <- NextMethod()
       y <- as.sostyppp(y, "none")
-      y$sostinfo <- sosinfo
-
+      
       marx <- as.matrix(y$marks)
       if (male > 0) {
         y$marks <- as.data.frame(marx[, (1:male)], row.names = NULL) # has to come first, function marks will destroy typemarks!
-        y$sostinfo$tmarks <- as.data.frame(marx[, -(1 : male)], row.names = NULL)
+        sostinfo$tmarks <- as.data.frame(marx[, -(1 : male)], row.names = NULL)
       }
       else {
         y$marks <- NULL
-        y$sostinfo$tmarks <- as.data.frame(marx, row.names = NULL)
+        sostinfo$tmarks <- as.data.frame(marx, row.names = NULL)
       }
+      names(sostinfo$tmarks) <- tmarknames
     }
     else
     {
       y <- NextMethod()
       y <- as.sostyppp(y)
-      y$sostinfo <- x$sostinfo
     }
     if(!is.null(y$marks)) names(y$marks) <- marknames
-    y$sostype <- sostyp
-    y$extra <- xtras
-    names(y$sostinfo$tmarks) <- tmarknames
+    attr(y, "sostinfo") <- sostinfo
+    attr(y, "sostype") <- sostyp
+    attr(y, "extra") <- xtras
     invisible(y)
 }
 
@@ -168,11 +169,13 @@ is.sostyppp <- function(x) inherits(x, "sostyppp")
 print.sostyppp <- function(x, ...)
 {
   print.ppp(x)
-  if(length (currenttypeno(x)) > 0)
-    cat("pattern is",.TYPENAMES[currenttypeno(x)],"second-order stationary","\n")
+  sost <- attr(x, "sostype")
+  if(length (sost) > 0)
+    cat("pattern is", longTypeName(sost[1]),"second-order stationary","\n")
   else cat("pattern is second-order stationary of unassigned type","\n")
-  further <- furthertypeno(x)
-  if (length(further>0)) cat("additional types:",.TYPENAMES[further],"\n")
+  further <- sost[-1]
+  if (length(further > 0)) 
+    cat("additional types:",sapply(further, longTypeName),"\n")
 }
 
 #' Manipulate s.o.s. type information
@@ -189,11 +192,12 @@ print.sostyppp <- function(x, ...)
 # @keywords internal
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
 
-has.type <- function (x, type = .TYPES)
+hasType <- function (x, type = .TYPES)
 {
   knowntype <-  any(!is.na(match(type, .TYPES)))
   if (!knowntype) stop ("unknown type of hidden 2nd-order stationarity")
-  return(type %in% .gettype(x$sostype)$all)
+  #return(type %in% .gettype(attr(x, "sostype"))$all)
+  return(type %in% (attr(x, "sostype")))
 }
 
 
@@ -204,64 +208,53 @@ has.type <- function (x, type = .TYPES)
 # @keywords internal
 #' @export
 # @alias sos-type functions
-#' @rdname has.type
+#' @rdname hasType
 
-currenttype <- function (x)
+currentType <- function (x)
 {
-  return(.gettype(x$sostype)$last)
+  #return(.gettype(attr(x, "sostype"))$last)
+  return(attr(x, "sostype")[1])
 }
 
-# @return integer, index number of second-order stationarity type
-# @rdname sostyppp-types
-#' @rdname sostatpp-internal
-#' @keywords internal
-# @export
+#@param value type character
+#@usage currentType(x) <- value
+#'@export
+#'@rdname sostatpp-internal
+#'@usage currentType(x) <- value
+#'@keywords internal
 
-currenttypeno <- function (x)
+"currentType<-" <- function(x, value)
 {
-  return(.gettype(x$sostype)$lastno)
-}
+  knowntype <-  any(!is.na(match(value, .TYPES)))
+  if (!knowntype) stop ("unknown type of hidden 2nd-order stationarity")
+  types <- attr(x, "sostype")
+  if("none" %in% types) types <- types[-match("none", types)]
+  if(value %in% types) types <- types[-match(value, types)]
+  attr(x, "sostype") <- c(value, types)
+  x
+}  
 
-
-# @param x point pattern, of class sostyppp
-# @return vector of type numbers, all but the current type
-# if several types are present, the last one is picked
-# @rdname sostyppp-types
-#' @rdname sostatpp-internal
-#' @keywords internal
-# @export
-
-furthertypeno <- function (x)
-{
-  return(.gettype(x$sostype)$furtherno)
-}
-
-
-# hand made bit operations, certainly much too awkward...
 # @param typecode integer. encrypted information on last type, and all types
 # @return a list (\code{last}, \code{all}) of character vectors giving the type
 # if several types are present, the last one is picked
-#' @rdname sostatpp-internal
-#' @keywords internal
-# \code{"ppp"}
+# @rdname sostatpp-internal
+# @keywords internal
 
 .TYPENAMES  <- c("reweighted", "retransformed", "rescaled", "homogeneous", 
   "scaled-homogeneous", "not specified")
 .TYPES  <- c("w", "t", "s", "h", "hs", "none")
-.TYBITS <- c(1, 2, 4, 8, 16, 32)
-.TYLAST <- 64
 
-.gettype <- function (typecode)
-{
-  last <- typecode %/% .TYLAST
-  lindex <- (last %/% .TYBITS) %% 2 == 1
-  all <- typecode %% .TYLAST
-  contained <- (all %/% .TYBITS) %% 2 == 1
-  return(list(last = .TYPES[lindex], all = .TYPES[contained],
-              lastno = which(lindex), furtherno = which(!lindex & contained) ))
+# return long name
+#
+#' @rdname sostatpp-internal
+#' @keywords internal
+
+longTypeName <- function(type){
+  typeno <- match(type, .TYPES)
+  if (!is.na(typeno)) .TYPENAMES[typeno] else ""
 }
 
-# @param typecode integer, encrypted information on last type, and all types so far
+# @param typecode character
 # @param type character, giving the type to be entered in encrypted info
 # @return integer, updated encrypted type information
 # if several types are present, the last one is picked
@@ -271,18 +264,27 @@ furthertypeno <- function (x)
 
 .settype <- function(type, typecode)
 {
-  tindex <- which(.TYPES == type)
-  stopifnot(length(tindex) == 1)
-  if (length(typecode) < 1) { # new typecode
-    return(.TYBITS[tindex] * (.TYLAST+1))
-  }
-  else {
-    all <- typecode %% .TYLAST
-    contained <- (all %/% .TYBITS) %% 2 == 1
-    if (!contained[tindex]) all <- all + .TYBITS[tindex]
-    return (.TYBITS[tindex] * .TYLAST + all)
-  }
-}
+  knowntype <-  any(!is.na(match(type, .TYPES)))
+  if (!knowntype) stop ("unknown type of hidden 2nd-order stationarity")
+  if("none" %in% typecode) typecode <- typecode[-match("none", typecode)]
+  if(type %in% typecode) typecode <- typecode[-match(type, typecode)]
+  c(type, typecode)
+}  
+
+# .settype_oldsystem <- function(type, typecode)
+# {
+#   tindex <- which(.TYPES == type)
+#   stopifnot(length(tindex) == 1)
+#   if (length(typecode) < 1) { # new typecode
+#     return(.TYBITS[tindex] * (.TYLAST+1))
+#   }
+#   else {
+#     all <- typecode %% .TYLAST
+#     contained <- (all %/% .TYBITS) %% 2 == 1
+#     if (!contained[tindex]) all <- all + .TYBITS[tindex]
+#     return (.TYBITS[tindex] * .TYLAST + all)
+#   }
+# }
 
 
 
@@ -309,19 +311,20 @@ furthertypeno <- function (x)
 #'    \cr\code{window} \tab window of observation (an object of class \code{\link{owin}})
 #'    \cr\code{marks} \tab vector or data frame of marks
 #'  }
-#'  Additionally, it contains the elements
+#'  Additionally, it has attributes
 #' \tabular{ll}{
 #'    \code{sostype} \tab integer, encrypts the type of stationarity that is
 #'    assumed in analysis, see below
-#'    \cr\code{tinfo} \tab a list containing information relevant to
-#'    the type of stationarity,
+#'    \cr\code{sostinfo} \tab a list containing information relevant to
+#'    for calculating second-order statistics, such as the intensity function at
+#'    the points of the pattern,
 #'    \cr\code{extra} \tab a container (list) of additional information, intended for internal use.
 #'    This container is copied in subsetting operations.\cr
 #'  }
 #'
 #'  The type of second-order stationarity of an object \code{X} of class \code{sostyppp}
-#'  is returned as \code{character} by the function \code{\link{currenttype}}. Whether \code{X} has a given type of
-#'  second-order stationarity, can be checked with \code{\link{has.type}}.
+#'  is returned as \code{character} by the function \code{\link{currentType}}. Whether \code{X} has a given type of
+#'  second-order stationarity, can be checked with \code{\link{hasType}}.
 #'
 #'  Possible types of second-order stationarity (s.o.s.) are
 #'  \tabular{ll}{
@@ -338,7 +341,7 @@ furthertypeno <- function (x)
 #'    \cr\code{"hs"} \tab homogeneous, to be evaluated with scale invariant statistics.
 #'    }
 #'  An object of class \code{sostyppp} can carry type information for several types simultaneously.
-#'  Thus, function \code{\link{has.type}} may return \code{TRUE} for different arguments.
+#'  Thus, function \code{\link{hasType}} may return \code{TRUE} for different arguments.
 #'
 #'@author Ute Hahn  \email{ute@@imf.au.dk}
 #'

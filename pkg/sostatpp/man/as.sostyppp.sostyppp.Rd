@@ -22,7 +22,7 @@
 \description{
   Wrapper function for \code{\link{reweighted}},
   \code{\link{retransformed}}, \code{\link{rescaled}} and
-  \code{\link{ashomogeneous}}, assigns type of second-order
+  \code{\link{homogeneous}}, assigns type of second-order
   stationarity.
 }
 \examples{

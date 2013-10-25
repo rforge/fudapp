@@ -1,11 +1,11 @@
-\name{has.type}
-\alias{currenttype}
-\alias{has.type}
+\name{hasType}
+\alias{currentType}
+\alias{hasType}
 \title{Manipulate s.o.s. type information}
 \usage{
-  has.type(x, type = .TYPES)
+  hasType(x, type = .TYPES)
 
-  currenttype(x)
+  currentType(x)
 }
 \arguments{
   \item{x}{point pattern, of class sostyppp}

@@ -13,7 +13,7 @@
   (\pkg{spatstat}-object \code{"\link[spatstat]{tess}"})}
 
   \item{styles}{optional a \emph{named} list of
-  \code{\link{style}} lists, see Details,}
+  \code{\link{simplist}}s, see Details,}
 
   \item{...}{further plot parameters}
 
@@ -33,7 +33,7 @@
   Background colour and coulour intensity of the quadrats
   are determined by the parameters \code{col.win} and
   \code{alpha.win}, see \code{\link{plot.sostyppp}}. These
-  plot parameters can be given as \code{\link{style}} lists
+  plot parameters can be given as \code{\link{simplist}}s
   or explicitely. Both styles and explicite parameters can
   be given as named lists, the names are then matched with
   the names of the quadrat sets. Quadrats that have not
@@ -42,7 +42,7 @@
 \examples{
 # quadrat plot for the beilschmiedia pattern
 beiquads <- twoquadsets(bei, nx = 8, ny = 4, minpoints = 30)
-beistyle <- list(hi = style(col.win = "red"), lo = style(col.win = "blue"))
+beistyle <- list(hi = simplist(col.win = "red"), lo = simplist(col.win = "blue"))
 
 quadratsplot(bei, beiquads, beistyle, alpha.win = 0.2, main = "Beilschmiedia: quadrats")
 

@@ -1,8 +1,8 @@
-\name{ashomogeneous}
-\alias{ashomogeneous}
+\name{homogeneous}
+\alias{homogeneous}
 \title{Mark point pattern as homogeneous}
 \usage{
-  ashomogeneous(X, type = "h", intensity = NULL)
+  homogeneous(X, type = "h", intensity = NULL)
 }
 \arguments{
   \item{X}{the original point pattern}

@@ -49,13 +49,15 @@ as.sostyppp.ppp <- function(x, type = "h", ...)
 {
   X <- x
   firstclass(X) <-  "sostyppp"
-  X$sostinfo <- list()
-  if (type == "none") { X$sostinfo$tmarks <- NULL;  X$sostype <- .settype("none", NULL) }
+  if (type == "none"){
+    attr(X, "sostinfo") <- list(tmarks = NULL)
+    attr(X, "sostype") <- .settype("none", NULL) 
+  }
   else { if (type == "w") X <- reweighted(X, ...)
     else { if (type == "t") X <- retransformed(X, ...)
       else { if (type == "s") X <- rescaled(X, ...)
-        else { if (type == "h") X <- ashomogeneous(X, "h")
-          else { if (type == "hs") X <- ashomogeneous(X, "hs")
+        else { if (type == "h") X <- homogeneous(X, "h")
+          else { if (type == "hs") X <- homogeneous(X, "hs")
             else { warning("unknown 2ndorder stationarity type") }}}}}}
   return(X)
 }
@@ -63,7 +65,7 @@ as.sostyppp.ppp <- function(x, type = "h", ...)
 #' Convert object of class sostyppp to class sostyppp
 #'
 #' Wrapper function for \code{\link{reweighted}}, \code{\link{retransformed}},
-#' \code{\link{rescaled}} and \code{\link{ashomogeneous}}, assigns type of
+#' \code{\link{rescaled}} and \code{\link{homogeneous}}, assigns type of
 #' second-order stationarity.
 #'
 #' @S3method as.sostyppp sostyppp
@@ -83,16 +85,26 @@ as.sostyppp.ppp <- function(x, type = "h", ...)
 
 as.sostyppp.sostyppp <- function(x, type = "h", ...)
 {
-  if (type == "none") { 
-    x$sostinfo$tmarks <- NULL  
-    x$sostype <- .settype("none", NULL) 
-  }
-  else if (type == "w") x <- reweighted(x, ...)
-    else { if (type == "t") x <- retransformed(x, ...)
-      else { if (type == "s") x <- rescaled(x, ...)
-        else { if (type == "h") x <- ashomogeneous(x, "h")
-          else { if (type == "hs") x <- ashomogeneous(x, "hs")
-            else { warning("unknown 2ndorder stationarity type") }}}}}
+  if (type == "none") {
+    attr(x, "sostinfo") <- list(tmarks = NULL)
+    attr(x, "sostype") <- .settype("none", NULL)
+  } else {
+    if (hasType(x, type) && (length(list(...))==0)) {
+      # mainly nothing to do, but forward type in list of types
+      currentType(x) <- type
+    } 
+    else {if (type == "w") x <- reweighted(x, ...)
+      else { if (type == "t") x <- retransformed(x, ...)
+        else { if (type == "s") x <- rescaled(x, ...)
+          else { if (type == "h") x <- homogeneous(x, "h")
+            else { if (type == "hs") x <- homogeneous(x, "hs")
+              else { warning("unknown 2ndorder stationarity type") }
+            }
+          }
+        }
+      }
+    }
+  }  
   return(x)
 }
 
@@ -130,7 +142,7 @@ as.sostyppp.sostyppp <- function(x, type = "h", ...)
 #'   constant intensity, which effectively means that it will be analysed as a homogeneous
 #'   point process with known intensity.
 #'
-#' @seealso related functions: \code{\link{rescaled}}, \code{\link{retransformed}}, \code{\link{ashomogeneous}}
+#' @seealso related functions: \code{\link{rescaled}}, \code{\link{retransformed}}, \code{\link{homogeneous}}
 #' @seealso \code{\link{sostyppp}} for details on the class.
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
 
@@ -138,17 +150,19 @@ reweighted <- function (X, intensity = NULL, ...)#, normpower = 0)
 {
   if(!is.sostyppp(X)) X <- as.sostyppp.ppp(X, "none")
   npts <- npoints(X)
-  marx <- X$sostinfo$tmarks
+  sostinfo <- attr(X, "sostinfo")
+  marx <- sostinfo$tmarks
   if (npts > 0){
     if (is.null(intensity) && !is.null(marx$invscale)) intensity <- marx$invscale^2
     la <- getIntensity(X, intensity, ...)#,  normpower = normpower)
     if (!is.null (marx$intens)) marx$intens <- la
     else marx <- as.data.frame(cbind(marx, intens = la))
     # now marx is really a data frame
-    X$sostinfo$tmarks <-  marx
+    sostinfo$tmarks <-  marx
   }
-  X$sostinfo$intensity <- intensity
-  X$sostype <- .settype("w", X$sostype)
+ # X$sostinfo$intensity <- intensity
+  attr(X, "sostype") <- .settype("w", attr(X, "sostype"))
+  attr(X, "sostinfo") <- sostinfo
   return(X)
 }
 
@@ -186,7 +200,7 @@ reweighted <- function (X, intensity = NULL, ...)#, normpower = 0)
 #'   If \code{invscale} is given as a single number, the point pattern gets marked with
 #'   constant scale factor, which effectively means that it will be analysed as a homogeneous
 #'   point process.
-#' @seealso related functions: \code{\link{reweighted}}, \code{\link{retransformed}}, \code{\link{ashomogeneous}}
+#' @seealso related functions: \code{\link{reweighted}}, \code{\link{retransformed}}, \code{\link{homogeneous}}
 #' @seealso \code{\link{sostyppp.object}} for details on the class.
 #' @export
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
@@ -202,7 +216,8 @@ rescaled <- function (X,  invscale = NULL, intensity = NULL, ...)
   if(!is.sostyppp(X)) X <- as.sostyppp.ppp(X, "none")
 
   npts <- npoints(X)
-  marx <- X$sostinfo$tmarks
+  sostinfo <- attr(X, "sostinfo")
+  marx <- sostinfo$tmarks
 
   if (npts > 0){
   if (is.null(invscale))  {
@@ -226,11 +241,12 @@ rescaled <- function (X,  invscale = NULL, intensity = NULL, ...)
       }
   if (!is.null (marx$invscale)) marx$invscale <- iscale
   else marx <- as.data.frame(cbind(marx, invscale = iscale))
-   X$sostinfo$tmarks <-  marx
+  sostinfo$tmarks <-  marx
   }
-  X$sostinfo$invscale <- invscale
-  X$sostinfo$intensity <- intensity
-  X$sostype <- .settype("s", X$sostype)
+#  X$sostinfo$invscale <- invscale
+#  X$sostinfo$intensity <- intensity
+  attr(X, "sostype") <- .settype("s", attr(X, "sostype"))
+  attr(X, "sostinfo") <- sostinfo
   return(X)
 }
 
@@ -258,7 +274,7 @@ rescaled <- function (X,  invscale = NULL, intensity = NULL, ...)
 #' @param ... optional extra parameters for \code{backtrafo}, if this is given as a \code{function}.
 #' @return A retransformed s.o.s. typed point pattern (object of class \code{"\link{sostyppp}"})
 #' with information about the backtransform.
-#' @seealso related functions: \code{\link{reweighted}}, \code{\link{rescaled}}, \code{\link{ashomogeneous}}
+#' @seealso related functions: \code{\link{reweighted}}, \code{\link{rescaled}}, \code{\link{homogeneous}}
 #' @seealso \code{\link{sostyppp.object}} for details on the class.
 #' @details
 #'   If \code{backtrafo = "gradx"} or \code{backtrafo = "grady"}, the backtransformation is obtained
@@ -286,9 +302,11 @@ rescaled <- function (X,  invscale = NULL, intensity = NULL, ...)
 
 retransformed <- function (X, backtrafo = identxy, intensity = NULL, trafo = NULL, ...)
 {
-  if(!is.sostyppp(X)) X <- as.sostyppp.ppp(X, "none")
+  if (!is.sostyppp(X)) 
+    X <- as.sostyppp.ppp(X, "none")
+  sostinfo <- attr(X, "sostinfo")
   npts <- npoints(X)
-  isGradTrafo <- (backtrafo %in% c("gradx", "grady"))
+  isGradTrafo <- is.character(backtrafo) && backtrafo %in% c("gradx", "grady")
   gradient <- ifelse(isGradTrafo, backtrafo, NULL)
   if (npts > 0){
     if (is.function(backtrafo)){
@@ -373,12 +391,11 @@ retransformed <- function (X, backtrafo = identxy, intensity = NULL, trafo = NUL
                       dQuote("gradx"),"or", dQuote("grady")))
   }
   }
-  X$sostinfo$backtransform <- backtrafo
-  X$sostinfo$transform <- trafo
-  # X$sostinfo$isGradTrafo <- isGradTrafo
-  X$sostinfo$gradient <- gradient
-  X$sostype <- .settype("t", X$sostype)
-  X$sostinfo$intensity <- intensity
+  sostinfo$backtransform <- backtrafo
+  sostinfo$transform <- trafo
+  sostinfo$gradient <- gradient
+  attr(X, "sostinfo") <- sostinfo
+  attr(X, "sostype") <- .settype("t", attr(X, "sostype"))
   return(X)
 }
 
@@ -398,11 +415,12 @@ retransformed <- function (X, backtrafo = identxy, intensity = NULL, trafo = NUL
 #' @export
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
 
-ashomogeneous <- function (X,  type="h", intensity = NULL)
+homogeneous <- function (X,  type="h", intensity = NULL)
 {
   if(!is.sostyppp(X)) X <- as.sostyppp.ppp(X, "none")
+  sostinfo <- attr(X, "sostinfo")
   npts <- npoints(X)
-  marx <- X$sostinfo$tmarks
+  marx <- sostinfo$tmarks
   if (npts > 0){
     if (is.null(intensity)) la <- npts / area.owin(X$window) else la <- intensity[1]
     if (!is.null(marx$intens)) marx$intens <- la
@@ -410,62 +428,110 @@ ashomogeneous <- function (X,  type="h", intensity = NULL)
     if (!is.null(marx$invscale)) marx$invscale <- sqrt(la)
     else marx <-  cbind(marx, invscale = sqrt(la))
     # make sure last type is set to given argument:
-    X$sostinfo$tmarks <-  marx
+    sostinfo$tmarks <-  marx
   }
-  X$sostinfo$intensity <- intensity
-    X$sostype  <- .settype(type, .settype("h", .settype("hs", NULL)))
+#  X$sostinfo$intensity <- intensity
+  attr(X, "sostype") <- .settype(type, .settype("h", .settype("hs", NULL)))
+  attr(X, "sostinfo") <- sostinfo
   return(X)
 }
 
+
+#' Obtain backtransformed point pattern or sample of point patterns
+#'
+#' Backtransform a
+#' pattern that is tagged as  retransformed second-order stationary, or a sample
+#' of such patterns.
+#'
+#' @param X a retransformed s.o.s. type tagged point pattern, object of class \code{{sostyppp}},
+#' or a \code{ppsample} of such point patterns.
+#' @return A homogeneous s.o.s. type tagged point pattern of class \code{sostyppp}, or a
+#' \code{ppsample} of such point patterns.
+#'  The type of the result is set to both  homogeneous and scaled-homogeneous,
+#'  and is typemarked with constant intensity and constant inverse scale factor.
+#'
+#'  The window of the resulting pattern is polygonal if the original was a rectangle or polygonal;
+#'  it is a binary mask if the original window was a binary mask.
+#' @details If \code{X} is a \code{ppsample}, the function \code{\link{backtransformed.sostyppp}}
+#' is applied to each of its elements. 
+#' @export
+#' @author Ute Hahn,  \email{ute@@imf.au.dk}
+#' @seealso \code{\link{backtransformed.sostyppp}}, \code{\link{backtransformed.ppsample}}
+#' @examples
+#' bronzetra <- retransformed(bronzefilter, "gradx")
+#' bronzetemplate <- backtransformed(bronzetra)
+#' plot(bronzetemplate, use.marks = FALSE)
+#' 
+#' bronzesample <- ppsubsample(bronzetra, quadrats(bronzetra, nx=6, ny = 3))
+#' plot(bronzesample, use.marks = FALSE)
+#' plot(backtransformed(bronzesample), use.marks = FALSE)
+
+backtransformed <- function(X) UseMethod("backtransformed", X)
 
 #' Obtain backtransformed point pattern
 #'
 #' Backtransform a pattern that is tagged as  retransformed second-order stationary.
 #'
 #' @param X a retransformed s.o.s. type tagged point pattern, object of class \code{{sostyppp}}.
-#' @return a homogeneous s.o.s. type tagged point pattern of class \code{{sostyppp}}
-#'  with points in \code{x0} and \code{y0}.
+#' @return A homogeneous s.o.s. type tagged point pattern of class \code{sostyppp}.
 #'  The type of the result is set to both  homogeneous and scaled-homogeneous,
 #'  and is typemarked with constant intensity and constant inverse scale factor.
 #'
 #'  The window of the resulting pattern is polygonal if the original was a rectangle or polygonal;
 #'  it is a binary mask if the original window was a binary mask.
-#' @details As retransformed s.o.s. typed point pattern, \code{X} has an element \code{tinfo},
-#' a list containing information about the transformation. If this list contains
+#' @details  As retransformed s.o.s. typed point pattern, \code{X} has an attribute \code{sostinfo},
+#' a list containing (among others) information about the transformation. If this list contains
 #' an element \code{backtransform}, this element is taken to be a function and used
 #' to backtransform the window. If the original transformation was a gradient transformation,
-#' the coordinates of the window are interpolated. Currently, no saftey precautions if
-#' \code{backtransform} returns rubbish.
+#' the coordinates of the window are interpolated. Currently, no saftey precautions are taken if
+#' \code{backtransformed} returns rubbish. 
 #'
-# If no element \code{invtrafo} is present in \code{X$extra}, the original window is retained, which also might result in rubbish.
-#' @export
+#' For patterns with windows that are binary masks (objects of class \code{spatstat::\link{im}}),
+#' also information on the inverse of \code{backtransformed} is required. This information
+#' is stored as element \code{invtransform} in attribute \code{sostinfo}.
+#' @S3method backtransformed sostyppp
+#' @method backtransformed sostyppp
+#' @export backtransformed.sostyppp
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
 #' @examples
 #' bronzetra <- retransformed(bronzefilter, "gradx")
 #' bronzetemplate <- backtransformed(bronzetra)
 #' plot(bronzetemplate, use.marks = FALSE)
-backtransformed <- function(X)
+#' @seealso The details of \code{\link{retransformed}} on the necessity to give both the transformation
+#' and its inverse when the window is of class \code{spatstat::\link{im}}, and
+#' \code{\link{backtransformed.ppsample}} for backtransformation of samples of point patterns.
+#' 
+
+backtransformed.sostyppp <- function(X)
 {
   stopifnot(is.sostyppp(X))
-  stopifnot(has.type(X, type= "t"))
-  if (is.null(X$sostinfo$backtransform)) stop ("no backtransform given")
-  preserveRectangle <- is.rectangle(X$window) & !is.null(X$sostinfo$gradient)
-  if (is.function(X$sostinfo$transform))
+  stopifnot(hasType(X, type= "t"))
+  sostinfo <- attr(X, "sostinfo")
+  if (is.null(sostinfo$backtransform)) stop ("no backtransform given")
+  preserveRectangle <- is.rectangle(X$window) & !is.null(sostinfo$gradient)
+  if (is.function(sostinfo$transform))
     Y <- coordTransform(as.ppp(X),
-                        trafoxy = X$sostinfo$backtransform,
-                        invtrafoxy = X$sostinfo$transform,
+                        trafoxy = sostinfo$backtransform,
+                        invtrafoxy = sostinfo$transform,
                         subdivideBorder = !preserveRectangle)
   else Y <- coordTransform(as.ppp(X),
-                           trafoxy = X$sostinfo$backtransform,
+                           trafoxy = sostinfo$backtransform,
                            subdivideBorder = !preserveRectangle)
-  return(ashomogeneous(Y))
+  return(homogeneous(Y))
 }
-
-
+#'@title Internal functions of sostatpp package
+#' @description
+#' Functions for use by the package's functions, partly slightly
+#' documented in the source code
+#' @name sostatpp-internal
+#' @rdname sostatpp-internal
+NA
 
 # @param X point pattern, of class ppp
 # @param intensity optional intensity, number, vector, function or image
 # @param ... extra parameters for estimation of intensity
+# @name sostatpp-internal
+# @aliases getIntensity
 #' @rdname sostatpp-internal
 #' @export
 #' @keywords internal
@@ -514,13 +580,14 @@ normalizedIntensity <- function(X, intensity = NULL, normpower = 2)
   npts <- npoints(X)
   if(is.null(intensity)) {
     if(!is.sostyppp(X)) stop("no intensity given")
+    sostinfo <- attr(X, "sostinfo")
     # first priority: current type
-    if (currenttype(X) %in% c("w","s")) {
-        if (currenttype(X) == "w") intensity <- X$sostinfo$tmarks$intens
-        else intensity <- X$sostinfo$tmarks$invscale^2
+    if (currentType(X) %in% c("w","s")) {
+        if (currentType(X) == "w") intensity <- sostinfo$tmarks$intens
+        else intensity <- sostinfo$tmarks$invscale^2
       }
-    else if (has.type(X, "w")) intensity <- X$sostinfo$tmarks$intens
-    else if (has.type(X, "s")) intensity <- X$sostinfo$tmarks$invscale^2
+    else if (hasType(X, "w")) intensity <- sostinfo$tmarks$intens
+    else if (hasType(X, "s")) intensity <- sostinfo$tmarks$invscale^2
     else stop("error: no intensity information in point pattern")
   }
   else {

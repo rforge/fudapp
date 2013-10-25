@@ -57,7 +57,7 @@
 }
 \seealso{
   related functions: \code{\link{rescaled}},
-  \code{\link{retransformed}}, \code{\link{ashomogeneous}}
+  \code{\link{retransformed}}, \code{\link{homogeneous}}
 
   \code{\link{sostyppp}} for details on the class.
 }

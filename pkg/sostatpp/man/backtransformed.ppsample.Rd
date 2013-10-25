@@ -2,7 +2,7 @@
 \alias{backtransformed.ppsample}
 \title{Backtransformed a list of point pattern}
 \usage{
-  backtransformed.ppsample(X)
+  \method{backtransformed}{ppsample} (X)
 }
 \arguments{
   \item{X}{a sample of retransformed s.o.s. typed point
@@ -22,6 +22,9 @@
   for single point patterns.
 }
 \author{
-  Ute Hahn, \email{ute@imf.au.dk}
+  Ute Hahn, \email{ute@imf.au.dk} bronzesample <-
+  ppsubsample(bronzetra, quadrats(bronzetra, nx=6, ny = 3))
+  plot(bronzesample, use.marks = FALSE)
+  plot(backtransformed(bronzesample), use.marks = FALSE)
 }
 

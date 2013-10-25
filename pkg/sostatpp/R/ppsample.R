@@ -105,12 +105,15 @@ npoints.ppsample <- function(x) sapply(x, npoints)
 #' @return a \code{ppsample} object consisiting of homogeneous s.o.s. typed point patterns.
 #' @details The parent window is also retransformed. For more details, see the function
 #' \code{\link{backtransformed}} for single point patterns.
-#' @export
+#' @S3method backtransformed ppsample
+#' @method backtransformed ppsample
+#' @export backtransformed.ppsample
 #' @author Ute Hahn,  \email{ute@@imf.au.dk}
 # @examples
 # bronzetra <- retransformed(bronzefilter, "gradx")
-# bronzetemplate <- backtransformed(bronzetra)
-# plot(bronzetemplate, use.marks = FALSE)
+#'bronzesample <- ppsubsample(bronzetra, quadrats(bronzetra, nx=6, ny = 3))
+#'plot(bronzesample, use.marks = FALSE)
+#'plot(backtransformed(bronzesample), use.marks = FALSE)
 
 backtransformed.ppsample <- function(X)
 {
@@ -118,13 +121,15 @@ backtransformed.ppsample <- function(X)
   if (length(X) == 0) stop ("does not contain anything")
   X1 <- X[[1]]
   stopifnot(is.sostyppp(X1))
-  stopifnot(has.type(X1, type= "t"))
+  stopifnot(hasType(X1, type= "t"))
   W <- attr(X, "parentwindow")
-  if (!is.null(W))
+  if (!is.null(W)){
+      sostinfo <- attr(X1, "sostinfo")
       W <- coordTransform(W,
-                          trafoxy = X1$sostinfo$backtransform,
-                          invtrafoxy = X1$sostinfo$transform,
-                          subdivideBorder = !is.rectangle(W) | is.null(X1$sostinfo$gradient))
+                          trafoxy = sostinfo$backtransform,
+                          invtrafoxy = sostinfo$transform,
+                          subdivideBorder = !is.rectangle(W) | is.null(sostinfo$gradient))
+  }
   Y <- lapply(X, backtransformed)
   attr(Y, "parentwindow") <- W
   if(!("ppsample" %in% class(Y))) class(Y) <- c("ppsample", class(Y))
@@ -135,7 +140,7 @@ backtransformed.ppsample <- function(X)
 
 #' @title Extract subset of a point pattern sample
 #' @aliases [.ppsample
-#' @name Subset_ppsample
+#' @rdname Subset_ppsample
 #' @description Subsample a point pattern sample, retaining information about
 #' the original pattern's window.
 #'

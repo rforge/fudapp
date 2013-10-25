@@ -1,5 +1,4 @@
-\name{Subset_ppsample}
-\alias{Subset_ppsample}
+\name{[.ppsample}
 \alias{[.ppsample}
 \title{Extract subset of a point pattern sample}
 \usage{

@@ -118,6 +118,6 @@
   {fdnonpar} is used as test engine,
   \code{\link{twoquadsets}} is used for setting up quadrat
   samples. The quadrat subsamples or the $K$-function
-  estimates can be plotted, see \code{\link{plot.Ktest}}
+  estimates can be plotted, see \code{\link{plot.sostest}}
 }
 
