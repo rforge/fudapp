@@ -15,7 +15,7 @@
   \item{...}{further arguments for controlling the plot.}
 }
 \description{
-  Plots the individual functions coerced in an object of
+  Plots the individual functions contained in an object of
   class \code{\link{fdsample}}.
 }
 \details{

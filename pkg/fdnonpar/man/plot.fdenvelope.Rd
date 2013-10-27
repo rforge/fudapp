@@ -18,8 +18,8 @@
   Plots an object of class \code{fdenvelope}.
 }
 \details{
-  Plotting parameters can be given as list
-  \code{"ploptions"} or separately. If not given
+  Plotting parameters can be given as
+  \code{\link{simplist}} or separately. If not given
   explicitely, default values contained in the list
   \code{x$options} are used. The following elements in the
   list of options in the \code{envelope}-object are used:
@@ -32,12 +32,12 @@
 \examples{
 # load example data and calculate 90 \% envelope
 data(ExampleData)
-envy <- pwEnvelope(fuda, prob = .9, lightup = .9)
+envy <- pwEnvelope(fuda, prob = .9, lightup = .5)
 # using a predefined list of options
-blau <- simplist(col = "blue")
+blau <- simplist(col = "blue", alpha = .6)
 plot(envy, blau, main="mein blau", includy = -2)
 # add lines and mean
-plot(fuda, blau, lightup = 0.4, add = TRUE)
-plot(mean(fuda), blau, lightup = 0, lwd = 2, add = TRUE)
+plot(fuda, blau, add = TRUE)
+plot(mean(fuda), blau, alpha = 1, lwd = 2, add = TRUE)
 }
 

@@ -65,6 +65,10 @@
   reasons). If this causes memory or computing time issues,
   set \code{nperm} to a fixed value.
 }
+\examples{
+# test the difference of atlantic and continental Canadian temperature curves
+tL2.permtest(TempAtla, TempCont, nperm = 999)
+}
 \author{
   Ute Hahn, \email{ute@imf.au.dk}
 }

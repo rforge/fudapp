@@ -57,7 +57,7 @@ pwEnvelope <- function (x, prob = 1, ..., lightup = 0.5)
 #@param add if \code{FALSE} (default), a new plot is started, if \code{TRUE}, adds to existing plot
 #'@param ... further arguments
 #'@details
-#'Plotting parameters can be given as list \code{"ploptions"} or separately. If not
+#'Plotting parameters can be given as \code{\link{simplist}} or separately. If not
 #'given explicitely, default values contained in the list \code{x$options} are used.
 #'The following elements in the list of options in the \code{envelope}-object are used:
 #'\tabular{ll}{
@@ -73,13 +73,13 @@ pwEnvelope <- function (x, prob = 1, ..., lightup = 0.5)
 #'@examples
 #'# load example data and calculate 90 % envelope
 #'data(ExampleData)
-#'envy <- pwEnvelope(fuda, prob = .9, lightup = .9)
+#'envy <- pwEnvelope(fuda, prob = .9, lightup = .5)
 #'# using a predefined list of options
-#'blau <- simplist(col = "blue")
+#'blau <- simplist(col = "blue", alpha = .6)
 #'plot(envy, blau, main="mein blau", includy = -2)
 #'# add lines and mean
-#'plot(fuda, blau, lightup = 0.4, add = TRUE)
-#'plot(mean(fuda), blau, lightup = 0, lwd = 2, add = TRUE)
+#'plot(fuda, blau, add = TRUE)
+#'plot(mean(fuda), blau, alpha = 1, lwd = 2, add = TRUE)
 #'
 
 plot.fdenvelope <- function(x, ..., includy = NULL)
@@ -104,9 +104,11 @@ plot.fdenvelope <- function(x, ..., includy = NULL)
   allopt <- updateJoin(par("col"), allopt)
   alpha <- ifelse(!is.null(allopt$alpha), allopt$alpha, 1)
   lightup <- ifelse(!is.null(allopt$lightup), allopt$lightup, 0.5)
+  if (is.null(allopt$col)) allopt$col <- par("col")
   allopt$col <- alphacol(allopt$col, alpha * (1 - lightup))
 
   plopt <- matching(allopt, .graphparams)
   plopt$border <- NA
   do.call (polygon, c(list(c(x$args, rev(x$args)), c(x$fvals[ ,1], rev(x$fvals[ ,2]))), plopt))
 }
+
