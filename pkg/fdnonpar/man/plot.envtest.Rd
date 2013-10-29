@@ -2,7 +2,7 @@
 \alias{plot.envtest}
 \title{Plot the result of an envelope test}
 \usage{
-  plot.envtest(x, ..., col.obs = "red")
+  \method{plot}{envtest} (x, ..., col.obs = "red")
 }
 \arguments{
   \item{x}{test result to be plotted, an object of type

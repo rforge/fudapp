@@ -20,7 +20,7 @@
 }
 \section{Data classes, visualisation of data}{
   \tabular{ll}{ \code{\link{fdsample}} \tab basic data
-  type, a sample of curves \cr\code{envelope} \tab two
+  type, a sample of curves \cr\code{fdenvelope} \tab two
   boundary curves of an envelope, a specialized
   \code{fdsample} object \cr\code{\link{print.fdsample}}
   \tab print brief details of an fdsample
@@ -44,10 +44,12 @@
   \cr\code{\link{pwEnvelope}} \tab pointwise envelope }
 }
 
-\section{{Permutation tests}}{
+\section{{Tests}}{
   \tabular{ll}{ \code{\link{tL2.permtest}} \tab Comparison
   of two groups, \cr\tab using square integrated
-  Welch-t-statistic }
+  Welch-t-statistic \cr\code{\link{rankEnv.test}} \tab Rank
+  envelope test: compare a single observation to a group
+  (e.g. simulated data) }
 }
 \examples{
 # simulated data sets, consisting of 8 and 9
@@ -61,6 +63,8 @@ xy2 <- fdsample(x, y2)
 xy1b <- fdsample(x, y1b)
 
 # visualize the data sets
+# require plutils which contains the generic to "summaryplot"
+require(plutils)
 
 summaryplot(xy1, envprob=1)
 summaryplot(xy1b, add = TRUE, col = "blue")

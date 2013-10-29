@@ -15,6 +15,8 @@
   weather stations with continental climate. }
 }
 \examples{
+# require plutils which contains the generic to "summaryplot"
+require(plutils)
 data(CanadianTemperatures)
 
 # plot summary of the data together with 80\% pointwise envelopes

@@ -21,6 +21,8 @@
   the point pattern.
 }
 \examples{
+# require plutils which contains the generic to "summaryplot"
+require(plutils)
 data(DeltaKBronze)
 
 # plot summary for rescaled DeltaK_dir

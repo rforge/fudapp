@@ -32,12 +32,16 @@
   in an object of class \code{\link{fdsample}}.
 }
 \details{
+  This function is a method to the generic
+  \code{summaryplot} from package \code{plutils}, therefore
+  it is necessary to \code{require(plutils)}.
+
   Plotting parameters for the individual functions can be
-  given as list \code{"ploptions"} or separately. If not
-  given explicitely, default values contained in the list
-  \code{x$options} are used. If these are set to
-  \code{NULL}, the global graphic parameters as reported by
-  \code{\link{par}} are assumed.
+  given as a \code{simplist} (from the \code{plutils}
+  package) or separately. If not given explicitely, default
+  values contained in the list \code{x$options} are used.
+  If these are set to \code{NULL}, the global graphic
+  parameters as reported by \code{\link{par}} are assumed.
 
   \emph{Individual functions} are plotted using the
   parameters \tabular{ll}{ \code{col} \tab character or
@@ -74,7 +78,8 @@
   an envelope, let \code{envprob = NULL}.
 }
 \examples{
-# load data, containing an example set "fuda"
+require(plutils)
+ # load data, containing an example set "fuda"
 data(ExampleData)
 
 # plot mean and median in a minimax envelope
