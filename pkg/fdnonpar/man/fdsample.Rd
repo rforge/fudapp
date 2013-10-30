@@ -16,10 +16,11 @@
   \code{\link{plot.fdsample}}}
 }
 \value{
-  a list with elements \tabular{ll}{ \code{args} \tab{the
-  function arguments} \cr\code{fvals} \tab{the function
-  value samples} \cr\code{dimarg} \tab{integer, dimension
-  of \code{x}} \cr\code{groupsize} \tab{integer, number of
+  An object of class \code{fdsample}, that is a list with
+  elements \tabular{ll}{ \code{args} \tab{the function
+  arguments} \cr\code{fvals} \tab{the function value
+  samples} \cr\code{dimarg} \tab{integer, dimension of
+  \code{x}} \cr\code{groupsize} \tab{integer, number of
   functions y included in the list} \cr\code{options} \tab
   list of plot options, see \code{\link{plot.fdsample}} }
 }
@@ -30,7 +31,7 @@
   Predefining plot options may be particularly useful for
   plot annotation, i.e. \code{xlab}, \code{ylab} and
   \code{main}. They may be also given as a
-  \pkg{plottools}-\code{\link{simplist}}. Options with same
+  \pkg{plutils}-\code{\link{simplist}}. Options with same
   name are overriden from left to right, i.e., the last one
   given counts.
 }
