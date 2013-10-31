@@ -15,8 +15,8 @@
   string with value \code{"gradx"} or \code{"grady"}.  }}
 
   \item{intensity}{optional, intensity. Only used if
-  \code{backtrafo="gradx")} or \code{backtrafo="grady")}.
-  can be given as \itemize{ \item a single number, \item a
+  \code{backtrafo="gradx"} or \code{backtrafo="grady"}. Can
+  be given as \itemize{ \item a single number, \item a
   vector of intensity values at the points of \code{X},
   \item a \code{function(x,y)} that returns the intensity
   and is valid at each point of \code{X} \item a pixel

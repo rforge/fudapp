@@ -101,14 +101,14 @@
   estimates the \eqn{\Delta K_{dir}}-function } }
   \subsection{Tests}{ \tabular{ll}{ \code{\link{sos.test}}
   \tab test type of s.o.s or local anisotropy, using
-  \eqn{K}-function on subsamples
+  estimates \cr\tab or the \eqn{K}-function on subsamples
   \cr\code{\link{twosample.K.test}} \tab comparison of the
-  \eqn{K}-function on two samples of point patterns. } }
+  \eqn{K}-function estimated on two point patterns. } }
 }
 
-\section{Demos
-The data analysis section in H&J(2013) is covered by the following demos}{
-  \tabular{l}{ \code{demo(bronzefilter)}
+\section{Demos}{
+  Data analysis section in H&J(2013) is covered by the
+  following demos \tabular{l}{ \code{demo(bronzefilter) }
   \cr\code{demo(beilschmiedia)} \cr\code{demo(scholtzia)} }
 }
 \author{

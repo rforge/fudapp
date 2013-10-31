@@ -21,10 +21,13 @@
   details, see the function \code{\link{backtransformed}}
   for single point patterns.
 }
+\examples{
+bronzetra <- retransformed(bronzefilter, "gradx")
+bronzesample <- ppsubsample(bronzetra, quadrats(bronzetra, nx=6, ny = 3))
+plot(bronzesample, use.marks = FALSE)
+plot(backtransformed(bronzesample), use.marks = FALSE)
+}
 \author{
-  Ute Hahn, \email{ute@imf.au.dk} bronzesample <-
-  ppsubsample(bronzetra, quadrats(bronzetra, nx=6, ny = 3))
-  plot(bronzesample, use.marks = FALSE)
-  plot(backtransformed(bronzesample), use.marks = FALSE)
+  Ute Hahn, \email{ute@imf.au.dk}
 }
 
