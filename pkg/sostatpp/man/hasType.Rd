@@ -11,7 +11,7 @@
   \item{x}{point pattern, of class sostyppp}
 
   \item{type}{character, type of second-order stationarity.
-  See \code{\link{sostyppp.object}} for details.}
+  See \code{\link{sostyppp}} for details.}
 }
 \description{
   Access the encrypted type information of second-order

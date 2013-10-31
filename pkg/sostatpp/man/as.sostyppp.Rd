@@ -26,6 +26,6 @@
   Ute Hahn, \email{ute@imf.au.dk}
 }
 \seealso{
-  \code{\link{sostyppp.object}} for details on the class.
+  \code{\link{sostyppp}} for details on the class.
 }
 
