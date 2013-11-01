@@ -2,12 +2,16 @@
 \alias{alphacol}
 \title{Generate color of a given brightness / opacity}
 \usage{
-  alphacol(col = par("col"), alpha = 1)
+  alphacol(col = par("col"), alpha = 1, alphamixing = NULL)
 }
 \arguments{
   \item{col}{a valid color specification}
 
   \item{alpha}{numeric, alpha level, between 0 and 1.}
+
+  \item{alphamix}{logical, if \code{TRUE}, return rgb-alpha
+  colour, see Details. Defaults to the value stored in the
+  package options.}
 }
 \value{
   a colour in RGB format. If alpha < 1, the colour is
@@ -33,10 +37,20 @@
   mix the input colour A with the background colour found
   by \code{par("bg")}. A colour with \code{alpha < 1} thus
   actually also prints opaque. If you want to change this
-  behaviour, let \code{.plottopt$alphamixing = TRUE}.
+  behaviour once, let \code{alphamix = TRUE}. To change it
+  globally, call \code{ploptions(alphamix = TRUE)}
+}
+\examples{
+alphacol("red", alpha = .5, alphamixing = FALSE)
+alphacol("red", alpha = .5, alphamixing = TRUE)
+ploptions(alphamix = FALSE)
+alphacol("red", alpha = .5)
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}
+}
+\seealso{
+  \code{\link{ploptions}} for setting package options.
 }
 \keyword{internal}
 

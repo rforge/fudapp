@@ -1,6 +1,6 @@
 \docType{package}
 \name{plutils-package}
-\alias{plottools}
+\alias{plutils}
 \alias{plutils-package}
 \title{Plotting with Style}
 \description{
@@ -20,7 +20,9 @@
   brightness of a colour \cr\code{\link{matching}} \tab
   match a list of parameters by name, \cr\tab useful for
   sorting out parameters that throw warnings \cr\tab when
-  used in plot methods.  }
+  used in plot methods.  \cr\code{\link{firstclass<-}} \tab
+  add a class to an object and forward this class \cr\tab
+  to the first place in the object's class list }
 }
 \author{
   Ute Hahn, \email{ute@imf.au.dk}
