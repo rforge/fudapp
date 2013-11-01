@@ -5,6 +5,7 @@
 
 #'@title Options for package plutils
 #'@description Get or set options for package plutils
+#'@param ... option names given as character string, or given as \code{name = value}
 #'@return For \code{ploptions()}, a list of set options for package \code{plutils};
 #'if invoked with names of options or set values, a list of all options contained
 #'in the arguments.

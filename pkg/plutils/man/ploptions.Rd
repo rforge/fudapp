@@ -4,6 +4,10 @@
 \usage{
   ploptions(...)
 }
+\arguments{
+  \item{...}{option names given as character string, or
+  given as \code{name = value}}
+}
 \value{
   For \code{ploptions()}, a list of set options for package
   \code{plutils}; if invoked with names of options or set

@@ -2,6 +2,9 @@ CHANGES IN plutils VERSION 0.3.0
 
     o now with package options, accessible via function "ploptions"
 
+    o simplification and user's own risk: splot does no longer check whether the 
+      objects to plot have a plot method
+
 CHANGES IN plutils VERSION 0.2.3
   
     o package has been renamed!

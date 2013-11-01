@@ -16,20 +16,19 @@
 
   \item{.plotmethod}{a generic function for plotting, or a
   character string naming a generic function. Defaults to
-  \code{"plot"} and should usually not be changed. #'}
+  \code{"plot"} and should usually not be changed.}
 }
 \description{
   Plot all objects given in a list, with parameters that
   can be given as a named list.
 }
 \details{
-  Only objects that belong to classes with a plot method
-  are plotted. The plot parameters may be given as lists
-  with the same name as the objects list. Parameters in
-  named lists are assigned to the object with same name in
-  list \code{objects}. Plot parameters not given in a list
-  apply to all objects. Plot parameters may also be grouped
-  as \code{\link{simplist}}s, since \code{lplot} internally
+  Plot parameters may be given as lists with the same name
+  as the objects list. Parameters in named lists are
+  assigned to the object with same name in list
+  \code{objects}. Plot parameters not given in a list apply
+  to all objects. Plot parameters may also be grouped as
+  \code{\link{simplist}}s, since \code{lplot} internally
   calles \code{\link{splot}}.
 
   Any \code{add}-parameters only affect the first plotted
