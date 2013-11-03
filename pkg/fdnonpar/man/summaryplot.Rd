@@ -1,9 +1,9 @@
-\name{summaryplot.fdsample}
-\alias{summaryplot.fdsample}
+\name{summaryplot}
+\alias{summaryplot}
 \title{Plot summary of an fdsample object}
 \usage{
-  \method{summaryplot}{fdsample} (x, ..., sumfun = "mean",
-    fopt = list(), envprob = NULL, includy = NULL, add = F)
+  summaryplot(x, ..., sumfun = "mean", fopt = list(),
+    envprob = NULL, includy = NULL, add = F)
 }
 \arguments{
   \item{x}{the fdsample to be plotted}
@@ -51,20 +51,21 @@
   value, controls colour opacity / brightness, defaults to
   1. } For the \emph{summary function}, the parameters are
   \tabular{ll}{\code{col.sum} \tab character or numeric,
-  color, defaulting to \code{col} \cr\code{lwd.sum} \tab
-  numeric, line width, defaulting to \code{2 * lwd},
-  \cr\tab thus the summary function always plots stronger
-  than the individual curves, \cr\code{lty.sum} \tab
-  character or numeric, line type, defaults to
-  \code{lty}.\cr } Plotting of \emph{envelopes} is
-  controlled by the parameters \tabular{ll}{ \code{col.env}
-  \tab character or numeric, color, defaults to \code{col}
-  \cr\code{alpha.env} \tab numeric between 0 and 1, alpha
-  value, defaults to Defaults to \code{0.5*alpha}, \cr\tab
-  thus the envelope will always plot lighter than
-  individual functions. \cr } The summary function given in
-  \code{x} is used, if not overridden by the parameter
-  \code{sumfun}. By default this is the mean.
+  color, defaulting to \code{col} \cr\code{alpha.sum} \tab
+  numeric between 0 and 1, alpha value, defaults to 1,
+  \cr\code{lwd.sum} \tab numeric, line width, defaulting to
+  \code{2 * lwd}, \cr\tab thus the summary function always
+  plots stronger than the individual curves,
+  \cr\code{lty.sum} \tab character or numeric, line type,
+  defaults to \code{lty}.\cr } Plotting of \emph{envelopes}
+  is controlled by the parameters \tabular{ll}{
+  \code{col.env} \tab character or numeric, color, defaults
+  to \code{col} \cr\code{alpha.env} \tab numeric between 0
+  and 1, alpha value, defaults to Defaults to
+  \code{0.5*alpha}, \cr\tab thus the envelope will always
+  plot lighter than individual functions. \cr } The summary
+  function given in \code{x} is used, if not overridden by
+  the parameter \code{sumfun}. By default this is the mean.
 
   To suppress plotting of the summary function or the
   individual functions, set \code{sumfun = NULL} or

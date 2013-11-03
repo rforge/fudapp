@@ -1,9 +1,15 @@
 \name{funsample_list_methods}
+\alias{$.funsample}
+\alias{$<-.funsample}
 \alias{c.funsample}
 \alias{funsample_list_methods}
 \title{List like methods for class funsample}
 \usage{
   \method{c}{funsample} (..., recursive = FALSE)
+
+  \method{$}{funsample} (x, name)
+
+  \method{$}{funsample}(x, name) <- value
 }
 \arguments{
   \item{...}{for method \code{"c"}:\code{funsample} objects
@@ -12,6 +18,20 @@
 
   \item{recursive}{ignored, for compatibility with generic
   function \code{\link{c}}}
+
+  \item{x}{\code{funsample} object from which a function is
+  to be extracted or replaced}
+
+  \item{name}{character string or name (possibly backtick
+  quoted) of a function contained \code{x}.}
+
+  \item{value}{replacement value, needs to be a
+  \code{function}, or \code{NULL}.}
+}
+\value{
+  A \code{function}, or \code{NULL}.
+
+  For x$name <- value a \code{funsample}.
 }
 \description{
   Subsetting, concatenation and printing of
@@ -37,6 +57,10 @@
   If \code{...} contains objects that are neither
   \code{funsample}s nor \code{function}s, an ordinary
   \code{\link{list}} object is returned.
+
+  Assigning \code{NULL} to a function element of in a
+  funsample \code{x} is equivalent to removing that element
+  from the function sample.
 }
 \examples{
 myfuns <- funsample(list(sin = sin, cos = cos), arglim = c(0, 2*pi))
