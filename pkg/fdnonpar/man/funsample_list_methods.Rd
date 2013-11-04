@@ -31,7 +31,7 @@
 \value{
   A \code{function}, or \code{NULL}.
 
-  For x$name <- value a \code{funsample}.
+  For \code{x$name <- value} a \code{funsample} object.
 }
 \description{
   Subsetting, concatenation and printing of
@@ -65,8 +65,13 @@
 \examples{
 myfuns <- funsample(list(sin = sin, cos = cos), arglim = c(0, 2*pi))
 myfuns2 <- funsample(list(exp = exp, log = log), arglim = c(0, 2*pi))
-myfuns3 <- c(myfuns, tan = tan, myfuns2)
-myfuns3(c(0, pi/4, pi/2))
+myfuns <- c(myfuns, tan = tan, myfuns2, f = function(x) x^2)
+myfuns(c(0, pi/4, pi/2))
+myfuns$f(3)
+myfuns$f <- function(x) x - 1
+myfuns$g <- function(x) x^2 + 1
+myfuns$log <- NULL
+myfuns(c(0, pi/4, pi/2, 3))
 }
 \author{
   Ute Hahn \email{ute@imf.au.dk}
