@@ -29,7 +29,7 @@
   \code{function}, or \code{NULL}.}
 }
 \value{
-  A \code{function}, or \code{NULL}.
+  An \code{\link{urfunction}}, or \code{NULL}.
 
   For \code{x$name <- value} a \code{funsample} object.
 }

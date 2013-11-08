@@ -4,7 +4,7 @@
 \usage{
   rankEnv.test(obs, sim,
     alternative = c("two.sided", "less", "greater"),
-    conf.level = c(1, 0.95, 0.9, 0.8))
+    inclprob = c(1, 0.95, 0.9, 0.8), minn = 1)
 }
 \arguments{
   \item{obs}{object of class \code{fdsample}, the observed
@@ -18,9 +18,12 @@
   (default), \code{"less"} or \code{"greater"}. May be
   abbreviated.}
 
-  \item{conf.level}{a numerical vector of confidence levels
-  (inclusion probabilities) of the envelopes to be plotted,
-  for use in \code{\link{plot.envtest}}}
+  \item{inclprob}{a numerical vector of inclusion
+  probabilities of the envelopes to be plotted, for use in
+  \code{\link{plot.envtest}}}
+
+  \item{minn}{number of minimum ranks per curve to average
+  over when ranking, see details}
 }
 \description{
   Test if an observed curve matches a sample of simulated
@@ -31,22 +34,36 @@
 }
 \details{
   The observed curve, represented by the
-  \code{\link{fdsample}} object \code{obs} containing only
-  one curve, is compared to simulated curves collected in
-  the \code{fdsample} object '\code{sim}. The two sets of
-  curves have to share the same argument values.
+  \code{\link{fdsample}} object \code{obs} is compared to
+  simulated curves collected in the \code{fdsample} object
+  '\code{sim}. The two sets of curves have to share the
+  same argument values, and \code{obs} is supposed to
+  contain only one curve.
 
-  \code{alternative == "less"} means the alternative that
-  the observed curve has (some) smaller function values
-  than the simulated curves.
+  \code{alternative == "less"} is the one-sided alternative
+  meaning that the observed curve has (some) smaller
+  function values than the simulated curves, and
+  \code{alternative == "greater"} is the opposite one-sided
+  alternative.
 
-  The test is performed as described in Davison and Hinkley
-  (1997), Equation (4.17), and corresponds to the rank
-  envelope test by Myllymaki et. al (2013), who suggest
-  refinements of the test procedure.
+  For \code{minn == 1}, the test is performed as described
+  in Davison and Hinkley (1997), Equation (4.17), and
+  corresponds to the rank envelope test by Myllymaki et. al
+  (2013), who suggest further refinements of the test
+  procedure. The p-value is obtained by ranking the curves
+  according to the minimum pointwise rank obtained in any
+  point of the curve -- note that the curves are actually
+  represented as vectors.
+
+  If \code{minn > 1}, the mean of the \code{minn} smallest
+  pointwise ranks per curve is used instead, to rank the
+  curves among each other. This may increase the power of
+  the test, but the test is no longer usable as a graphical
+  test.
 
   The result of the test can be plotted, see
-  \code{\link{plot.envtest}}.
+  \code{\link{plot.envtest}}. If \code{minn} was set to a
+  value \code{> 1}, a warning is issued when plotting.
 }
 \examples{
 # make a sample of sinus curves

@@ -3,7 +3,7 @@
 \alias{is.funsample}
 \title{Class for a sample of functions}
 \usage{
-  funsample(funs, arglim = c(0, 1), ...)
+  funsample(funs, ..., arglim = c(0, 1))
 
   is.funsample(x)
 }

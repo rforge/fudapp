@@ -1,0 +1,37 @@
+\name{as.fdsample}
+\alias{as.fdsample}
+\title{Coerce to an fdsample}
+\usage{
+  as.fdsample(x, ..., argrange = attr(x, "arglim"),
+    nsteps = 200)
+}
+\arguments{
+  \item{x}{the \code{\link{funsample}} object to be
+  converted.}
+
+  \item{...}{parameters to be passed to the generator
+  \code{\link{fdsample}}.}
+
+  \item{argrange}{numeric vector of length 2, range of the
+  argument values.}
+
+  \item{nsteps}{the number of intervals the argument range
+  is divided into.}
+}
+\description{
+  Coerce a \code{\link{funsample}} object to a
+  \code{\link{fdsample}} object.
+}
+\details{
+  Convert a sample of functions into an \code{fdsample} by
+  approximation in the argument values. Argument values are
+  obtained by dividing the given interval \code{argrange}
+  into \code{nsteps} parts.
+}
+\examples{
+#rather artificial example: plot sin(x), cos(x), and their mean
+myfuns <- funsample(list(sin = sin, cos = cos), arglim = c(0, 2*pi))
+myfdsample <- as.fdsample(myfuns, xlab ="x", ylab = "sin(x) and cos(x)")
+summaryplot(myfdsample)
+}
+
