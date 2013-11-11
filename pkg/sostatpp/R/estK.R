@@ -314,7 +314,7 @@ estK <- function (X,
     
 #  attr(K, "sostype") <- sostype
 #  if (typename == "s") unitname (K) = NULL else unitname(K) <- unitname(X)
-  allK <- list(theo = Ktheo, trans = Ktrans, iso = Kiso, bord = Kbord)
+  allK <- list(theo = Ktheo, trans = Ktrans, iso = Kiso, border = Kbord)
   allK <- allK[!sapply(allK, is.null)]
   KK <- funsample(allK, 
     arglim = c(0, rmax),
@@ -351,15 +351,11 @@ estL <- function(...) {
   Kfuns <- attr(K, "funs")
   Lfuns <- vector("list", length(Kfuns))
   names (Lfuns) <- names(Kfuns)
-  if (sostype %in% c("w", "s", "t")) {
-    Ltheolab <- as.expression(substitute(L[0]^(name)*(r), list(name = typename)))
-  } else {
-    if (sostype == "h") {
-      Ltheolab <- "L(r)"
-    } else if (sostype == "hs") {
-      Ltheolab <- expression(L^symbol("*")*(r))
-    }
-  }
+  
+  opt <- attr(K, "options")
+  Ltheolab <- as.expression(do.call("substitute", 
+                            list(opt$ylab[[1]], list(K = "L"))))
+  opt$ylab <- Ltheolab
   for (i in seq_along(Kfuns)) {
     optio <- attr(Kfuns[[i]], "options")
     optio$ylab <- Ltheolab
@@ -382,8 +378,6 @@ estL <- function(...) {
     }
   }
   
-  opt <- attr(K, "options")
-  opt$ylab <- Ltheolab
   LL <- funsample(Lfuns,
     arglim = attr(K, "arglim"),
     opt) 
