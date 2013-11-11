@@ -1,58 +1,7 @@
-# the hidden K-function
-
-#' Template L-function of a hidden 2nd-order stationary process
-#'
-#' Estimates the template \eqn{L}-function of a point process by transforming
-#' the template \eqn{K}-function.
-#'
-#' @param ... Arguments for \code{\link{K.est}}.
-#' @details
-#' For a reweighted or retransformed second-order stationary Poisson point process,
-#' the theoretical value of the template \eqn{L}-function is \deqn{L_0(r)=r}{L_0(r)=r}.
-#'
-#' Under locally rescaled second-order stationarity,
-#' this holds only approximately for large arguments, if the intensity varies strongly.
-#' Furthermore, approximations when calculating
-#' locally scaled distances and simplifications in the estimation of
-#' the locally scaled \eqn{K}-function may add a bias to the estimates of the locally scaled
-#' \eqn{L}-function for inhomogeneous Poisson point processes.
-#' The bias depends upon how fast the intensity function varies. Usually, the approximation
-#' holds very well for reasonably small arguments.
-#' @export
-#' @seealso \code{\link{K.est}}
-
-L.est <- function(...) {
-  K <- K.est(...)
-  sostype <- attr(K, "sostype")
-  L <- eval.fv(sqrt(pmax.int(K, 0) / pi))
-  attr(L, "sostype") <-  sostype
-  if (sostype %in% c("w", "s", "t"))
-  {
-    Lhatname <- paste("widehat(L)[0]^(", sostype, ")", sep="")
-    Ltheolab <- substitute(L[0]^(name)*(r), list(name = sostype))
-  }
-  else if (sostype == "h") {
-    Lhatname <- "widehat(L)"
-    Ltheolab <- "L(r)"
-  }
-  else if (sostype == "hs") {
-    Lhatname <- "widehat(L)^symbol('*')"
-    Ltheolab <- expression(L^symbol('*')*(r))
-  }
-
-  # relabel the fv object
-  L <- rebadge.fv(L, Ltheolab, Lhatname, names(K), new.labl=attr(K, "labl"))
-  CSRlab <- if(sostype %in% c("s", "hs")) "paste(L^symbol('*')*(r),', ',scriptstyle(CSR))"
-             else  "paste(L*(r),', ',scriptstyle(CSR))"
-  L <- tweak.fv.entry(L, "theo", new.labl=CSRlab)
-
-  return(L)
-}
-
 #' Estimate the (template) K-function
 #'
 #' Estimates the \eqn{K}-function or template \eqn{K}-function of a point process.
-#' Modified (and frozen) version of \code{spatstat:\link[spatstat]{Kest}}.
+#'
 #'
 #' @param X a point pattern, object of class \code{"ppp"}.
 #' @param type optional character, the type of second-order stationarity assumed:
@@ -64,8 +13,7 @@ L.est <- function(...) {
 #'        \item \code{"hs"} homogeneous, but evaluated as scaled \eqn{K}-function
 #'   }
 #'   Only the first match is used.
-#' @param r optional: vector of argument values \eqn{r} at which \eqn{K(r)} should
-#'   be evaluated.
+#' @param rmax optional numeric value: maximal r at which K-function is evaluated.
 #' @param correction a character vector giving the edge correction type, may be
 #'   any subset of \code{"border"},  \code{"isotropic"}, \code{"translate"}, \code{"none"}.
 #' @param normpower an integer between 0 and 2. If \code{normpower} > 0, the
@@ -74,33 +22,32 @@ L.est <- function(...) {
 #' @param max.ls.r optional, upper limit for argument \eqn{r} if \code{type="s"}.
 #'
 #' @details
-#' If applied to homogeneous point patterns, \code{sostatpp}'s function \code{K.est}
-#' is a simplified version of \code{spatstat:\link[spatstat]{Kest}}.
-#' In particular, it does not provide any variance estimates, and does not choose
-#' the edge correction according to the number of points in the data set. See the excellent
-#' man page of \code{spatstat:\link[spatstat]{Kest}} for information on the \eqn{K}-function
-#' and edge correction.
+#' By contrast to \code{\link{K.est}}, which returns an object of class \code{fv}, 
+#' the function \code{estK} returns a \code{\link{funsample}}, which is a multivariate
+#' function.
 #'
-#' The present version of \code{K.est} also applies to inhomogeneous point processes
+#' \code{estK} takes both homogeneous and inhomogeneous point processes
 #' that are supposed to be hidden second-order stationary (H&J, 2013). It then estimates
 #' the so called \emph{template} \eqn{K}-function, the definition of which depends
 #' on the type of second-order stationarity.
 #' If \code{type} is not given, the last type of second-order stationarity assigned
-#' to \code{X} is used to determine how the template \eqn{K}-function is estimated.
+#' to the point pattern \code{X} is used to determine how the template \eqn{K}-function 
+#' is estimated.
 #' If \code{X} has no type of second-order stationarity, it is assumed to be homogeneous.
 #'
 #' If \code{type} is given, but does not match the type of \code{X}, the function
-#' \code{\link{as.sostyppp}} is called with arguments ... to ensure the correct
+#' \code{\link{as.sostyppp}} is called with arguments \ldots to ensure the correct
 #' hidden second-order information.
 #'
-#' If  \code{normpower} > 0, the intensity is renormalized, so that \code{\link{K.est}} yields similar results as
-#' \code{spatstat:\link[spatstat]{Kinhom}}. The intensity values \eqn{\lambda} are then multiplied by
+#' If  \code{normpower} > 0, the intensity is renormalized, so that \code{\link{estK}} 
+#' yields similar results as \code{spatstat:\link[spatstat]{Kinhom}}. 
+#' The intensity values \eqn{\lambda} are then multiplied by
 #' \deqn{c^{normpower/2}}{c^(normpower/2),} where
 #' \deqn{c = area(W)/sum_i(1/\lambda(x_i))}{c = area(W)/sum[i](1/lambda(x[i])).}
 #'
 #' The hidden \eqn{K}-function for \strong{reweighted} s.o. stationary point processes
 #' delivers the same result as  \code{spatstat:\link[spatstat]{Kinhom}}, up to a subtle
-#' difference for the border correction: \code{K.est} does not use fast optimized code.
+#' difference for the border correction, where \code{estK} does not use fast optimized code.
 #'
 #' If \code{X} is typed \strong{retransformed} s.o. stationary, the \eqn{K}-function of
 #' the \code{\link{backtransformed}} point pattern is returned, which corresponds to
@@ -111,7 +58,7 @@ L.est <- function(...) {
 #' The Euclidean distance between two points is multiplied by the
 #' average of the square roots of the intensity values at the two points.
 #' Similarly, all edge corrections are implemented
-#' as approximations. Here \code{K.est} is similar to \code{spatstat:\link[spatstat]{Kscaled}}
+#' as approximations. Here \code{estK} is similar to \code{spatstat:\link[spatstat]{Kscaled}}
 #'  The translational edge
 #' correction suffers from a small intrinsic bias in some cases of locally
 #' rescaled s.o.s., depending on intensity and window shape. It is
@@ -160,10 +107,10 @@ L.est <- function(...) {
 #' plot(K.est(retransformed(rescaled(bronzefilter), backtrafo="gradx")))
 
 
-K.est <- function (X,
+estK <- function (X,
                   type,
-                  r = NULL,
-                  correction = c("border", "isotropic", "Ripley", "translate"),
+                  rmax = NULL,
+                  correction = c("border", "isotropic", "translate"),
                   normpower = 0,
                   ...,
                   max.ls.r = 3.0)
@@ -223,62 +170,42 @@ K.est <- function (X,
 
 
   # get arguments r for K
-
+  if (is.null(rmax))
+  {
   if (scaling) {
-    # transition from scaled to real world
-    maxrescale <- max(marx$invscale)
-    if(!is.null(r)) {
-      suggested.absr <- r/maxrescale
-      r.max <- max(r)
-    }
-    else {
-      suggested.absr <-NULL
-      r.max <- max.ls.r
-    }
+    if(is.null(rmax)) rmax <- max.ls.r
     # calculate in the real world, without scaling
     rmaxdefault <- rmax.rule("K", W)
-    breaks <- NULL
-    breaks <- handle.r.b.args(suggested.absr, breaks, W, rmaxdefault=rmaxdefault)
-    # get back to scaled world
-    rmaxdefault <- rmaxdefault * maxrescale
-    breaks$val <- breaks$val * maxrescale
-    breaks$r <- breaks$r * maxrescale
-    r <- breaks$r
-    rmax <- max(r)
-    # recommended range of r values
-    alim <- c(0, min(rmax, rmaxdefault, max.ls.r))
+    # now transfer this to the scaled world
+    rmaxdefault <- rmaxdefault * max(marx$invscale)
   }
   else {
     if(sostype == "w") lamax <- max(marx$intens) else lamax <- npts / area
     rmaxdefault <- rmax.rule("K", W, lamax)
-    breaks <- handle.r.b.args(r, NULL, W, rmaxdefault = rmaxdefault)
-    r <- breaks$r
-    rmax <- breaks$max
-    # recommended range of r values
-    alim <- c(0, min(rmax, rmaxdefault))
+    if(is.null(rmax)) rmax <- rmaxdefault
   }
-
-
+  rmax <- rmaxdefault
+  }  
   correction.given <- !missing(correction) && !is.null(correction)
   if (is.null(correction))
-        correction <- c("border", "isotropic", "Ripley", "translate")
-  correction <- pickoption("correction", correction, c(none = "none",
-                                                       border = "border", bord.modif = "bord.modif", isotropic = "isotropic",
-                                                       Ripley = "isotropic", trans = "translate", translate = "translate",
-                                                       translation = "translate"), multi = TRUE)
+        correction <- c("border", "isotropic", "translate")
+  correction <- match.arg(correction, c("border", "isotropic", "translate"),
+                  several.ok = TRUE)
   correction <- implemented.for.K(correction, W$type, correction.given)
 
 
   # name of the function and its estimates
-  typename = sostype
-  if (sostype == "hs") typename ="s"
-  # if (sostype == "h") typename ="w"
+  typename <- sostype
+  if (sostype == "hs") typename <- "s"
+  # if (sostype == "h") typename <- "w"
 
   if (sostype %in% c("w", "s", "t"))
   {
     Kname <- paste("K[0]^{(", typename, ")}", sep="")
     Khatname <- paste("widehat(K)[0]^(", typename, ")", sep="")
-    Ktheolab <- substitute(K[0]^(name)*(r), list(name = typename))
+    Ktheolab <- as.expression(substitute(K[0]^(name)*(r), list(name = typename)))
+ # <<<< CHANGED HERE FOR PAPER >>>>
+#    Ktheolab <- substitute(widehat(K)[0]^(name)*(r), list(name = typename))
   }
   else if (sostype == "h") {
     Kname <- "K"
@@ -287,27 +214,25 @@ K.est <- function (X,
   }
   else if (sostype == "hs") {
     Kname <- "K^*"
-    Khatname <- "widehat(K)^symbol('*')"
+    Khatrname <- quote(widehat(K)^symbol('*')*(r))
     Ktheolab <- expression(K^symbol("*")*(r))
   }
-  Krname <- paste(Kname, "*(r)", sep="")
-
-  # start data frame with CSR
-  K <- data.frame(r=r, theo= pi * r^2)
+ # Krname <- paste(Kname, "*(r)", sep="")
+#  Khatrname <- paste(Khatname, "*(r)", sep="")
+  legende <- function(AA = Khatrname, BB = "iso")
+     as.expression(do.call("substitute", list(expression(AA*', '*scriptstyle(BB))[[1]], 
+         list(AA=AA, BB = BB))))
+  
+# start funsample with CSR
   desc <- c("distance argument r", "theoretical Poisson %s")
-  K <- fv(K, "r", Ktheolab,
-            "theo", , alim, c("r",Krname), desc, fname=Kname)
   CSRlab <- if(typename == "s") "paste(K^symbol('*')*(r),', ',scriptstyle(CSR))"
             else  "paste(K*(r),', ',scriptstyle(CSR))"
-  K <- tweak.fv.entry(K, "theo", new.labl=CSRlab)
-
-
- # K <- tweak.fv.entry(K, "theo", new.labl="paste(Krname,', ',scriptstyle(CSR))")
-
-
+  Ktheo <- urfunction(function(r) r^2 * pi, from = 0, to = rmax,
+            xlab = "r", ylab = Ktheolab, legendtxt = CSRlab, main = "")
+  KK <- list(theo = Ktheo)
+  
   # identify all close pairs
-  rmax <- max(r)
-
+ 
   if(scaling) close <- lsclosepairs(X, rmax, invscale = marx$invscale)
   else close <- lsclosepairs(X, rmax)
 
@@ -318,116 +243,151 @@ K.est <- function (X,
   J <- close$j
   XI <- X[I]
   XJ <- X[J]
-
-# intensityweights. No worries, mate, intensities are one if we deal with scaled processes.
+  
+  rvals <- c(0, unique(sort(dIJ)))
+  rsteps <- (length(rvals) > 1000) 
+  if (rsteps) 
+    rvals <- seq(0, rmax, length.out=501) 
+    
+# intensityweights. Intensities are equal to one if we deal with scaled processes.
 # we use them here in the homogeneous / scaled case, too, and implement implicitely that
 # infamous Poisson lambda^2 estimator n*(n-1)/area^2
 
   if (weighted) wIJ <- 1 / (marx$intens[J] * marx$intens[I])
   else wIJ <- 1 / marx$intens[J] * area / (npts - 1)
 
-
-  if (any(correction == "none")) {
-    wh <- whist(dIJ, breaks$val, wIJ)
-    Kun <- cumsum(wh) / area
-    K <- bind.fv(K, data.frame(un = Kun), "%s[un](r)",
-                    "uncorrected estimate of %s", "un")
+  Kmaker <- function(wh, rvals, cname = "") {
+     Kst <- c(0,cumsum(wh) / area)
+    if (rsteps) 
+      Kfu <- approxfun (rvals, Kst) 
+    else
+      Kfu <- stepfun(rvals, c(0,Kst)) 
+    Kfu <-  urfunction(Kfu, 
+      xlim = c(0, rmax),  xlab = "r", ylab = Ktheolab, 
+      legendtxt =  legende(BB = cname), do.points = FALSE,
+      main = "")
+    Kfu
   }
 
-  if (any(correction == "border" | correction == "bord.modif")) {
+  if (any(correction == "none")) {
+#  TODO: whist not really needed if rsteps is false
+    wh <- whist(dIJ, rvals, wIJ)
+    Kun <- Kmaker(wh, rvals, "none")
+  }  else {
+    Kun <- NULL
+  }
+
+  if (any(correction == "border")) {
     b <- bdist.points(X)
     if (scaling) b <- b * marx$invscale
-    bI <- b[I]
     newwIJ <- wIJ
     if(scaling) newwIJ <- newwIJ * npts / area
-    RS <- Kwtsum(dIJ, bI, newwIJ, b, w = 1/marx$intens, breaks)
-    if (any(correction == "border")) {
-      Kb <- RS$ratio
-      K <- bind.fv(K, data.frame(border=Kb),"%s*(r)", # "%s[bord](r)",
-                   "border-corrected estimate of %s",
-                   "border")
-      K <- rebadge.fv(K, Ktheolab, Khatname)
-      K <- tweak.fv.entry(K, "border", new.labl="paste(%s*(r),', ',scriptstyle(bord))")
-    }
-    if (any(correction == "bord.modif")) {
-      Kbm <- RS$numerator / eroded.areas(W, r)
-      K <- bind.fv(K, data.frame(bord.modif = Kbm),"%s*(r)", # "%s[bordm](r)",
-                   "modified border-corrected estimate of %s",
-                   "bord.modif")
-      K <- rebadge.fv(K, Ktheolab, Khatname)
-      K <- tweak.fv.entry(K, "bord.modif", new.labl="paste(%s*(r),', ',scriptstyle(bord.mod))")
-    }
+    # horvitz-thompson weighting according to distance of point I to the boundary
+    wtb <- npts / sapply(b, function(x) sum(b>=x))
+    weightfun <- approxfun(b, wtb)
+    HTweightsIJ <- weightfun(dIJ)*newwIJ
+    useIJ <- dIJ <= b[I]
+   
+    wh <- whist(dIJ[useIJ], rvals, HTweightsIJ[useIJ])
+    Kbord <- Kmaker(wh, rvals, "bord")
+  } else {
+    Kbord <- NULL
   }
 
   if (any(correction == "translate")) {
     edgewt <- edge.Trans(XI, XJ, paired = TRUE)
     totalwt <- edgewt * wIJ
-    wh <- whist(dIJ, breaks$val, totalwt)
-    Ktrans <- cumsum(wh) / area
-    K <- bind.fv(K, data.frame(trans=Ktrans), "%s[trans](r)",
-                 "translation-corrected estimate of %s",
-                 "trans")
-    K <- rebadge.fv(K, Ktheolab, Khatname)
-    K <- tweak.fv.entry(K, "trans", new.labl="paste(%s*(r),', ',scriptstyle(trans))")
-  }
+    wh <- whist(dIJ, rvals, totalwt)
+    Ktrans <-  Kmaker(wh, rvals, "trans")
+  } else {
+    Ktrans <- NULL
+  }  
 
   if (any(correction == "isotropic")) {
     edgewt <- edge.Ripley(XI, matrix(eudIJ, ncol = 1))
     totalwt <- edgewt * wIJ
-    wh <- whist(dIJ, breaks$val, totalwt)
-    Kiso <- cumsum(wh) / area
-    K <- bind.fv(K, data.frame(iso=Kiso), "%s[iso](r)",
-                 "Ripley isotropic correction estimate of %s",
-                 "iso")
-    K <- rebadge.fv(K, Ktheolab, Khatname)
-    K <- tweak.fv.entry(K, "iso", new.labl="paste(%s*(r),', ',scriptstyle(iso))")
-  }
-
-  formula(K) <- . ~ r
-  nama <- rev(colnames(K))
-  nama <- nama[nama != "r"] #!(nama %in% c("r", "rip", "ls"))]
-  fvnames(K, ".") <- nama
-  attr(K, "sostype") <- sostype
-  if (typename == "s") unitname (K) = NULL else unitname(K) <- unitname(X)
-  return(K)
+    wh <- whist(dIJ, rvals, totalwt)
+    Kiso <- Kmaker(wh, rvals, "iso")
+  } else {
+    Kiso <- NULL
+  } 
+    
+#  attr(K, "sostype") <- sostype
+#  if (typename == "s") unitname (K) = NULL else unitname(K) <- unitname(X)
+  allK <- list(theo = Ktheo, trans = Ktrans, iso = Kiso, bord = Kbord)
+  allK <- allK[!sapply(allK, is.null)]
+  KK <- funsample(allK, 
+    arglim = c(0, rmax),
+    xlab = "r", ylab = Ktheolab, main = "" ) # TODO: sensible main
+  attr(KK, "sostype") <- sostype
+  return(KK)
 }
 
-
-
-# get r-argument ----------------------------------------------------------
-
-# replacement for handle.r.b.args and rmax.rule for locally scaled point processes
-# @param r
-#' @rdname sostatpp-internal
-#' @keywords internal
+#' Template L-function of a hidden 2nd-order stationary process
 #'
+#' Estimates the template \eqn{L}-function of a point process by transforming
+#' the template \eqn{K}-function.
+#'
+#' @param ... Arguments for \code{\link{estK}}.
+#' @details
+#' For a reweighted or retransformed second-order stationary Poisson point process,
+#' the theoretical value of the template \eqn{L}-function is \deqn{L_0(r)=r}{L_0(r)=r}.
+#'
+#' Under locally rescaled second-order stationarity,
+#' this holds only approximately for large arguments, if the intensity varies strongly.
+#' Furthermore, approximations when calculating
+#' locally scaled distances and simplifications in the estimation of
+#' the locally scaled \eqn{K}-function may add a bias to the estimates of the locally scaled
+#' \eqn{L}-function for inhomogeneous Poisson point processes.
+#' The bias depends upon how fast the intensity function varies. Usually, the approximation
+#' holds very well for reasonably small arguments.
+#' @export
+#' @seealso \code{\link{estK}}
 
-ls.r.args <- function (r = NULL, eps = NULL, rmaxdefault = 4, minscale = NULL, maxscale)
-{
-  if (is.null(minscale)) minscale <- max
-  if (!is.null(r) && !is.null(breaks))
-    stop(paste("Do not specify both", sQuote("r"), "and",
-               sQuote("breaks")))
-  if (!is.null(breaks)) {
-    breaks <- as.breakpts(breaks)
-  }
-  else if (!is.null(r)) {
-    breaks <- breakpts.from.r(r)
-  }
-  else {
-    rmax <- if (missing(rmaxdefault))
-      diameter(as.rectangle(window))
-    else rmaxdefault
-    if (is.null(eps)) {
-      if (!is.null(window$xstep))
-        eps <- window$xstep/4
-      else eps <- rmax/512
+estL <- function(...) {
+  K <- estK(...)
+  sostype <- attr(K, "sostype")
+  # change here once there is a method for funsamples
+  Kfuns <- attr(K, "funs")
+  Lfuns <- vector("list", length(Kfuns))
+  names (Lfuns) <- names(Kfuns)
+  if (sostype %in% c("w", "s", "t")) {
+    Ltheolab <- as.expression(substitute(L[0]^(name)*(r), list(name = typename)))
+  } else {
+    if (sostype == "h") {
+      Ltheolab <- "L(r)"
+    } else if (sostype == "hs") {
+      Ltheolab <- expression(L^symbol("*")*(r))
     }
-    breaks <- make.even.breaks(rmax, bstep = eps)
   }
-
-  # r <- breaks$r
-  # rmax <- breaks$max
-
-  return(breaks)
+  for (i in seq_along(Kfuns)) {
+    optio <- attr(Kfuns[[i]], "options")
+    optio$ylab <- Ltheolab
+    if (is.stepfun(Kfuns[[i]])){
+      rr <- knots(Kfuns[[i]])
+      ll <- sqrt(Kfuns[[i]](rr)/pi)
+      Lfuns[[i]] <- urfunction(stepfun(rr, c(0,ll)), optio)
+    } else {
+      if (names(Lfuns)[i] == "theo")
+        Lfuns[[i]] <- urfunction(function(r) r, optio)
+      else {
+        # need to create a new object, since R might look up the wrong code.  
+        # do this somehow q&d- no success with simple as.call and stuff things
+        # TODO: make number of data points a package option
+        argl <- attr(K, "arglim")
+        rr <- seq(argl[1], argl[2], length.out = 501)
+        ll <- sqrt(Kfuns[[i]](rr)/pi)
+        Lfuns[[i]] <- urfunction(approxfun(rr, ll), optio)
+      }
+    }
+  }
+  
+  opt <- attr(K, "options")
+  opt$ylab <- Ltheolab
+  LL <- funsample(Lfuns,
+    arglim = attr(K, "arglim"),
+    opt) 
+  
+  attr(LL, "sostype") <- sostype
+  return(LL)
 }
