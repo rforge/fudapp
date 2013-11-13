@@ -11,6 +11,9 @@
   Say hello to everybody!
 }
 \examples{
+installed.packages()->IP
 helloworld("don't give up!")
+helloworld(IP["plutils","Version"])
+helloworld(IP["fdnonpar","Version"])
 }
 
