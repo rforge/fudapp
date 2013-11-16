@@ -1,9 +1,19 @@
 instpa <- installed.packages()[,1]
-if(!is.element("plyr", instpa)) install.packages("plyr")
-#unloadNamespace(ns="fdnonpar")
-if(!is.element("fdnonpar", instpa)) install.packages("fdnonpar", repos = "http://R-Forge.R-project.org")
+if(!is.element("plyr", instpa)) {
+  cat("\ngetting plyr...\n")
+install.packages("plyr", repos = "http://cran.r-mirror.de")
+}
 #unloadNamespace(ns="plutils")
-if(!is.element("plutils", instpa)) install.packages("plutils", repos = "http://R-Forge.R-project.org")
+if(!is.element("plutils", instpa)) {
+  cat("\ngetting plutils...\n")
+  install.packages("plutils", repos = "http://R-Forge.R-project.org")
+}
+
+#unloadNamespace(ns="fdnonpar")
+if(!is.element("fdnonpar", instpa)){
+  cat("\ngetting fdnonpar...\n")
+ install.packages("fdnonpar", repos = "http://R-Forge.R-project.org")
+ }
 
 
 #'@title Hello world
