@@ -1,7 +1,7 @@
 #unloadNamespace(ns="fdnonpar")
-#install.packages("fdnonpar", repos = "http://R-Forge.R-project.org")
+install.packages("fdnonpar", repos = "http://R-Forge.R-project.org")
 #unloadNamespace(ns="plutils")
-#install.packages("plutils", repos = "http://R-Forge.R-project.org")
+install.packages("plutils", repos = "http://R-Forge.R-project.org")
 
 
 #'@title Hello world
