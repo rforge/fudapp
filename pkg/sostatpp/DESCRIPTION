@@ -1,8 +1,8 @@
 Package: sostatpp
 Type: Package
 Title: This is only to ensure that the newest versions of plutils and fdnonpar are installed
-Version: 0.12.0-6
-Date: 2013-11-16
+Version: 0.12.0-7
+Date: 2013-11-17
 Author: ute
 Maintainer: Ute Hahn <ute@imf.au.dk>
 Description: This is a dummy, to reinstall plutils and fdnonpar
