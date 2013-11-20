@@ -34,6 +34,14 @@
   \code{"urfunction"} objects have an attribute
   \code{"options"} which is a \code{simplist} of options
   used for plotting, in particular axis labels and the
-  title (\code{main}).
+  title (\code{main}). It contains an additional element
+  \code{legendtxt} which is used when the function is
+  plotted as part of a \code{funsample}. This element, as
+  well as all other elements of \code{"options"}, can be
+  set as argument (\ldots). It defaults to \code{ylab}.
+}
+\examples{
+str(urfunction(sin))
+str(urfunction(sin, legendtxt = "sinus", col = 2))
 }
 

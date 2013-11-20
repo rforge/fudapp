@@ -26,7 +26,9 @@
   \code{"\link{simplist}"}s or separately.
 }
 \examples{
-urfu <- urfunction(sin, xlab = "alpha")
+urfu <- urfunction(sin, xlab = "beta")
 plot(urfu, from = 0, to = 2*pi)
+#compare x- and y- axis labels
+plot(sin, from = 0, to = 2*pi)
 }
 
