@@ -1,0 +1,31 @@
+\name{plot.sostyppp}
+\alias{plot.sostyppp}
+\title{Plot a second-order stationarity typed point pattern}
+\usage{
+  \method{plot}{sostyppp} (x, main, ..., col.win = NULL,
+    alpha.win = 0.4)
+}
+\arguments{
+  \item{x}{sos-typed point pattern which is plotted.}
+
+  \item{main}{title text}
+
+  \item{...}{arguments passed to \code{\link{plot.ppp}}}
+
+  \item{col.win}{color of the plot window}
+
+  \item{alpha.win}{numeric between 0 and 1, alpha-value of
+  window color, see \code{\link{alphacol}}}
+}
+\description{
+  Extends the spatstat method
+  \code{\link[spatstat]{plot.ppp}} by background color.
+}
+\author{
+  Ute Hahn, \email{ute@imf.au.dk}
+}
+\seealso{
+  \code{\link{plot.ppp}} for the print method of class
+  ancestor \code{ppp}.
+}
+

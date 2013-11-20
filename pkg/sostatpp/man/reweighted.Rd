@@ -1,0 +1,64 @@
+\name{reweighted}
+\alias{reweighted}
+\title{Make point pattern reweighted 2nd-order stationary}
+\usage{
+  reweighted(X, intensity = NULL, ...)
+}
+\arguments{
+  \item{X}{the original point pattern, an object of class
+  \code{"ppp"} or \code{"sostyppp"}}
+
+  \item{intensity}{optional. The estimated intensity
+  function, can be either \itemize{ \item a single number,
+  \item a vector of intensity values at the points of
+  \code{X}, \item a \code{function(x,y)} that returns the
+  intensity and is valid at each point of \code{X} \item a
+  pixel image of class \code{"\link{im}"} }}
+
+  \item{\ldots}{optional extra parameters. If
+  \code{intensity} is given as a function, \ldots may
+  contain extra parameters, if \code{intensity} is empty,
+  these are parameters passed to
+  \code{spatstat::\link[spatstat]{density.ppp}}.}
+}
+\value{
+  A reweighted s.o.s. typed point pattern (object of class
+  \code{{"sostyppp"}}), having typemarks with an element
+  \code{intensity} (estimated intensity)
+}
+\description{
+  Add type information for reweighted second-order
+  stationary point processes.
+}
+\details{
+  If \code{intensity} is missing, the function will check
+  if the pattern \code{X} has previously been typed as
+  rescaled s.o.s. (by function \code{\link{rescaled}}). In
+  that case, the intensity is calculated as the square
+  inverse scale factor.
+
+  If \code{intensity} is empty, and \code{X} has no inverse
+  scale factor marks, the intensity is estimated using
+  \code{spatstat::\link[spatstat]{density.ppp}}, and extra
+  arguments \ldots are passed to \code{density.ppp}. By
+  contrast to \bold{spatstat}, the {"leaveoneout"}-method
+  is not chosen by default.
+
+  If \code{intensity} is given as a function, extra
+  parameters may be passed as \ldots.
+
+  If \code{intensity} is given as a single number, the
+  point pattern gets marked with constant intensity, which
+  effectively means that it will be analysed as a
+  homogeneous point process with known intensity.
+}
+\author{
+  Ute Hahn, \email{ute@imf.au.dk}
+}
+\seealso{
+  related functions: \code{\link{rescaled}},
+  \code{\link{retransformed}}, \code{\link{homogeneous}}
+
+  \code{\link{sostyppp}} for details on the class.
+}
+

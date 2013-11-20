@@ -1,0 +1,25 @@
+\name{npoints.ppsample}
+\alias{npoints.ppsample}
+\title{Number of points in a point pattern sample}
+\usage{
+  \method{npoints}{ppsample} (x)
+}
+\arguments{
+  \item{x}{a sample of point patterns, object of class
+  \code{ppsample}}
+}
+\value{
+  integer vector, the number of points in each pattern
+  contained in \code{X}
+}
+\description{
+  Retrieves the number of points for all point patterns
+  contained in the data set.
+}
+\seealso{
+  \code{\link{ppsubsample}} for creating \code{ppsample}
+  objects, \code{intensity.ppsample} for estimating the
+  empirical intensity, \code{\link[spatstat]{npoints}} for
+  spatstat's generic function.
+}
+

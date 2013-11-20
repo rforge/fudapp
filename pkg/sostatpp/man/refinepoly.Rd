@@ -1,0 +1,35 @@
+\name{refinepoly}
+\alias{refinepoly}
+\title{Refine a Polygonal Window}
+\usage{
+  refinepoly(X, edgelen = NULL)
+}
+\arguments{
+  \item{X}{A polygonal window (object of class
+  \code{"owin"} and of type \code{"polygonal"}).}
+
+  \item{edgelen}{The maximum edge length (see `Details') of
+  the resulting polygon, defaults to perimeter/50 of the
+  largest subpolygon.}
+}
+\description{
+  Generate a finer polygonal window by subdividing edges.
+}
+\details{
+  Every edge is subdivided into segments of same length,
+  with length less or equal to \code{edgelen}.
+}
+\examples{
+# refine the polygonal window letterR from the spatstat package
+fineR <- refinepoly(letterR, edgelen = 0.1)
+summary(letterR)
+plot(letterR)
+summary(fineR)
+plot(fineR)
+}
+\author{
+  Ute Hahn, \email{ute@imf.au.dk}
+}
+\keyword{manip}
+\keyword{spatial}
+

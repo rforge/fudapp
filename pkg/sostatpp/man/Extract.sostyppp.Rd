@@ -1,0 +1,36 @@
+\name{[.sostyppp}
+\alias{[.sostyppp}
+\alias{[<-.sostyppp}
+\title{Extract or replace subset of a second-order stationarity typed point pattern}
+\usage{
+  \method{[}{sostyppp} (x, i)
+
+  \method{[}{sostyppp} (x, i) <- value
+}
+\arguments{
+  \item{x}{a sos-typed point pattern, object of class
+  \code{"sostyppp"}.}
+
+  \item{i}{subset index, see spatstat
+  \code{\link[spatstat]{[<-.ppp}}.}
+
+  \item{value}{Replacement for the subset, a sos-typed
+  point pattern of same type.}
+}
+\description{
+  An analogon to extraction an replacement of points in an
+  ordinary point pattern, i.e. a spatstat-object of class
+  \code{ppp}.
+}
+\details{
+  Replacing a subset in a gradient retransformed point
+  patterns does not make much sense since the
+  transformation was calculated from the original data.
+}
+\author{
+  Ute Hahn, \email{ute@imf.au.dk}
+}
+\seealso{
+  \code{\link{sostyppp}} for details on the class.
+}
+
