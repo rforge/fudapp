@@ -6,23 +6,52 @@
 }
 \arguments{
   \item{...}{option names given as character string, or
-  given as \code{name = value}}
+  given as \code{name = value}. Alternatively, options can
+  be passed as \code{\link{simplist}}s.}
 }
 \value{
-  For \code{ploptions()}, a list of set options for package
-  \code{plutils}; if invoked with names of options or set
-  values, a list of all options contained in the arguments.
+  For \code{ploptions()}, a \code{simplist} of set options
+  for package \code{plutils}; if invoked with names of
+  options, a list of all options contained in the
+  arguments. If called with \code{name = value}, no visible
+  result is returned.
 }
 \description{
   Get or set options for package plutils
 }
 \details{
-  Currently, only one options is used: \tabular{ll}{
-  \code{alphamix:}\tab logical, defaults to \code{FALSE}.
-  Controls the behaviour of \code{\link{alphacol}}:\cr\tab
-  if \code{alphamix == TRUE}, \code{\link{alphacol}}
-  returns a color with alpha channel. \cr\tab Otherwise,
-  the color is an RGB mixed with the background
-  color,\cr\tab thus faking alpha mixing. }
+  It is possible to set any options - this might be useful
+  for global options of other packages. This can however
+  also be done with the base function \code{options}, the
+  only difference is that \code{ploptions} returns a
+  \code{\link{simplist}}, and resolves
+  \code{\link{simplist}} arguments, but not
+  \code{\link{list}} arguments.
+
+  Currently, only one options is used by package
+  \code{plutils}: \tabular{ll}{ \code{alphamix:}\tab
+  logical, defaults to \code{FALSE}. Controls the behaviour
+  of \code{\link{alphacol}}:\cr\tab if \code{alphamix ==
+  TRUE}, \code{\link{alphacol}} returns a color with alpha
+  channel. \cr\tab Otherwise, the color is an RGB mixed
+  with the background color,\cr\tab thus faking alpha
+  mixing. }
+}
+\examples{
+ploptions()
+# add a new option
+ploptions(schnurz = "piep")
+ploptions()
+# save options
+oldopt <- ploptions()
+# change old option, and add a new one
+ploptions(schnurz = pi, a = 5)
+ploptions()
+# reset old options, and change the new one from the step before
+ploptions(oldopt, a = 3)
+ploptions()
+}
+\seealso{
+  The base function \code{\link{options}} is similar.
 }
 

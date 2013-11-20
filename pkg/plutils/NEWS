@@ -1,3 +1,8 @@
+CHANGES IN plutils VERSION 0.3.1
+
+    o generic function plotlegend, taking simplists for argument. 
+      Class methods are meant to retrieve legend information from the objects.
+
 CHANGES IN plutils VERSION 0.3.0
 
     o now with package options, accessible via function "ploptions"
