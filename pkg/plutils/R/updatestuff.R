@@ -69,8 +69,10 @@ updateList <- function(input, update, ignoreNULLs = TRUE) {
 #'@family updatelist
 
 updateNULLs <- function(input, update, ignoreNULLs = TRUE) {
-  inulls <- input[sapply(input, is.null)]
-  replace <- updateList(inulls, update, ignoreNULLs)
+  inulls <- sapply(input, is.null)
+  if (length(inulls) < 1) return(input)
+  # inulls <- input[sapply(input, is.null)]
+  replace <- updateList(input[inulls], update, ignoreNULLs)
   input[names(replace)] <- replace
   firstclass(input) <- "simplist"
   input

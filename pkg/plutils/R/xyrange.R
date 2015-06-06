@@ -34,7 +34,8 @@ rangexy <- function(...) UseMethod("rangexy")
 
 #' @rdname rangexy
 #' @method rangexy default
-#' @S3method rangexy default
+#' @export
+#@S3method rangexy default
 #' 
  
 rangexy.default <- function (x, y=NULL, finite = TRUE, ...) {

@@ -1,3 +1,9 @@
+CHANGES IN plutils VERSION 0.3.1-1
+
+    o updated S3methods
+    
+    o minor fix in function updateNULLs
+    
 CHANGES IN plutils VERSION 0.3.1
 
     o generic function plotlegend, taking simplists for argument. 
