@@ -65,9 +65,9 @@ rankCount.test <-
   allvals <- cbind(obs$fvals, sim$fvals)
   R <- sim$groupsize + 1
   # from below, startin with 1 = lowest
-  lorank <- apply(allvals, 1, rank, ties = "min")
+  lorank <- apply(allvals, 1, rank, ties = "max")
   # from the top, starting with 1 = highest
-  hirank <- apply(-allvals, 1, rank, ties = "min")
+  hirank <- apply(-allvals, 1, rank, ties = "max")
   
   if (alternative == "two.sided") {
     allrank <- pmin(lorank, hirank) # lowest achieved rank in all points of a curve
@@ -109,7 +109,7 @@ rankCount.test <-
 #   
   pvalue <- mean(therank <= obsrank) 
   
-  mrquant <- quantile(therank,  1 - inclprob)
+  mrquant <- quantile(therank,  1 - inclprob, type = 1)
   trueprob <- 1 - sapply(mrquant, function(q) mean(therank < q))
   
   envs <- lapply(mrquant, function (q) pwEnvelope(sim[therank[-1] >= q], 1))

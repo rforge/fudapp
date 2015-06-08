@@ -5,7 +5,7 @@
 \title{Envelope test of goodness of fit}
 \usage{
 rankEnv.test(obs, sim, alternative = c("two.sided", "less", "greater"),
-  inclprob = 0.95)
+  inclprob = 0.95, includeobs = TRUE)
 }
 \arguments{
 \item{obs}{object of class \code{fdsample}, the observed curve.}
@@ -18,6 +18,8 @@ compared.}
 
 \item{inclprob}{a numerical vector of inclusion probabilities
 of the envelopes to be plotted, for use in \code{\link{plot.envtest}}}
+
+\item{includeobs}{logical, if TRUE, observed curve is also used in the envelope}
 }
 \description{
 Test if an observed curve matches a sample of simulated curves (or
